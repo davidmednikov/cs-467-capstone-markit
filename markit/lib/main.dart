@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'components/live_feed/live_feed.dart';
-import 'components/mark_price/mark_price.dart';
-import 'components/profile/my_profile.dart';
-import 'components/shopping_list/my_lists.dart';
-import 'components/store/view_stores.dart';
+import 'components/common/scaffold.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,23 +18,9 @@ class Markit extends StatelessWidget {
     return MaterialApp(
       title: 'Markit',
       theme: ThemeData(
-        primarySwatch: Colors.deepPurple,
+        primarySwatch: Colors.deepOrange,
       ),
-      routes: getRoutes(),
-      initialRoute: '/',
+      home: MarkitScaffold(),
     );
-  }
-
-  Map<String, WidgetBuilder> getRoutes() {
-    return {
-      '/': (context) => MyLists(),
-      // 'addList': (context) => AddList(),
-      // 'viewList': (context) => ViewLists(),
-      'markPrice': (context) => MarkPrice(),
-      'liveFeed': (context) => LiveFeed(),
-      'stores': (context) => ViewStores(),
-      // 'store': (context) => ViewStore(),
-      'profile': (context) => MyProfile(),
-    };
   }
 }
