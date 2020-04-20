@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class LiveFeed extends StatelessWidget {
+class AddTag extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
