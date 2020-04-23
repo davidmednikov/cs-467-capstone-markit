@@ -14,9 +14,4 @@ class ViewListsState extends State<ViewLists> {
   Widget build(BuildContext context) {
     return Placeholder();
   }
-
-  void addList(BuildContext context) {
-    // Navigator.of(context).pushNamed('addList');
-    print(2);
-  }
 }

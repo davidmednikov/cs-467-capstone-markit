@@ -22,10 +22,10 @@ class MyListsState extends State<MyLists> {
   @override
   Widget build(BuildContext context) {
     return Navigator(
-      initialRoute: 'viewLists',
+      initialRoute: '/',
       onGenerateRoute: (RouteSettings settings) {
         switch (settings.name) {
-          case 'viewLists':
+          case '/':
             return MaterialPageRoute(
               builder: (context) => ViewLists(key: _viewListsState),
               settings: settings,
@@ -62,14 +62,15 @@ class MyListsState extends State<MyLists> {
     );
   }
 
-    void navigate() {
+    String navigate() {
       BuildContext context = _viewListsState.currentState.context;
       NavigatorState navigator = Navigator.of(context);
-      String title = ModalRoute.of(context).settings.name;
-      if (title == 'viewLists') {
+      String route = ModalRoute.of(context).settings.name;
+      if (route == '/') {
         Navigator.of(context).pushNamed('addList');
-      } else {
-        Navigator.of(context).pushNamed('addTag');
+        return 'addList';
       }
+      Navigator.of(context).pushNamed('addTag');
+      return 'addTag';
     }
 }

@@ -13,11 +13,15 @@ class BottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      items: navOptions,
-      currentIndex: selectedIndex,
-      onTap: onItemTapped,
-      type: BottomNavigationBarType.fixed,
+    return BottomAppBar(
+      shape: CircularNotchedRectangle(),
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      child: BottomNavigationBar(
+        items: navOptions,
+        currentIndex: selectedIndex,
+        onTap: (index) => onItemTapped(index, context),
+        type: BottomNavigationBarType.fixed,
+      ),
     );
   }
 }

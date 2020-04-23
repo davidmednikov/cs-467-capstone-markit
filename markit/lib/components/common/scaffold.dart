@@ -6,7 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../mark_price/mark_price.dart';
 import '../shopping_list/my_lists.dart';
 import 'bottom_nav_bar.dart';
-import 'bottom_nav_bar_options.dart';
+import 'navigation_options.dart';
 import 'dynamic_fab.dart';
 import 'scan_barcode.dart';
 
@@ -25,6 +25,8 @@ class _MarkitScaffoldState extends State<MarkitScaffold> {
   final GlobalKey<MyListsState> _myListsState = GlobalKey<MyListsState>();
 
   final List<BottomNavigationBarItem> _navOptions = getNavTabOptions();
+  final List<Map<String, String>> _routesTitlesMap = getRouteTitlesMap();
+
   List<Widget> _navTabs;
 
   @override
@@ -41,6 +43,12 @@ class _MarkitScaffoldState extends State<MarkitScaffold> {
         title: Center(
           child: _title,
         ),
+        // leading: BackButton(
+        //   onPressed: () => {
+        //     print(ModalRoute.of(_myListsState.currentState.context).settings.name)
+        //     // print(Navigator.of(_myListsState.currentState.context))
+        //     // Navigator.of(_myListsState.currentState.context).pop();
+        //   }),
       ),
       body: SafeArea(
         child: Padding(
@@ -48,14 +56,10 @@ class _MarkitScaffoldState extends State<MarkitScaffold> {
           child: _navTabs.elementAt(_selectedIndex),
         ),
       ),
-      bottomNavigationBar: BottomAppBar(
-        shape: CircularNotchedRectangle(),
-        clipBehavior: Clip.antiAliasWithSaveLayer,
-        child: BottomNavBar(
-          selectedIndex: _selectedIndex,
-          navOptions: _navOptions,
-          onItemTapped: _onItemTapped,
-        ),
+      bottomNavigationBar: BottomNavBar(
+        selectedIndex: _selectedIndex,
+        navOptions: _navOptions,
+        onItemTapped: _onItemTapped,
       ),
       floatingActionButton: DynamicFab(
         page: _title.data,
@@ -66,10 +70,10 @@ class _MarkitScaffoldState extends State<MarkitScaffold> {
     );
   }
 
-  void _onItemTapped(int index) {
+  void _onItemTapped(int index, BuildContext context) {
     setState(() {
       _selectedIndex = index;
-      _title = _navOptions[_selectedIndex].title;
+      _title = Text(_routesTitlesMap[_selectedIndex][ModalRoute.of(context).settings.name]);
     });
   }
 
@@ -77,7 +81,10 @@ class _MarkitScaffoldState extends State<MarkitScaffold> {
     if (actionIndex == 0) {
       _onBarcodeButtonPressed();
     } else {
-      _myListsState.currentState.navigate();
+      String newRoute = _myListsState.currentState.navigate();
+      setState(() {
+        _title = Text(_routesTitlesMap[_selectedIndex][newRoute]);
+      });
     }
   }
 

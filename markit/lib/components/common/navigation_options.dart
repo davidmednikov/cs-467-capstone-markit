@@ -35,3 +35,25 @@ List<Widget> getNavTabViews(GlobalKey key) {
     MyProfile()
   ];
 }
+
+List<Map<String, String>> getRouteTitlesMap() {
+  return [
+    {
+      '/'         : 'My Lists',
+      'addList'   : 'Add List',
+      'viewList'  : 'View List',
+      'addTag'    : 'Add Tag',
+      'viewTag'   : 'View Tag',
+    },
+    {
+      '/'         : 'Live Feed',
+    },
+    {
+      '/'         : 'View Stores',
+      'viewStore' : 'View Store',
+    },
+    {
+      '/'         : 'My Profile',
+    },
+  ];
+}
