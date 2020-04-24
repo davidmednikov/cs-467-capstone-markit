@@ -10,13 +10,6 @@ class TopScaffold extends StatelessWidget {
 
   TopScaffold({Key key, this.title, this.view }) : super(key: key);
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _title = _navOptions[_selectedIndex].title;
-  //   _navTabs = getNavTabViews(_myListsState);
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

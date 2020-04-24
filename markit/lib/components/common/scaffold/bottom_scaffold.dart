@@ -73,7 +73,7 @@ class _BottomScaffoldState extends State<BottomScaffold> {
   void _onBarcodeButtonPressed() async {
     Future<String> barcode = scanBarcode();
     barcode.then((String upc) {
-      // _onItemTapped(null);
+      // _onItemTapped(null); // how to select none of the tabs?
       print(upc);
     });
   }

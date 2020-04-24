@@ -28,7 +28,6 @@ class DynamicFab extends StatelessWidget {
       actions: icons,
       childOnFold: Text('M', style: GoogleFonts.lato(fontStyle: FontStyle.italic, fontWeight: FontWeight.bold, fontSize: 40)),
       childOnUnfold: FaIcon(FontAwesomeIcons.times),
-      // useRotateAnimation: true,
       onAction: onSpeedDialAction,
     );
   }
