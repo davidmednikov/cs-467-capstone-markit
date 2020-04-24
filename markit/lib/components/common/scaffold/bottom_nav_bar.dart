@@ -18,7 +18,7 @@ class BottomNavBar extends StatelessWidget {
       child: BottomNavigationBar(
         items: navOptions,
         currentIndex: selectedIndex,
-        onTap: (index) => onItemTapped(index, context),
+        onTap: (index) => onItemTapped(index),
         type: BottomNavigationBarType.fixed,
       ),
     );

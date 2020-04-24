@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../common/page.dart';
+import '../../common/page.dart';
 
 import 'bottom_nav_bar.dart';
 import 'dynamic_fab.dart';
-import 'navigation/lists_navigator.dart';
-import 'navigation/live_feed_navigator.dart';
-import 'navigation/stores_navigator.dart';
-import 'navigation/profiles_navigator.dart';
-import 'navigation/navigation_options.dart';
-import 'scan_barcode.dart';
+import '../navigation/lists_navigator.dart';
+import '../navigation/live_feed_navigator.dart';
+import '../navigation/stores_navigator.dart';
+import '../navigation/profiles_navigator.dart';
+import '../navigation/navigation_options.dart';
+import '../scan_barcode.dart';
 
 class BottomScaffold extends StatefulWidget {
   BottomScaffold({Key key }) : super(key: key);
@@ -58,7 +58,7 @@ class _BottomScaffoldState extends State<BottomScaffold> {
     );
   }
 
-  void _onItemTapped(int index, BuildContext context) {
+  void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
@@ -74,7 +74,10 @@ class _BottomScaffoldState extends State<BottomScaffold> {
 
   void _onBarcodeButtonPressed() async {
     Future<String> barcode = scanBarcode();
-    barcode.then((String upc) => print(upc));
+    barcode.then((String upc) {
+      // _onItemTapped(null);
+      print(upc);
+    });
   }
 
   String getPageTitle() {

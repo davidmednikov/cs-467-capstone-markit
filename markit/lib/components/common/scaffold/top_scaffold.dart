@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'navigation/navigation_options.dart';
+import '../navigation/navigation_options.dart';
 
 class TopScaffold extends StatelessWidget {
 

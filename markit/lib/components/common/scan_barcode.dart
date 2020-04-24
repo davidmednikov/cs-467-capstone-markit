@@ -6,7 +6,7 @@ Future<String> scanBarcode() async {
   print(result.rawContent); // The barcode content
   print(result.format); // The barcode format (as enum)
   print(result.formatNote); // If a u
-  if (result.type != 'Barcode') {
+  if (result.type.toString() != 'Barcode') {
     return null;
   }
   return result.rawContent;

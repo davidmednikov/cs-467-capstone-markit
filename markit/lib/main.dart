@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'components/common/bottom_scaffold.dart';
+import 'components/common/scaffold/bottom_scaffold.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
