@@ -33,8 +33,4 @@ class MarkitNavigatorState extends State<MarkitNavigator> {
       ),
     );
   }
-
-  void navigate(String route) {
-    Navigator.pushNamed(context, route);
-  }
 }
