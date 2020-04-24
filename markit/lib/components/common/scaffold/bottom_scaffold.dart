@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../../common/page.dart';
-
 import 'bottom_nav_bar.dart';
 import 'dynamic_fab.dart';
 import '../navigation/lists_navigator.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../common/page.dart';
+import '../common/scaffold/top_scaffold.dart';
 
 class LiveFeed extends StatelessWidget {
 
@@ -8,7 +8,7 @@ class LiveFeed extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MarkitPage(
+    return TopScaffold(
       title: 'Live Feed',
       view: Placeholder(),
     );

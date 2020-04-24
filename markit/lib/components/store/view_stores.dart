@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../common/page.dart';
+import '../common/scaffold/top_scaffold.dart';
 
 class ViewStores extends StatelessWidget {
 
@@ -8,7 +8,7 @@ class ViewStores extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MarkitPage(
+    return TopScaffold(
       title: 'View Stores',
       view: Placeholder(),
     );

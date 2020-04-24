@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../common/page.dart';
+import '../common/scaffold/top_scaffold.dart';
 
 class AddTag extends StatelessWidget {
 
@@ -8,7 +8,7 @@ class AddTag extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-     return MarkitPage(
+     return TopScaffold(
       title: 'Add Tag',
       view: Placeholder(),
     );

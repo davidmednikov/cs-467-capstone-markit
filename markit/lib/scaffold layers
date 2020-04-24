@@ -1,9 +1,0 @@
-material app
-  scaffold
-    body
-      navigator
-        scaffold
-          app bar
-          actual body
-    bottom nav bar
-    floating action button

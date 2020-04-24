@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 
-import '../common/page.dart';
+import 'user_profile.dart';
 
 class MyProfile extends StatelessWidget {
 
-  var user;
+  var thisUser;
 
   MyProfile({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return MarkitPage(
-      title: 'My Profile',
-      view: Placeholder(),
+    return UserProfile(
+     user: thisUser,
     );
   }
 }
