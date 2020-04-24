@@ -14,8 +14,8 @@ class DynamicFab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String route = ModalRoute.of(context).settings.name;
-    if (page == 'My Lists' || route == 'viewList') {
+    print(page);
+    if (page == 'My Lists') {
       return _getSpeedDialFab();
     }
     return _getBarcodeScannerFab();

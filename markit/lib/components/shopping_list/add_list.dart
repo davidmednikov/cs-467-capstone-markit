@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 
-class AddList extends StatefulWidget {
+import '../common/page.dart';
+
+class AddList extends StatelessWidget {
 
   AddList({Key key}) : super(key: key);
 
   @override
-  AddListState createState() => AddListState();
-}
-
-class AddListState extends State<AddList> {
-
-  @override
   Widget build(BuildContext context) {
-    return Placeholder();
+    return MarkitPage(
+      title: 'Add List',
+      view: Placeholder(),
+    );
   }
 }
