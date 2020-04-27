@@ -29,18 +29,19 @@ class _MarkitAppBarState extends State<MarkitAppBar> {
     return AppBar(
       title: Text(_title),
       centerTitle: true,
-      actions: getActions(),
+      actions: getActions(context),
     );
   }
 
-  void _changeTitled(String title) {
+  void _changeTitle(String title) {
     setState(() {
       _title = title;
     });
   }
 
-  List<Widget> getActions() {
-    if (_title == 'My Lists' || _title == 'View List') {
+  List<Widget> getActions(context) {
+    String route = ModalRoute.of(context).settings.name;
+    if (_title == 'My Lists' || route == 'viewList') {
       return [
         PopupMenuButton(
           onSelected: (value) => selectedInPopup(value),
