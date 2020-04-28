@@ -60,9 +60,9 @@ Map<String, Widget> getListsRoutes(GlobalKey myListsKey, GlobalKey viewListKey, 
   return {
     '/': MyLists(key: myListsKey, myLists: getTestLists(), dynamicFabKey: dynamicFab),
     'addList': AddList(dynamicFabKey: dynamicFab),
-    'addTag': AddTag(),
+    'addTag': AddTag(dynamicFabKey: dynamicFab),
     'viewList': ViewList(key: viewListKey, dynamicFabKey: dynamicFab),
-    'viewTag': ViewTag(),
+    'viewTag': ViewTag(dynamicFabKey: dynamicFab),
   };
 }
 
