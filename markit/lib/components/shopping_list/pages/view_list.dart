@@ -22,21 +22,29 @@ class ViewListState extends State<ViewList> {
   @override
   Widget build(BuildContext context) {
     shoppingList = ModalRoute.of(context).settings.arguments;
-    return TopScaffold(
-      title: shoppingList.name,
-      view: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: shoppingList.listTags.length,
-              itemBuilder: (context, index) {
-                ListTagModel tag = shoppingList.listTags[index];
-                return ListTagTile(listTag: tag);
-              },
+    return WillPopScope(
+      child: TopScaffold(
+        title: shoppingList.name,
+        view: Column(
+          children: [
+            Expanded(
+              child: ListView.builder(
+                itemCount: shoppingList.listTags.length,
+                itemBuilder: (context, index) {
+                  ListTagModel tag = shoppingList.listTags[index];
+                  return ListTagTile(listTag: tag);
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
+      onWillPop: notifyFabOfPop,
     );
+  }
+
+  Future<bool> notifyFabOfPop() {
+    widget.dynamicFabKey.currentState.changePage('myLists');
+    return Future.value(true);
   }
 }

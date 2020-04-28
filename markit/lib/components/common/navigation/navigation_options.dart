@@ -3,15 +3,19 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../live_feed/live_feed.dart';
 import '../../profile/my_profile.dart';
-import '../../shopping_list/add_list.dart';
-import '../../shopping_list/add_tag.dart';
-import '../../shopping_list/my_lists.dart';
+import '../../shopping_list/pages/add_list.dart';
+import '../../shopping_list/pages/add_tag.dart';
+import '../../shopping_list/pages/my_lists.dart';
+import '../../shopping_list/pages/view_list.dart';
+import '../../shopping_list/pages/view_tag.dart';
 import '../../store/view_stores.dart';
 
 import 'lists_navigator.dart';
 import 'live_feed_navigator.dart';
 import 'stores_navigator.dart';
 import 'profiles_navigator.dart';
+
+import '../../models/shopping_list_model.dart';
 
 List<BottomNavigationBarItem> getNavTabOptions() {
   return [
@@ -34,10 +38,11 @@ List<BottomNavigationBarItem> getNavTabOptions() {
   ];
 }
 
-List<Widget> getNavigators(GlobalKey listsNav, GlobalKey liveFeedNav, GlobalKey storesNav, GlobalKey profilesNav) {
+List<Widget> getNavigators(GlobalKey listsNav, GlobalKey liveFeedNav, GlobalKey storesNav, GlobalKey profilesNav, GlobalKey dynamicFabKey) {
   return [
     ListsNavigator(
       key: listsNav,
+      dynamicFabKey: dynamicFabKey,
     ),
     LiveFeedNavigator(
       key: liveFeedNav,
@@ -51,72 +56,54 @@ List<Widget> getNavigators(GlobalKey listsNav, GlobalKey liveFeedNav, GlobalKey 
   ];
 }
 
-Map<String, Map<String, Widget>> getListsRoutes(GlobalKey myListsKey, GlobalKey addListKey) {
+Map<String, Widget> getListsRoutes(GlobalKey myListsKey, GlobalKey viewListKey, GlobalKey dynamicFab) {
   return {
-    '/': {
-      'title' : Text('My Lists'),
-      'page'  : MyLists(key: myListsKey),
-    },
-    'addList': {
-      'title' : Text('Add List'),
-      'page'  : AddList(key: addListKey),
-    },
-    'addTag': {
-      'title' : Text('Add Tag'),
-      'page'  : AddTag(),
-    },
-    // 'viewList'  : ViewList(),
-    // 'viewTag'   : ViewTag(),
+    '/': MyLists(key: myListsKey, myLists: getTestLists(), dynamicFabKey: dynamicFab),
+    'addList': AddList(dynamicFabKey: dynamicFab),
+    'addTag': AddTag(),
+    'viewList': ViewList(key: viewListKey, dynamicFabKey: dynamicFab),
+    'viewTag': ViewTag(),
   };
 }
 
-Map<String, Map<String, Widget>> getLiveFeedRoutes() {
+Map<String, Widget> getLiveFeedRoutes() {
   return {
-    '/':{
-      'title' : Text('Live Feed'),
-      'page'  : LiveFeed(),
-    }
+    '/': LiveFeed(),
   };
 }
 
-Map<String, Map<String, Widget>> getStoresRoutes() {
+Map<String, Widget> getStoresRoutes() {
   return {
-    '/':{
-      'title' : Text('Live Feed'),
-      'page'  : ViewStores(),
-    }
+    '/':ViewStores(),
     // 'viewStore' : ViewStore(),
   };
 }
 
-Map<String, Map<String, Widget>> getProfileRoutes() {
+Map<String, Widget> getProfileRoutes() {
   return {
-    '/': {
-        'title' : Text('My Profile'),
-        'page'  : MyProfile(),
-      },
+    '/': MyProfile(),
     // 'userProfile' : UserProfile()
   };
 }
 
-List<Map<String, String>> getTitles() {
+List<Map<String, String>> getPages() {
   return [
     {
-      '/': 'My Lists',
-      'addList': 'Add List',
-      'addTag'    : 'Add Tag',
-      // 'viewList'  : ViewList(),
-      // 'viewTag'   : ViewTag(),
+      '/': 'myLists',
+      'addList': 'addList',
+      'addTag'    : 'addTag',
+      'viewList'  : 'viewList',
+      'viewTag'   : 'viewTag',
     },
     {
-      '/': 'Live Feed',
+      '/': 'liveFeed',
     },
     {
-      '/': 'View Stores',
-      'viewStore': 'View Store',
+      '/': 'viewStores',
+      'viewStore': 'viewStore',
     },
     {
-      '/': 'My Profile',
+      '/': 'myProfile',
       // 'userProfile' : 'User Profile',
     },
   ];

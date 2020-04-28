@@ -13,6 +13,8 @@ import '../scan_barcode.dart';
 class BottomScaffold extends StatefulWidget {
   BottomScaffold({Key key }) : super(key: key);
 
+  List<Map<String, String>> pages = getPages();
+
   @override
   _BottomScaffoldState createState() => _BottomScaffoldState();
 }
@@ -25,17 +27,17 @@ class _BottomScaffoldState extends State<BottomScaffold> {
 
   List<Widget> _navigators;
 
-  List<Map<String, String>> _titles = getTitles();
-
   final GlobalKey<ListsNavigatorState> listsNavigatorState = GlobalKey<ListsNavigatorState>();
   final GlobalKey<LiveFeedNavigatorState> liveFeedNavigatorState = GlobalKey<LiveFeedNavigatorState>();
   final GlobalKey<StoresNavigatorState> storesNavigatorState = GlobalKey<StoresNavigatorState>();
   final GlobalKey<ProfilesNavigatorState> profilesNavigatorState = GlobalKey<ProfilesNavigatorState>();
 
+  final GlobalKey<DynamicFabState> dynamicFabState = GlobalKey<DynamicFabState>();
+
   @override
   void initState() {
     super.initState();
-    _navigators =  getNavigators(listsNavigatorState, liveFeedNavigatorState, storesNavigatorState, profilesNavigatorState);
+    _navigators =  getNavigators(listsNavigatorState, liveFeedNavigatorState, storesNavigatorState, profilesNavigatorState, dynamicFabState);
   }
 
   @override
@@ -48,7 +50,8 @@ class _BottomScaffoldState extends State<BottomScaffold> {
         onItemTapped: _onItemTapped,
       ),
       floatingActionButton: DynamicFab(
-        page: getPageTitle(),
+        key: dynamicFabState,
+        page: getPage(),
         onSpeedDialAction: _onSpeedDialAction,
         onBarcodeButtonPressed: _onBarcodeButtonPressed,
       ),
@@ -57,6 +60,7 @@ class _BottomScaffoldState extends State<BottomScaffold> {
   }
 
   void _onItemTapped(int index) {
+    dynamicFabState.currentState.tabChanged();
     setState(() {
       _selectedIndex = index;
     });
@@ -79,38 +83,38 @@ class _BottomScaffoldState extends State<BottomScaffold> {
     });
   }
 
-  String getPageTitle() {
+  String getPage() {
     GlobalKey theKey;
     switch (_selectedIndex) {
       case 0:
         if (listsNavigatorState.currentContext == null) {
-          return 'My Lists';
+          return 'myLists';
         }
         theKey = listsNavigatorState;
         break;
       case 1:
         if (liveFeedNavigatorState.currentContext == null) {
-          return 'Live Feed';
+          return 'liveFeed';
         }
         theKey = liveFeedNavigatorState;
         break;
       case 2:
         if (storesNavigatorState.currentContext == null) {
-          return 'Stores';
+          return 'viewStores';
         }
         theKey = storesNavigatorState;
         break;
       case 3:
         if (profilesNavigatorState.currentContext == null) {
-          return 'Profiles';
+          return 'myProfile';
         }
         theKey = profilesNavigatorState;
         break;
       default:
-        return 'Markit';
+        return 'markit';
     }
     String route = ModalRoute.of(theKey.currentContext).settings.name;
-    String title = _titles[_selectedIndex][route];
+    String title = widget.pages[_selectedIndex][route];
     return title;
   }
 }
