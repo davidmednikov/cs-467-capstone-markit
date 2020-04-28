@@ -9,7 +9,6 @@ class ListTagTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(listTag);
     return ListTile(
       title: Text(
         listTag.tagName,

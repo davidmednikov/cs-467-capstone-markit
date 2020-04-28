@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:markit/components/common/navigation/navigation_options.dart';
 
-import 'navigator.dart';
+import 'tab_navigator.dart';
 
 class LiveFeedNavigator extends StatefulWidget {
 
@@ -15,7 +15,7 @@ class LiveFeedNavigatorState extends State<LiveFeedNavigator> {
 
   @override
   Widget build(BuildContext context) {
-    return MarkitNavigator(
+    return TabNavigator(
       routesToPagesMap: getLiveFeedRoutes(),
     );
   }

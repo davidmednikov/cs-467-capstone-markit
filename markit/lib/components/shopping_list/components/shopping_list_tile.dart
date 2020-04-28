@@ -12,7 +12,6 @@ class ShoppingListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(shoppingList);
     return ListTile(
       title: Text(
         shoppingList.name,
