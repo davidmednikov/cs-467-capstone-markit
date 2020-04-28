@@ -178,7 +178,8 @@ class _AddTagState extends State<AddTag> {
   }
 
   Future<bool> notifyFabOfPop() {
-    widget.dynamicFabKey.currentState.changePage('myLists');
+    SystemChannels.textInput.invokeMethod('TextInput.hide');
+    widget.dynamicFabKey.currentState.changePage('viewList');
     return Future.value(true);
   }
 

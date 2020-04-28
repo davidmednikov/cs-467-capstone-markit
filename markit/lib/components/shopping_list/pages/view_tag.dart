@@ -162,6 +162,7 @@ class _ViewTagState extends State<ViewTag> {
   }
 
   Future<bool> notifyFabOfPop() {
+    SystemChannels.textInput.invokeMethod('TextInput.hide');
     widget.dynamicFabKey.currentState.changePage('viewList');
     return Future.value(true);
   }

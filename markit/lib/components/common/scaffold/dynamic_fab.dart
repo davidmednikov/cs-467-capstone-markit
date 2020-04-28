@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_speed_dial_material_design/flutter_speed_dial_material_design.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:markit/components/common/scaffold/my_lists_speed_dial_fab.dart';
+import 'package:markit/components/common/scaffold/view_list_speed_dial_fab.dart';
 
 class DynamicFab extends StatefulWidget {
 
@@ -22,13 +24,27 @@ class DynamicFabState extends State<DynamicFab> {
 
   bool stateChangedManually = false;
 
+  SpeedDialController _controller = SpeedDialController();
+
   @override
   Widget build(BuildContext context) {
     if (!stateChangedManually) {
       _currentPage = widget.page;
     }
-    if (_currentPage == 'myLists' || _currentPage == 'viewList') {
-      return _getSpeedDialFab(_currentPage);
+    if (_currentPage == 'myLists') {
+      return MyListsSpeedDialFab(
+        page: _currentPage,
+        controller: _controller,
+        onSpeedDialAction: widget.onSpeedDialAction,
+        getSpeedDialLabelWidget: getSpeedDialLabelWidget,
+      );
+    } else if (_currentPage == 'viewList') {
+      return ViewListSpeedDialFab(
+        page: _currentPage,
+        controller: _controller,
+        onSpeedDialAction: widget.onSpeedDialAction,
+        getSpeedDialLabelWidget: getSpeedDialLabelWidget,
+      );
     } else if (_currentPage == 'viewTag' || _currentPage == 'addTag') {
       return _getPriceRunFab();
     } else if (_currentPage == 'markit') {
@@ -38,6 +54,7 @@ class DynamicFabState extends State<DynamicFab> {
   }
 
   void changePage(String newPage) {
+    _controller.unfold();
     setState(() {
       stateChangedManually = true;
       _currentPage = newPage;
@@ -48,22 +65,6 @@ class DynamicFabState extends State<DynamicFab> {
     setState(() {
       stateChangedManually = false;
     });
-  }
-
-  Widget _getSpeedDialFab(String currentPage) {
-    List<SpeedDialAction> actions;
-    if (currentPage == 'viewList') {
-      actions = _getViewListIcons();
-    } else {
-      actions = _getMyListsIcons();
-    }
-
-    return SpeedDialFloatingActionButton(
-      actions: actions,
-      childOnFold: Text('M', style: GoogleFonts.lato(fontStyle: FontStyle.italic, fontWeight: FontWeight.bold, fontSize: 40)),
-      childOnUnfold: FaIcon(FontAwesomeIcons.times),
-      onAction: widget.onSpeedDialAction,
-    );
   }
 
   Widget _getBarcodeScannerFab() {
@@ -87,25 +88,18 @@ class DynamicFabState extends State<DynamicFab> {
     );
   }
 
-  List<SpeedDialAction> _getMyListsIcons() {
-    return [
-      SpeedDialAction(
-        child: FaIcon(FontAwesomeIcons.qrcode),
+  Widget getSpeedDialLabelWidget(String label) {
+    return SizedBox(
+      child:  FittedBox(
+        fit: BoxFit.scaleDown,
+        child: Material(
+          child: Text(
+            label,
+            style: GoogleFonts.lato(fontStyle: FontStyle.italic, fontWeight: FontWeight.bold, fontSize: 30, color: Colors.deepOrange),
+          ),
+        ),
       ),
-      SpeedDialAction(
-        child: FaIcon(FontAwesomeIcons.plus),
-      ),
-    ];
-  }
-
-  List<SpeedDialAction> _getViewListIcons() {
-    return [
-      SpeedDialAction(
-        child: FaIcon(FontAwesomeIcons.searchDollar),
-      ),
-      SpeedDialAction(
-        child: FaIcon(FontAwesomeIcons.plus),
-      ),
-    ];
+      height: 24,
+    );
   }
 }

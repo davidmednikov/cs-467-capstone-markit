@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 
 import 'package:markit/components/common/scaffold/dynamic_fab.dart';
@@ -125,6 +126,7 @@ class _AddListState extends State<AddList> {
   }
 
   Future<bool> notifyFabOfPop() {
+    SystemChannels.textInput.invokeMethod('TextInput.hide');
     widget.dynamicFabKey.currentState.changePage('myLists');
     return Future.value(true);
   }

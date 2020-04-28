@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:markit/components/common/scaffold/dynamic_fab.dart';
 import '../../models/list_tag_model.dart';
 
 class ListTagTile extends StatelessWidget {
 
   ListTagModel listTag;
 
-  ListTagTile({Key key, this.listTag}) : super(key: key);
+  GlobalKey<DynamicFabState> dynamicFabKey;
+
+  ListTagTile({Key key, this.listTag, this.dynamicFabKey}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +38,7 @@ class ListTagTile extends StatelessWidget {
         ),
       ),
       onTap: () {
+        dynamicFabKey.currentState.changePage('viewTag');
         Navigator.of(context).pushNamed('viewTag', arguments: listTag);
       },
     );
