@@ -3,9 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 
 import 'package:markit/components/common/scaffold/dynamic_fab.dart';
+import 'package:markit/components/models/shopping_list_model.dart';
 import '../../common/scaffold/top_scaffold.dart';
 
-class AddList extends StatefulWidget {
+class NewList extends StatefulWidget {
 
   int userid;
 
@@ -13,13 +14,13 @@ class AddList extends StatefulWidget {
 
   GlobalKey<DynamicFabState> dynamicFabKey;
 
-  AddList({Key key, this.userid, this.dynamicFabKey}) : super(key: key);
+  NewList({Key key, this.userid, this.dynamicFabKey}) : super(key: key);
 
   @override
-  _AddListState createState() => _AddListState();
+  _NewListState createState() => _NewListState();
 }
 
-class _AddListState extends State<AddList> {
+class _NewListState extends State<NewList> {
 
   final formKey = GlobalKey<FormState>();
 
@@ -31,7 +32,7 @@ class _AddListState extends State<AddList> {
   Widget build(BuildContext context) {
     return WillPopScope(
       child: TopScaffold(
-        title: 'Add List',
+        title: 'New List',
         view: Form(
           key: formKey,
           child: ListView(
@@ -95,8 +96,15 @@ class _AddListState extends State<AddList> {
                             formKey.currentState.save();
                             buttonPressed = true;
                             setState( () {} );
-                            await saveList();
-                            Navigator.of(context).pop();
+                            // await saveList();
+                            ShoppingListModel list = ShoppingListModel(
+                              name: name,
+                              description: notes,
+                              listTags: [],
+                            );
+                            SystemChannels.textInput.invokeMethod('TextInput.hide');
+                            widget.dynamicFabKey.currentState.changePage('viewList');
+                            Navigator.of(context).pushReplacementNamed('viewList', arguments: list);
                           }
                         },
                         color: Colors.deepOrange,

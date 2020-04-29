@@ -3,7 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../live_feed/live_feed.dart';
 import '../../profile/my_profile.dart';
-import '../../shopping_list/pages/add_list.dart';
+import '../../shopping_list/pages/new_list.dart';
 import '../../shopping_list/pages/add_tag.dart';
 import '../../shopping_list/pages/my_lists.dart';
 import '../../shopping_list/pages/view_list.dart';
@@ -59,7 +59,7 @@ List<Widget> getNavigators(GlobalKey listsNav, GlobalKey liveFeedNav, GlobalKey 
 Map<String, Widget> getListsRoutes(GlobalKey myListsKey, GlobalKey viewListKey, GlobalKey dynamicFab) {
   return {
     '/': MyLists(key: myListsKey, myLists: getTestLists(), dynamicFabKey: dynamicFab),
-    'addList': AddList(dynamicFabKey: dynamicFab),
+    'newList': NewList(dynamicFabKey: dynamicFab),
     'addTag': AddTag(dynamicFabKey: dynamicFab),
     'viewList': ViewList(key: viewListKey, dynamicFabKey: dynamicFab),
     'viewTag': ViewTag(dynamicFabKey: dynamicFab),
@@ -90,7 +90,7 @@ List<Map<String, String>> getPages() {
   return [
     {
       '/': 'myLists',
-      'addList': 'addList',
+      'newList'   : 'newList',
       'addTag'    : 'addTag',
       'viewList'  : 'viewList',
       'viewTag'   : 'viewTag',

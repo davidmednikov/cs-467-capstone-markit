@@ -38,8 +38,8 @@ class ListsNavigatorState extends State<ListsNavigator> {
 
   void navigate() {
     if (widget.viewListKey.currentContext == null) {
-      widget.dynamicFabKey.currentState.changePage('addList');
-      Navigator.of(widget.myListsKey.currentContext).pushNamed('addList');
+      widget.dynamicFabKey.currentState.changePage('newList');
+      Navigator.of(widget.myListsKey.currentContext).pushNamed('newList');
     } else {
       widget.dynamicFabKey.currentState.changePage('addTag');
       Navigator.of(widget.viewListKey.currentContext).pushNamed('addTag');

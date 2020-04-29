@@ -38,7 +38,7 @@ class MyListsSpeedDialFabState extends State<MyListsSpeedDialFab> {
       ),
       SpeedDialAction(
         child: FaIcon(FontAwesomeIcons.plus),
-        label: widget.getSpeedDialLabelWidget('Add List'),
+        label: widget.getSpeedDialLabelWidget('New List'),
       ),
     ];
   }
