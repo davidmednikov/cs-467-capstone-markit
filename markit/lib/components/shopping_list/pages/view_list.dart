@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:markit/components/common/scaffold/dynamic_fab.dart';
 import 'package:markit/components/shopping_list/components/list_tag_tile.dart';
 import '../../common/scaffold/top_scaffold.dart';
@@ -27,16 +28,9 @@ class ViewListState extends State<ViewList> {
       child: TopScaffold(
         title: shoppingList.name,
         view: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Expanded(
-              child: ListView.builder(
-                itemCount: shoppingList.listTags.length,
-                itemBuilder: (context, index) {
-                  ListTagModel tag = shoppingList.listTags[index];
-                  return ListTagTile(listTag: tag, dynamicFabKey: widget.dynamicFabKey);
-                },
-              ),
-            ),
+            showListOrIcon(context),
           ],
         ),
       ),
@@ -48,5 +42,25 @@ class ViewListState extends State<ViewList> {
     SystemChannels.textInput.invokeMethod('TextInput.hide');
     widget.dynamicFabKey.currentState.changePage('myLists');
     return Future.value(true);
+  }
+
+  Widget showListOrIcon(BuildContext context) {
+    if (shoppingList.listTags.length == 0) {
+      return Center(
+        child: Opacity(
+          opacity: 0.35,
+          child: FaIcon(FontAwesomeIcons.shoppingBasket, size: 125, color: Colors.grey),
+        )
+      );
+    }
+    return Expanded(
+      child: ListView.builder(
+        itemCount: shoppingList.listTags.length,
+        itemBuilder: (context, index) {
+          ListTagModel tag = shoppingList.listTags[index];
+          return ListTagTile(listTag: tag, dynamicFabKey: widget.dynamicFabKey);
+        },
+      ),
+    );
   }
 }

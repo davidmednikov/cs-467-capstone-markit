@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:markit/components/common/scaffold/dynamic_fab.dart';
 
 import '../../common/scaffold/top_scaffold.dart';
@@ -25,17 +26,30 @@ class MyListsState extends State<MyLists> {
     return TopScaffold(
       title: 'My Lists',
       view: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: widget.myLists.length,
-              itemBuilder: (context, index) {
-                ShoppingListModel list = widget.myLists[index];
-                return ShoppingListTile(shoppingList: list, dynamicFabKey: widget.dynamicFabKey);
-              },
-            ),
-          ),
+          showListOrIcon(context),
         ],
+      ),
+    );
+  }
+
+  Widget showListOrIcon(BuildContext context) {
+    if (widget.myLists.length == 0) {
+      return Center(
+        child: Opacity(
+          opacity: 0.35,
+          child: FaIcon(FontAwesomeIcons.listUl, size: 125, color: Colors.grey),
+        ),
+      );
+    }
+    return Expanded(
+      child: ListView.builder(
+        itemCount: widget.myLists.length,
+        itemBuilder: (context, index) {
+          ShoppingListModel list = widget.myLists[index];
+          return ShoppingListTile(shoppingList: list, dynamicFabKey: widget.dynamicFabKey);
+        },
       ),
     );
   }
