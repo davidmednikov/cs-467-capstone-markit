@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 
 import '../common/scaffold/top_scaffold.dart';
 import './review_mark.dart';
