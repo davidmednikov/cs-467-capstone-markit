@@ -5,7 +5,7 @@ import 'package:markit/components/common/scaffold/dynamic_fab.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
 
-import 'package:markit/components/authentication/auth_service.dart';
+import 'package:markit/components/service/api_service.dart';
 
 import '../../common/scaffold/top_scaffold.dart';
 import '../components/shopping_list_tile.dart';
@@ -18,7 +18,7 @@ class MyLists extends StatefulWidget {
 
   MyLists({Key key, this.dynamicFabKey}) : super(key: key);
 
-  AuthService authService = new AuthService();
+  ApiService apiService = new ApiService();
 
   @override
   MyListsState createState() => MyListsState();
@@ -75,11 +75,7 @@ class MyListsState extends State<MyLists> {
   }
 
   Future<Response> getListsResponse() async {
-    String token = await widget.authService.getToken();
     String url = 'https://markit-api.azurewebsites.net/user/3/lists';
-    Future<Response> response = get(url, headers: {
-      'Authorization': 'Bearer $token',
-    });
-    return response;
+    return widget.apiService.makeGetCall(url, true);
   }
 }
