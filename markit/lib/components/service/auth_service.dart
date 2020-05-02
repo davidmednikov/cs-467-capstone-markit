@@ -48,6 +48,9 @@ class AuthService {
         'password': password,
       })
     );
+    if (response.statusCode != 200) {
+      return null;
+    }
     String token = jsonDecode(response.body)['data']['token'];
     return Future.value(token);
   }
@@ -66,5 +69,18 @@ class AuthService {
 
   void logout() {
     storage.deleteAll();
+  }
+
+  Future<bool> updateToken() async {
+    String username = await getUsernameFromStorage();
+    String password = await getPasswordFromStorage();
+    if (username != null && password != null) {
+      String serverToken = await getTokenFromServer(username, password);
+      if (serverToken != null) {
+        storeToken(serverToken);
+        return Future.value(true);
+      }
+    }
+    return Future.value(false);
   }
 }

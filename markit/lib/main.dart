@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:markit/components/authentication/auth_service.dart';
+import 'package:markit/components/service/auth_service.dart';
 import 'package:markit/components/common/scaffold/bottom_scaffold.dart';
 import 'package:markit/components/authentication/pages/login.dart';
 
