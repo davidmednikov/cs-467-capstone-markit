@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class MarkitAppBar extends StatefulWidget implements PreferredSizeWidget {
 
@@ -17,6 +18,8 @@ class MarkitAppBar extends StatefulWidget implements PreferredSizeWidget {
 class _MarkitAppBarState extends State<MarkitAppBar> {
 
   String _title;
+
+  bool _mapView = false;
 
   @override
   void initState() {
@@ -57,11 +60,31 @@ class _MarkitAppBarState extends State<MarkitAppBar> {
           ],
         ),
       ];
+    } else if (_title == 'View Stores') {
+      return [
+        Switch(
+          value: _mapView,
+          onChanged: mapViewToggled,
+          activeColor: Color(0xff225dff),
+          activeTrackColor: Color(0xffffc422),
+          inactiveTrackColor: Colors.deepOrange[900],
+          inactiveThumbColor: Color(0xffffc422),
+          activeThumbImage: AssetImage('assets/img/pin.png'),
+          inactiveThumbImage: AssetImage('assets/img/list.png'),
+        )
+      ];
     }
     return [];
   }
 
   void selectedInPopup(var value) {
     print(value);
+  }
+
+  void mapViewToggled(bool isMapView) {
+    print(isMapView);
+    setState(() {
+      _mapView = isMapView;
+    });
   }
 }
