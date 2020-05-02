@@ -12,11 +12,9 @@ import '../../models/shopping_list_model.dart';
 
 class MyLists extends StatefulWidget {
 
-  List<ShoppingListModel> myLists;
-
   GlobalKey<DynamicFabState> dynamicFabKey;
 
-  MyLists({Key key, this.myLists, this.dynamicFabKey}) : super(key: key);
+  MyLists({Key key, this.dynamicFabKey}) : super(key: key);
 
   @override
   MyListsState createState() => MyListsState();

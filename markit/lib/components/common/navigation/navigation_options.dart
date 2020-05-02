@@ -58,7 +58,7 @@ List<Widget> getNavigators(GlobalKey listsNav, GlobalKey liveFeedNav, GlobalKey 
 
 Map<String, Widget> getListsRoutes(GlobalKey myListsKey, GlobalKey viewListKey, GlobalKey dynamicFab) {
   return {
-    '/': MyLists(key: myListsKey, myLists: getTestLists(), dynamicFabKey: dynamicFab),
+    '/': MyLists(key: myListsKey, dynamicFabKey: dynamicFab),
     'newList': NewList(dynamicFabKey: dynamicFab),
     'addTag': AddTag(dynamicFabKey: dynamicFab),
     'viewList': ViewList(key: viewListKey, dynamicFabKey: dynamicFab),
