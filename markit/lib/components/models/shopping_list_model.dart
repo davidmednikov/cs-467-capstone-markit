@@ -3,21 +3,27 @@ import 'markit_user_model.dart';
 
 class ShoppingListModel {
   int id;
-  MarkitUserModel user;
+  int userId;
   String name;
   String description;
   DateTime createdDate;
   DateTime updatedDate;
   List<ListTagModel> listTags;
 
-  ShoppingListModel({this.id, this.user, this.name, this.description,
+  ShoppingListModel({this.id, this.userId, this.name, this.description,
       this.createdDate, this.updatedDate, this.listTags});
+
+  factory ShoppingListModel.fromJson(Map<String, dynamic> json) {
+    return ShoppingListModel(
+      id: json['id'],
+      userId: json['userId'],
+      name: json['name'],
+      description: json['description'],
+      listTags: getListTagsFromObjects(json['listTags']),
+    );
+  }
 }
 
-ShoppingListModel getTestList(int id) {
-  return ShoppingListModel(id: id, name: 'BBQ', description: 'Super bomb', listTags: getTestListTags());
-}
-
-List<ShoppingListModel> getTestLists() {
-  return new List.of([getTestList(1), getTestList(2), getTestList(3), getTestList(4), getTestList(5)]);
+List<ListTagModel> getListTagsFromObjects(List<Object> listTags) {
+  return listTags.map((tag) => ListTagModel.fromJson(tag)).toList();
 }
