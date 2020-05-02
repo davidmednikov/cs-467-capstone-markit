@@ -17,9 +17,7 @@ class ListTagTile extends StatelessWidget {
         listTag.tagName,
         // style: TextStyle(fontSize: 22),
       ),
-      subtitle: Text(
-        listTag.comment,
-      ),
+      subtitle: getSubtitleWidget(listTag.comment),
       trailing: Container(
         decoration: ShapeDecoration(
           shape: CircleBorder(
@@ -42,6 +40,13 @@ class ListTagTile extends StatelessWidget {
         Navigator.of(context).pushNamed('viewTag', arguments: listTag);
       },
     );
+  }
+
+  Widget getSubtitleWidget(String comment) {
+    if (comment == null) {
+      return null;
+    }
+    return Text(comment);
   }
 
 }
