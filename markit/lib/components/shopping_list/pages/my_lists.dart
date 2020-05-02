@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:markit/components/common/scaffold/dynamic_fab.dart';
 
-import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 import 'dart:convert';
+
+import 'package:markit/components/authentication/auth_service.dart';
 
 import '../../common/scaffold/top_scaffold.dart';
 import '../components/shopping_list_tile.dart';
@@ -15,6 +17,8 @@ class MyLists extends StatefulWidget {
   GlobalKey<DynamicFabState> dynamicFabKey;
 
   MyLists({Key key, this.dynamicFabKey}) : super(key: key);
+
+  AuthService authService = new AuthService();
 
   @override
   MyListsState createState() => MyListsState();
@@ -38,15 +42,14 @@ class MyListsState extends State<MyLists> {
     );
   }
 
-  Widget showListOrLoading(BuildContext context, AsyncSnapshot<http.Response> snapshot) {
+  Widget showListOrLoading(BuildContext context, AsyncSnapshot<Response> snapshot) {
     if (snapshot.hasData) {
       String body = snapshot.data.body;
       Map<String, Object> data = jsonDecode(body);
-      List<Object> listObjects = data['lists'];
+      List<Object> listObjects = data['data'];
       return showListOrIcon(listObjects);
     }
     return Center(
-      // padding: EdgeInsets.symmetric(vertical: 7),
       child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.blueGrey)),
     );
   }
@@ -71,10 +74,10 @@ class MyListsState extends State<MyLists> {
     );
   }
 
-  Future<http.Response> getListsResponse() {
-    String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0MSIsImp0aSI6IjMiLCJleHAiOjE1ODg0ODMzMDAsImlzcyI6Imh0dHBzOi8vbWFya2l0LWFwaS5henVyZXdlYnNpdGVzLm5ldC8iLCJhdWQiOiJodHRwczovL21hcmtpdC1hcGkuYXp1cmV3ZWJzaXRlcy5uZXQvIn0.ruxeoK7t8aKFJ5X6Y5OxNgk975qs4pLVVR48aGAjucM';
+  Future<Response> getListsResponse() async {
+    String token = await widget.authService.getToken();
     String url = 'https://markit-api.azurewebsites.net/user/3/lists';
-    Future<http.Response> response = http.get(url, headers: {
+    Future<Response> response = get(url, headers: {
       'Authorization': 'Bearer $token',
     });
     return response;
