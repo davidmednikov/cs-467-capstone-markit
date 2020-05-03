@@ -27,6 +27,7 @@ class ApiService {
     Response response = await post(url,
       headers: {
         'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
       },
       body: jsonEncode(body),
     );
@@ -44,6 +45,7 @@ class ApiService {
     Response response = await patch(url,
       headers: {
         'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
       },
       body: jsonEncode(body),
     );
@@ -61,6 +63,7 @@ class ApiService {
     Response response = await put(url,
       headers: {
         'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
       },
       body: jsonEncode(body),
     );
