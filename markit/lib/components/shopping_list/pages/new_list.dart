@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart';
+import 'dart:convert';
+
+import 'package:markit/components/service/api_service.dart';
 
 import 'package:markit/components/common/scaffold/dynamic_fab.dart';
 import 'package:markit/components/models/shopping_list_model.dart';
 import '../../common/scaffold/top_scaffold.dart';
 
 class NewList extends StatefulWidget {
-
-  int userid;
-
-  final String postUrl = 'https://markit-api.azurewebsites.net/list';
-
   GlobalKey<DynamicFabState> dynamicFabKey;
 
-  NewList({Key key, this.userid, this.dynamicFabKey}) : super(key: key);
+  ApiService apiService = new ApiService();
+
+  NewList({Key key, this.dynamicFabKey}) : super(key: key);
 
   @override
   _NewListState createState() => _NewListState();
@@ -96,15 +96,22 @@ class _NewListState extends State<NewList> {
                             formKey.currentState.save();
                             buttonPressed = true;
                             setState( () {} );
-                            // await saveList();
-                            ShoppingListModel list = ShoppingListModel(
-                              name: name,
-                              description: notes,
-                              listTags: [],
-                            );
-                            SystemChannels.textInput.invokeMethod('TextInput.hide');
-                            widget.dynamicFabKey.currentState.changePage('viewList');
-                            Navigator.of(context).pushReplacementNamed('viewList', arguments: list);
+                            Response response =await saveList();
+                            if (response.statusCode == 200) {
+                              Map<String, Object> responseBody = jsonDecode(response.body);
+                              if (responseBody['statusCode'] == 200) {
+                                Map<String, Object> listObject = responseBody['data'];
+                                ShoppingListModel list = ShoppingListModel(
+                                  id: listObject['id'],
+                                  name: listObject['name'],
+                                  description: listObject['description'],
+                                  listTags: [],
+                                );
+                                SystemChannels.textInput.invokeMethod('TextInput.hide');
+                                widget.dynamicFabKey.currentState.changePage('viewList');
+                                Navigator.of(context).pushReplacementNamed('viewList', arguments: list);
+                              }
+                            }
                           }
                         },
                         color: Colors.deepOrange,
@@ -128,9 +135,13 @@ class _NewListState extends State<NewList> {
   }
 
   Future<Response> saveList() async {
-    var response = await post(widget.postUrl, body: {'userId': '1', 'name': name, 'notes': notes});
-    print('Response status: ${response.statusCode}');
-    print('Response body: ${response.body}');
+    String url = 'https://markit-api.azurewebsites.net/list';
+    var body = {
+      'userId': 3,
+      'name': name,
+      'description': notes
+    };
+    return widget.apiService.makePostCall(url, body, true);
   }
 
   Future<bool> notifyFabOfPop() {
