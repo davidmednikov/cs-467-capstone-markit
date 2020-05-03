@@ -56,7 +56,7 @@ class MyListsState extends State<MyLists> {
       return Center(
         child: Opacity(
           opacity: 0.35,
-          child: FaIcon(FontAwesomeIcons.listUl, size: 125, color: Colors.grey),
+          child: FaIcon(FontAwesomeIcons.home, size: 125, color: Colors.grey),
         ),
       );
     }
