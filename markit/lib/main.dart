@@ -12,8 +12,9 @@ void main() async {
     DeviceOrientation.portraitUp
   ]);
   AuthService authService = new AuthService();
-  authService.storeUsername('test1');
-  authService.storePassword('test');
+  authService.logout();
+  authService.storeUsername('test3');
+  authService.storePassword('password');
   String token = await authService.getToken();
   runApp(Markit(token: token));
 }

@@ -1,21 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:http/http.dart';
 
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:markit/components/models/shopping_list_model.dart';
+
+import 'package:markit/components/service/api_service.dart';
 
 import 'package:markit/components/common/scaffold/dynamic_fab.dart';
+import 'package:markit/components/shopping_list/pages/view_list.dart';
 import '../../common/scaffold/top_scaffold.dart';
 
 class AddTag extends StatefulWidget {
-
-  int listId;
 
   final String postUrl = 'https://markit-api.azurewebsites.net/list';
 
   GlobalKey<DynamicFabState> dynamicFabKey;
 
-  AddTag({Key key, this.listId, this.dynamicFabKey}) : super(key: key);
+  AddTag({Key key, this.dynamicFabKey}) : super(key: key);
+
+   ApiService apiService = new ApiService();
 
   @override
   _AddTagState createState() => _AddTagState();
@@ -26,6 +29,8 @@ class _AddTagState extends State<AddTag> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController _typeAheadController = TextEditingController();
 
+  int listId;
+
   int tagId;
   String tagName;
   int quantity;
@@ -35,6 +40,7 @@ class _AddTagState extends State<AddTag> {
 
   @override
   Widget build(BuildContext context) {
+    listId = ModalRoute.of(context).settings.arguments;
     return WillPopScope(
       child: TopScaffold(
         title: 'Add Tag',
@@ -49,6 +55,7 @@ class _AddTagState extends State<AddTag> {
                       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
                       child: TypeAheadFormField(
                         textFieldConfiguration: TextFieldConfiguration(
+                          controller: _typeAheadController,
                           decoration: InputDecoration(
                             labelText: 'Tag',
                             border: OutlineInputBorder(),
@@ -59,14 +66,15 @@ class _AddTagState extends State<AddTag> {
                         },
                         itemBuilder: (context, suggestion) {
                           return ListTile(
-                            title: Text(suggestion),
+                            title: Text(suggestion['name']),
                           );
                         },
                         transitionBuilder: (context, suggestionsBox, controller) {
                           return suggestionsBox;
                         },
                         onSuggestionSelected: (suggestion) {
-                          this._typeAheadController.text = suggestion;
+                          _typeAheadController.text = suggestion['name'];
+                          tagId = suggestion['id'];
                         },
                         onSaved: (value) {
                           tagName = value;
@@ -76,7 +84,7 @@ class _AddTagState extends State<AddTag> {
                             return 'Please enter a name';
                           }
                           return null;
-                        }
+                        },
                       ),
                     ),
                   ),
@@ -145,9 +153,10 @@ class _AddTagState extends State<AddTag> {
                             formKey.currentState.save();
                             buttonPressed = true;
                             setState( () {} );
-                            // await saveTag();
-                            saveTag();
-                            Navigator.of(context).pop();
+                            Map savedList = await saveTag();
+                            ShoppingListModel listModel = ShoppingListModel.fromJson(savedList);
+                            notifyFabOfPop();
+                            Navigator.of(context).pop(listModel);
                           }
                         },
                         color: Colors.deepOrange,
@@ -170,11 +179,18 @@ class _AddTagState extends State<AddTag> {
     );
   }
 
-   Future<Response> saveTag() async {
-    // var response = await post(widget.postUrl, body: {'listId': '1', 'tagId': '1', 'name': tagName, 'quantity': quantity, 'notes': notes});
-    // print('Response status: ${response.statusCode}');
-    // print('Response body: ${response.body}');
-    print('save');
+  Future<Map> saveTag() async {
+    String url = 'https://markit-api.azurewebsites.net/list/$listId';
+    var body = {
+      'id': listId,
+      'tag': {
+        'id': tagId,
+        'name': tagName,
+      },
+      'quantity': quantity,
+      'comment': notes,
+    };
+    return widget.apiService.patchResponseMap(url, body);
   }
 
   Future<bool> notifyFabOfPop() {
@@ -183,109 +199,8 @@ class _AddTagState extends State<AddTag> {
     return Future.value(true);
   }
 
-  List<String> getSuggestions(String pattern) {
-    List<String> allStrings = [
-      'a',
-      'about',
-      'all',
-      'also',
-      'and',
-      'as',
-      'at',
-      'be',
-      'because',
-      'but',
-      'by',
-      'can',
-      'come',
-      'could',
-      'day',
-      'do',
-      'even',
-      'find',
-      'first',
-      'for',
-      'from',
-      'get',
-      'give',
-      'go',
-      'have',
-      'he',
-      'her',
-      'here',
-      'him',
-      'his',
-      'how',
-      'I',
-      'if',
-      'in',
-      'into',
-      'it',
-      'its',
-      'just',
-      'know',
-      'like',
-      'look',
-      'make',
-      'man',
-      'many',
-      'me',
-      'more',
-      'my',
-      'new',
-      'no',
-      'not',
-      'now',
-      'of',
-      'on',
-      'one',
-      'only',
-      'or',
-      'other',
-      'our',
-      'out',
-      'people',
-      'say',
-      'see',
-      'she',
-      'so',
-      'some',
-      'take',
-      'tell',
-      'than',
-      'that',
-      'the',
-      'their',
-      'them',
-      'then',
-      'there',
-      'these',
-      'they',
-      'thing',
-      'think',
-      'this',
-      'those',
-      'time',
-      'to',
-      'two',
-      'up',
-      'use',
-      'very',
-      'want',
-      'way',
-      'we',
-      'well',
-      'what',
-      'when',
-      'which',
-      'who',
-      'will',
-      'with',
-      'would',
-      'year',
-      'you',
-      'your'
-    ];
-    return allStrings.where((string) => string.toLowerCase().contains(pattern.toLowerCase())).toList();
+  Future<List<Map<String, Object>>> getSuggestions(String pattern) async {
+    String url = 'https://markit-api.azurewebsites.net/tags/query?tagQuery=$pattern';
+    return List<Map<String, Object>>.from(await widget.apiService.getList(url));
   }
 }

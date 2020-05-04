@@ -36,13 +36,19 @@ class ListsNavigatorState extends State<ListsNavigator> {
     );
   }
 
-  void navigate() {
+  void navigate() async {
     if (widget.viewListKey.currentContext == null) {
       widget.dynamicFabKey.currentState.changePage('newList');
       Navigator.of(widget.myListsKey.currentContext).pushNamed('newList');
     } else {
       widget.dynamicFabKey.currentState.changePage('addTag');
-      Navigator.of(widget.viewListKey.currentContext).pushNamed('addTag');
+      int listId = widget.viewListKey.currentState.shoppingList.id;
+      Navigator.of(widget.viewListKey.currentContext).pushNamed('addTag', arguments: listId)
+      .then((item) {
+        if (item != null) {
+          widget.viewListKey.currentState.changeList(item);
+        }
+      });
     }
   }
 }

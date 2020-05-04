@@ -96,22 +96,16 @@ class _NewListState extends State<NewList> {
                             formKey.currentState.save();
                             buttonPressed = true;
                             setState( () {} );
-                            Response response =await saveList();
-                            if (response.statusCode == 200) {
-                              Map<String, Object> responseBody = jsonDecode(response.body);
-                              if (responseBody['statusCode'] == 200) {
-                                Map<String, Object> listObject = responseBody['data'];
-                                ShoppingListModel list = ShoppingListModel(
-                                  id: listObject['id'],
-                                  name: listObject['name'],
-                                  description: listObject['description'],
-                                  listTags: [],
-                                );
-                                SystemChannels.textInput.invokeMethod('TextInput.hide');
-                                widget.dynamicFabKey.currentState.changePage('viewList');
-                                Navigator.of(context).pushReplacementNamed('viewList', arguments: list);
-                              }
-                            }
+                            Map<String, Object> listObject =await saveList();
+                            ShoppingListModel list = ShoppingListModel(
+                              id: listObject['id'],
+                              name: listObject['name'],
+                              description: listObject['description'],
+                              listTags: [],
+                            );
+                            SystemChannels.textInput.invokeMethod('TextInput.hide');
+                            widget.dynamicFabKey.currentState.changePage('viewList');
+                            Navigator.of(context).pushReplacementNamed('viewList', arguments: list);
                           }
                         },
                         color: Colors.deepOrange,
@@ -134,14 +128,14 @@ class _NewListState extends State<NewList> {
     );
   }
 
-  Future<Response> saveList() async {
+  Future<Map> saveList() async {
     String url = 'https://markit-api.azurewebsites.net/list';
     var body = {
-      'userId': 3,
+      'userId': 10,
       'name': name,
       'description': notes
     };
-    return widget.apiService.makePostCall(url, body, true);
+    return widget.apiService.postResponseMap(url, body);
   }
 
   Future<bool> notifyFabOfPop() {

@@ -42,11 +42,9 @@ class MyListsState extends State<MyLists> {
     );
   }
 
-  Widget showListOrLoading(BuildContext context, AsyncSnapshot<Response> snapshot) {
+  Widget showListOrLoading(BuildContext context, AsyncSnapshot<List> snapshot) {
     if (snapshot.hasData) {
-      String body = snapshot.data.body;
-      Map<String, Object> data = jsonDecode(body);
-      List<Object> listObjects = data['data'];
+      List<Object> listObjects = snapshot.data;
       return showListOrIcon(listObjects);
     }
     return Center(
@@ -74,8 +72,8 @@ class MyListsState extends State<MyLists> {
     );
   }
 
-  Future<Response> getListsResponse() async {
-    String url = 'https://markit-api.azurewebsites.net/user/3/lists';
-    return widget.apiService.makeGetCall(url, true);
+  Future<List> getListsResponse() async {
+    String url = 'https://markit-api.azurewebsites.net/user/10/lists';
+    return widget.apiService.getList(url);
   }
 }

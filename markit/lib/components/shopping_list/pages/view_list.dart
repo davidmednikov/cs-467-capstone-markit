@@ -19,11 +19,15 @@ class ViewList extends StatefulWidget {
 
 class ViewListState extends State<ViewList> {
 
- ShoppingListModel shoppingList;
+  ShoppingListModel shoppingList;
+
+  bool tagAdded = false;
 
   @override
   Widget build(BuildContext context) {
-    shoppingList = ModalRoute.of(context).settings.arguments;
+    if (!tagAdded) {
+      shoppingList = ModalRoute.of(context).settings.arguments;
+    }
     return WillPopScope(
       child: TopScaffold(
         title: shoppingList.name,
@@ -36,6 +40,13 @@ class ViewListState extends State<ViewList> {
       ),
       onWillPop: notifyFabOfPop,
     );
+  }
+
+  void changeList(ShoppingListModel updatedList) {
+    setState(() {
+      shoppingList = updatedList;
+      tagAdded = true;
+    });
   }
 
   Future<bool> notifyFabOfPop() {
