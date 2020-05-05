@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:markit/components/common/scaffold/dynamic_fab.dart';
 
-import 'tab_navigator.dart';
-import 'navigation_options.dart';
-import '../../shopping_list/pages/my_lists.dart';
-import '../../shopping_list/pages/view_list.dart';
+import 'package:markit/components/common/navigation/navigation_options.dart';
+import 'package:markit/components/common/navigation/tab_navigator.dart';
+import 'package:markit/components/common/scaffold/dynamic_fab.dart';
+import 'package:markit/components/shopping_list/pages/my_lists.dart';
+import 'package:markit/components/shopping_list/pages/view_list.dart';
+
 
 class ListsNavigator extends StatefulWidget {
 

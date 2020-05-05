@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
 
-import 'bottom_nav_bar.dart';
-import 'dynamic_fab.dart';
-import '../navigation/lists_navigator.dart';
-import '../navigation/live_feed_navigator.dart';
-import '../navigation/stores_navigator.dart';
-import '../navigation/profiles_navigator.dart';
-import '../navigation/navigation_options.dart';
-import '../scan_barcode.dart';
+import 'package:markit/components/common/navigation/lists_navigator.dart';
+import 'package:markit/components/common/navigation/live_feed_navigator.dart';
+import 'package:markit/components/common/navigation/profiles_navigator.dart';
+import 'package:markit/components/common/navigation/navigation_options.dart';
+import 'package:markit/components/common/navigation/stores_navigator.dart';
+import 'package:markit/components/common/scaffold/bottom_nav_bar.dart';
+import 'package:markit/components/common/scaffold/dynamic_fab.dart';
+import 'package:markit/components/common/scan_barcode.dart';
 
 class BottomScaffold extends StatefulWidget {
   BottomScaffold({Key key }) : super(key: key);

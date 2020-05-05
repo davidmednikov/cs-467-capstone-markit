@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 
-import '../common/scaffold/top_scaffold.dart';
-import './review_mark.dart';
-import './price_mark.dart';
+import 'package:markit/components/common/scaffold/top_scaffold.dart';
+import 'package:markit/components/live_feed/price_mark.dart';
+import 'package:markit/components/live_feed/review_mark.dart';
 
 class LiveFeed extends StatelessWidget {
 

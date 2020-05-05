@@ -1,7 +1,6 @@
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
 import 'dart:convert';
 import 'package:http/http.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class AuthService {
 
@@ -37,6 +36,10 @@ class AuthService {
     return await storage.read(key: 'password');
   }
 
+  Future<int> getUserIdFromStorage() async {
+    return int.parse(await storage.read(key: 'userId'));
+  }
+
   Future<String> getTokenFromServer(String userName, String password) async {
     String url = 'https://markit-api.azurewebsites.net/user/auth';
     Response response = await post(
@@ -57,6 +60,10 @@ class AuthService {
 
   void storeToken(String token) async {
     await storage.write(key: 'token', value: token);
+  }
+
+  void storeUserId(int userId) async {
+    await storage.write(key: 'userId', value: userId.toString());
   }
 
   void storeUsername(String username) async {

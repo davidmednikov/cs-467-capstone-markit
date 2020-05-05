@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'user_profile.dart';
+import 'package:markit/components/profile/user_profile.dart';
 
 class MyProfile extends StatelessWidget {
 
