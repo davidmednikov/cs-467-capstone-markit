@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../common/scaffold/top_scaffold.dart';
+import 'package:markit/components/common/scaffold/top_scaffold.dart';
 
 class UserProfile extends StatelessWidget {
 

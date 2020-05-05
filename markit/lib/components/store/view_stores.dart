@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../common/scaffold/top_scaffold.dart';
-import './store_listing.dart';
+import 'package:markit/components/common/scaffold/top_scaffold.dart';
+import 'package:markit/components/store/store_listing.dart';
 
 class ViewStores extends StatelessWidget {
 

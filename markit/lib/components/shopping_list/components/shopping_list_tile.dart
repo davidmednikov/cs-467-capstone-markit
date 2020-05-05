@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+
 import 'package:markit/components/common/scaffold/dynamic_fab.dart';
-import '../../models/shopping_list_model.dart';
+import 'package:markit/components/models/shopping_list_model.dart';
 
 class ShoppingListTile extends StatelessWidget {
 

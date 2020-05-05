@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../common/scaffold/top_scaffold.dart';
-
 class StoreListing extends StatelessWidget {
   final String name;
   final String city;

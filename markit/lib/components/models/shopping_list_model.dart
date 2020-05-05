@@ -1,17 +1,13 @@
 import 'list_tag_model.dart';
-import 'markit_user_model.dart';
 
 class ShoppingListModel {
   int id;
   int userId;
   String name;
   String description;
-  DateTime createdDate;
-  DateTime updatedDate;
   List<ListTagModel> listTags;
 
-  ShoppingListModel({this.id, this.userId, this.name, this.description,
-      this.createdDate, this.updatedDate, this.listTags});
+  ShoppingListModel({this.id, this.userId, this.name, this.description, this.listTags});
 
   factory ShoppingListModel.fromJson(Map<String, dynamic> json) {
     return ShoppingListModel(

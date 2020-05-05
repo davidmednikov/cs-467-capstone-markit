@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../../live_feed/live_feed.dart';
-import '../../profile/my_profile.dart';
-import '../../shopping_list/pages/new_list.dart';
-import '../../shopping_list/pages/add_tag.dart';
-import '../../shopping_list/pages/my_lists.dart';
-import '../../shopping_list/pages/view_list.dart';
-import '../../shopping_list/pages/view_tag.dart';
-import '../../store/view_stores.dart';
+import 'package:markit/components/common/navigation/lists_navigator.dart';
+import 'package:markit/components/common/navigation/live_feed_navigator.dart';
+import 'package:markit/components/common/navigation/profiles_navigator.dart';
+import 'package:markit/components/common/navigation/stores_navigator.dart';
+import 'package:markit/components/live_feed/live_feed.dart';
+import 'package:markit/components/profile/my_profile.dart';
+import 'package:markit/components/shopping_list/pages/add_tag.dart';
+import 'package:markit/components/shopping_list/pages/my_lists.dart';
+import 'package:markit/components/shopping_list/pages/new_list.dart';
+import 'package:markit/components/shopping_list/pages/view_list.dart';
+import 'package:markit/components/shopping_list/pages/view_tag.dart';
+import 'package:markit/components/store/view_stores.dart';
 
-import 'lists_navigator.dart';
-import 'live_feed_navigator.dart';
-import 'stores_navigator.dart';
-import 'profiles_navigator.dart';
-
-import '../../models/shopping_list_model.dart';
 
 List<BottomNavigationBarItem> getNavTabOptions() {
   return [

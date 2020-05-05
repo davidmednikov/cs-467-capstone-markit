@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+
 import 'package:markit/components/common/scaffold/dynamic_fab.dart';
-import '../../models/list_tag_model.dart';
+import 'package:markit/components/models/list_tag_model.dart';
 
 class ListTagTile extends StatelessWidget {
 

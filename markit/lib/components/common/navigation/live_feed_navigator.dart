@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:markit/components/common/navigation/navigation_options.dart';
 
-import 'tab_navigator.dart';
+import 'package:markit/components/common/navigation/navigation_options.dart';
+import 'package:markit/components/common/navigation/tab_navigator.dart';
 
 class LiveFeedNavigator extends StatefulWidget {
 

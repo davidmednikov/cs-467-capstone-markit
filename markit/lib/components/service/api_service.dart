@@ -2,7 +2,7 @@
 import 'dart:convert';
 import 'package:http/http.dart';
 
-import 'auth_service.dart';
+import 'package:markit/components/service/auth_service.dart';
 
 class ApiService {
 
