@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:http/http.dart';
-import 'dart:convert';
-
-import 'package:markit/components/service/api_service.dart';
 
 import 'package:markit/components/common/scaffold/dynamic_fab.dart';
+import 'package:markit/components/common/scaffold/top_scaffold.dart';
 import 'package:markit/components/models/shopping_list_model.dart';
-import '../../common/scaffold/top_scaffold.dart';
+import 'package:markit/components/service/api_service.dart';
+
 
 class NewList extends StatefulWidget {
   GlobalKey<DynamicFabState> dynamicFabKey;

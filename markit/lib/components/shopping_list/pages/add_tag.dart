@@ -16,7 +16,7 @@ class AddTag extends StatefulWidget {
 
   AddTag({Key key, this.dynamicFabKey}) : super(key: key);
 
-   ApiService apiService = new ApiService();
+  ApiService apiService = new ApiService();
 
   @override
   _AddTagState createState() => _AddTagState();
