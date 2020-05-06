@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:overlay_support/overlay_support.dart';
 
 import 'package:markit/components/service/auth_service.dart';
 import 'package:markit/components/common/scaffold/bottom_scaffold.dart';
@@ -27,13 +28,15 @@ class Markit extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Markit',
-      theme: ThemeData(
-        primarySwatch: Colors.deepOrange,
+    return OverlaySupport(
+      child: MaterialApp(
+        title: 'Markit',
+        theme: ThemeData(
+          primarySwatch: Colors.deepOrange,
+        ),
+        routes: getRoutes(),
+        initialRoute: getInitialRoute(),
       ),
-      routes: getRoutes(),
-      initialRoute: getInitialRoute(),
     );
   }
 
