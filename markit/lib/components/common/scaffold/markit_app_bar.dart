@@ -41,24 +41,25 @@ class _MarkitAppBarState extends State<MarkitAppBar> {
   }
 
   List<Widget> getActions(context) {
-    String route = ModalRoute.of(context).settings.name;
-    if (_title == 'My Lists' || route == 'viewList') {
-      return [
-        PopupMenuButton(
-          onSelected: (value) => selectedInPopup(value),
-          itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-            const PopupMenuItem(
-              value: 'Rename',
-              child: Text('Rename'),
-            ),
-            const PopupMenuItem(
-              value: 'Delete',
-              child: Text('Delete'),
-            ),
-          ],
-        ),
-      ];
-    } else if (_title == 'View Stores') {
+    // String route = ModalRoute.of(context).settings.name;
+    // if (_title == 'My Lists' || route == 'viewList') {
+    //   return [
+    //     PopupMenuButton(
+    //       onSelected: (value) => selectedInPopup(value),
+    //       itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+    //         const PopupMenuItem(
+    //           value: 'Rename',
+    //           child: Text('Rename'),
+    //         ),
+    //         const PopupMenuItem(
+    //           value: 'Delete',
+    //           child: Text('Delete'),
+    //         ),
+    //       ],
+    //     ),
+    //   ];
+    // } else 
+    if (_title == 'View Stores') {
       return [
         Switch(
           value: _mapView,

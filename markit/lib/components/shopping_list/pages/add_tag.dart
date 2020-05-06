@@ -16,7 +16,7 @@ class AddTag extends StatefulWidget {
 
   AddTag({Key key, this.dynamicFabKey}) : super(key: key);
 
-   ApiService apiService = new ApiService();
+  ApiService apiService = new ApiService();
 
   @override
   _AddTagState createState() => _AddTagState();
@@ -180,7 +180,6 @@ class _AddTagState extends State<AddTag> {
   Future<Map> saveTag() async {
     String url = 'https://markit-api.azurewebsites.net/list/$listId';
     var body = {
-      'id': listId,
       'tag': {
         'id': tagId,
         'name': tagName,
@@ -198,7 +197,7 @@ class _AddTagState extends State<AddTag> {
   }
 
   Future<List<Map<String, Object>>> getSuggestions(String pattern) async {
-    String url = 'https://markit-api.azurewebsites.net/tags/query?tagQuery=$pattern';
+    String url = 'https://markit-api.azurewebsites.net/tags/query?name=$pattern';
     return List<Map<String, Object>>.from(await widget.apiService.getList(url));
   }
 }

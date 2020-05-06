@@ -148,22 +148,9 @@ class ApiService {
     return Future.value(response);
   }
 
-  Future<List> deleteResponseList(String url) async {
+  Future<int> deleteResponseCode(String url) async {
     Response response = await makeDeleteCall(url, true);
-    Map<String, Object> body = jsonDecode(response.body);
-    if (body['statusCode'] == 200) {
-      return List.from(body['data']);
-    }
-    return Future.value([]);
-  }
-
-  Future<Map> deleteResponseMap(String url) async {
-    Response response = await makeDeleteCall(url, true);
-    Map<String, Object> body = jsonDecode(response.body);
-    if (body['statusCode'] == 200) {
-      return body['data'];
-    }
-    return Future.value({});
+    return Future.value(response.statusCode);
   }
 
   Future<Response> makeDeleteCall(String url, bool retry) async {

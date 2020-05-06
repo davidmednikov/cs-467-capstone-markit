@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import 'package:markit/components/common/scaffold/dynamic_fab.dart';
-
-import 'package:http/http.dart';
-import 'dart:convert';
-
+import 'package:markit/components/common/scaffold/top_scaffold.dart';
+import 'package:markit/components/models/shopping_list_model.dart';
 import 'package:markit/components/service/api_service.dart';
+import 'package:markit/components/shopping_list/components/shopping_list_tile.dart';
 
-import '../../common/scaffold/top_scaffold.dart';
-import '../components/shopping_list_tile.dart';
 
-import '../../models/shopping_list_model.dart';
 
 class MyLists extends StatefulWidget {
 
@@ -34,7 +32,7 @@ class MyListsState extends State<MyLists> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           FutureBuilder(
-            future: getListsResponse(),
+            future: getLists(),
             builder: (context, snapshot) => showListOrLoading(context, snapshot),
           ),
         ],
@@ -66,14 +64,47 @@ class MyListsState extends State<MyLists> {
         itemCount: listObjects.length,
         itemBuilder: (context, index) {
           ShoppingListModel list = ShoppingListModel.fromJson(listObjects[index]);
-          return ShoppingListTile(shoppingList: list, dynamicFabKey: widget.dynamicFabKey);
+          return ShoppingListTile(shoppingList: list, dynamicFabKey: widget.dynamicFabKey, myListsKey: widget.key);
         },
       ),
     );
   }
 
-  Future<List> getListsResponse() async {
+  Future<List> getLists() async {
     String url = 'https://markit-api.azurewebsites.net/user/10/lists';
     return widget.apiService.getList(url);
+  }
+
+  Future<int> deleteList(int listId) async {
+    String url = 'https://markit-api.azurewebsites.net/list/$listId';
+    int statusCode = await widget.apiService.deleteResponseCode(url);
+    if (statusCode == 200) {
+      setState(() {});
+    }
+    return statusCode;
+  }
+
+  void renameList(int listId, String newName) async {
+    String url = 'https://markit-api.azurewebsites.net/list/${listId}';
+    var body = {
+      'userId': 10,
+      'name': newName
+    };
+    await widget.apiService.patchResponseMap(url, body);
+    setState(() {});
+  }
+
+  void showRenameDialog(int listId, String oldName) async {
+    List<String> newName = await showTextInputDialog(
+      context: context,
+      textFields: [DialogTextField(hintText: oldName)],
+      title: 'Rename List',
+      message: 'Please enter a new name:',
+      okLabel: 'Save',
+      cancelLabel: 'Cancel'
+    );
+    if (newName != null && newName.length > 0) {
+      renameList(listId, newName[0]);
+    }
   }
 }
