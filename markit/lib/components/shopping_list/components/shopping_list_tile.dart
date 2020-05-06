@@ -38,7 +38,7 @@ class ShoppingListTile extends StatelessWidget {
             ),
           ),
           child: Padding(
-            padding: EdgeInsets.all(13),
+            padding: EdgeInsets.all(10),
             child: Text(
               getQuantityString(),
               style: TextStyle(fontSize: 22),
@@ -55,7 +55,7 @@ class ShoppingListTile extends StatelessWidget {
           caption: 'Rename',
           color: Colors.black45,
           icon: Icons.edit,
-          onTap: () => print('Rename'),
+          onTap: () => renameList(),
         ),
         IconSlideAction(
           caption: 'Delete',
@@ -78,5 +78,9 @@ class ShoppingListTile extends StatelessWidget {
 
   void deleteList() {
     myListsKey.currentState.deleteList(shoppingList.id);
+  }
+
+  void renameList() {
+    myListsKey.currentState.showRenameDialog(shoppingList.id, shoppingList.name);
   }
 }

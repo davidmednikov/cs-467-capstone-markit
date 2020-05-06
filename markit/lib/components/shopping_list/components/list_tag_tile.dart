@@ -36,7 +36,7 @@ class ListTagTile extends StatelessWidget {
             ),
           ),
           child: Padding(
-            padding: EdgeInsets.all(13),
+            padding: EdgeInsets.all(10),
             child: Text(
               listTag.quantity.toString(),
               style: TextStyle(fontSize: 22),

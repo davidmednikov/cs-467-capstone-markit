@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:markit/components/common/scaffold/dynamic_fab.dart';
@@ -81,5 +82,29 @@ class MyListsState extends State<MyLists> {
       setState(() {});
     }
     return statusCode;
+  }
+
+  void renameList(int listId, String newName) async {
+    String url = 'https://markit-api.azurewebsites.net/list/${listId}';
+    var body = {
+      'userId': 10,
+      'name': newName
+    };
+    await widget.apiService.patchResponseMap(url, body);
+    setState(() {});
+  }
+
+  void showRenameDialog(int listId, String oldName) async {
+    List<String> newName = await showTextInputDialog(
+      context: context,
+      textFields: [DialogTextField(hintText: oldName)],
+      title: 'Rename List',
+      message: 'Please enter a new name:',
+      okLabel: 'Save',
+      cancelLabel: 'Cancel'
+    );
+    if (newName != null && newName.length > 0) {
+      renameList(listId, newName[0]);
+    }
   }
 }

@@ -15,11 +15,11 @@ class ShoppingListModel {
       userId: json['userId'],
       name: json['name'],
       description: json['description'],
-      listTags: getListTagsFromObjects(json['listTags']),
+      listTags: getListTagsFromObjects(json['listTags'], json['id']),
     );
   }
 }
 
-List<ListTagModel> getListTagsFromObjects(List<Object> listTags) {
-  return listTags.map((tag) => ListTagModel.fromJson(tag)).toList();
+List<ListTagModel> getListTagsFromObjects(List<Object> listTags, int listId) {
+  return listTags.map((tag) => ListTagModel.fromJsonWithListId(tag, listId)).toList();
 }
