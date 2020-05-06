@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:markit/components/common/scaffold/dynamic_fab.dart';
 import 'package:markit/components/models/list_tag_model.dart';
@@ -26,22 +28,21 @@ class ListTagTile extends StatelessWidget {
           // style: TextStyle(fontSize: 22),
         ),
         subtitle: getSubtitleWidget(listTag.comment),
-        trailing: Container(
-          decoration: ShapeDecoration(
-            shape: CircleBorder(
-              side: BorderSide(
-                color: Colors.black,
-                width: 1.0,
+        trailing: Stack(
+          alignment: Alignment.center,
+          children: [
+            Opacity(
+              opacity: 0.5,
+              child: FaIcon(FontAwesomeIcons.tag, color: Colors.grey, size: 36),
+            ),
+            Padding(
+              padding: EdgeInsets.only(bottom: 5),
+              child: Text(
+                listTag.quantity.toString(),
+                style: GoogleFonts.lato(fontSize: 17, fontWeight: FontWeight.bold),
               ),
             ),
-          ),
-          child: Padding(
-            padding: EdgeInsets.all(10),
-            child: Text(
-              listTag.quantity.toString(),
-              style: TextStyle(fontSize: 22),
-            ),
-          ),
+          ],
         ),
         onTap: () {
           dynamicFabKey.currentState.changePage('viewTag');
