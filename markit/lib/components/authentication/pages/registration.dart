@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../components/login_form.dart';
+import '../components/registration_form.dart';
 
-class LoginScreen extends StatelessWidget {
+class RegistrationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,9 @@ class LoginScreen extends StatelessWidget {
             ),
             Expanded(
               flex: 3,
-              child: LoginForm()
+              child: SingleChildScrollView(
+                child: RegistrationForm()
+              )
             ),
             Spacer(flex: 1)
           ]),

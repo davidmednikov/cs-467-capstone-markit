@@ -5,6 +5,8 @@ import 'package:overlay_support/overlay_support.dart';
 import 'package:markit/components/service/auth_service.dart';
 import 'package:markit/components/common/scaffold/bottom_scaffold.dart';
 import 'package:markit/components/authentication/pages/login.dart';
+import 'package:markit/components/authentication/pages/registration.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,9 +43,9 @@ class Markit extends StatelessWidget {
   }
 
   String getInitialRoute() {
-    if (token != 'NOT_AUTHENTICATED') {
-      return 'home';
-    }
+    // if (token != 'NOT_AUTHENTICATED') {
+    //   return 'home';
+    // }
     return 'auth';
   }
 
@@ -51,6 +53,7 @@ class Markit extends StatelessWidget {
     return {
       'auth': (context) => LoginScreen(),
       'home': (context) => BottomScaffold(),
+      'register': (context) => RegistrationScreen()
     };
   }
 }
