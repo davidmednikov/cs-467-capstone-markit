@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:overlay_support/overlay_support.dart';
 
 import 'package:markit/components/common/scaffold/dynamic_fab.dart';
 import 'package:markit/components/common/scaffold/top_scaffold.dart';
@@ -104,6 +105,10 @@ class _NewListState extends State<NewList> {
                             SystemChannels.textInput.invokeMethod('TextInput.hide');
                             widget.dynamicFabKey.currentState.changePage('viewList');
                             Navigator.of(context).pushReplacementNamed('viewList', arguments: list);
+                            showSimpleNotification(
+                              Text('List created.'),
+                              background: Color(0xff22cbff),
+                            );
                           }
                         },
                         color: Colors.deepOrange,

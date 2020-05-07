@@ -1,10 +1,10 @@
-import 'package:http/http.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:markit/components/common/scaffold/dynamic_fab.dart';
 import 'package:markit/components/common/scaffold/top_scaffold.dart';
 import 'package:markit/components/models/list_tag_model.dart';
+import 'package:markit/components/service/api_service.dart';
 
 class ViewTag extends StatefulWidget {
 
@@ -13,6 +13,8 @@ class ViewTag extends StatefulWidget {
   GlobalKey<DynamicFabState> dynamicFabKey;
 
   ViewTag({Key key, this.dynamicFabKey}) : super(key: key);
+
+  ApiService apiService = new ApiService();
 
   @override
   _ViewTagState createState() => _ViewTagState();
@@ -129,9 +131,10 @@ class _ViewTagState extends State<ViewTag> {
                             formKey.currentState.save();
                             buttonPressed = true;
                             setState( () {} );
-                            // await saveTag();
-                            saveTag();
-                            Navigator.of(context).pop();
+                            Map savedTag = await saveTag();
+                            ListTagModel listTagModel = ListTagModel.fromJsonWithListId(savedTag, listTag.listId);
+                            notifyFabOfPop();
+                            Navigator.of(context).pop(listTagModel);
                           }
                         },
                         color: Colors.deepOrange,
@@ -154,122 +157,23 @@ class _ViewTagState extends State<ViewTag> {
     );
   }
 
-   Future<Response> saveTag() async {
-    // var response = await post(widget.postUrl, body: {'listId': '1', 'tagId': '1', 'quantity': quantity, 'notes': notes});
-    // print('Response status: ${response.statusCode}');
-    // print('Response body: ${response.body}');
-    print('save');
+   Future<Map> saveTag() async {
+    String url = 'https://markit-api.azurewebsites.net/list/${listTag.listId}/listTag/${listTag.id}';
+    var body = {
+      'id': listTag.id,
+      'tag': {
+        'id': listTag.tagId,
+        'name': listTag.tagName,
+      },
+      'quantity': quantity,
+      'comment': notes,
+    };
+    return widget.apiService.patchResponseMap(url, body);
   }
 
   Future<bool> notifyFabOfPop() {
     SystemChannels.textInput.invokeMethod('TextInput.hide');
     widget.dynamicFabKey.currentState.changePage('viewList');
     return Future.value(true);
-  }
-
-  List<String> getSuggestions(String pattern) {
-    List<String> allStrings = [
-      'a',
-      'about',
-      'all',
-      'also',
-      'and',
-      'as',
-      'at',
-      'be',
-      'because',
-      'but',
-      'by',
-      'can',
-      'come',
-      'could',
-      'day',
-      'do',
-      'even',
-      'find',
-      'first',
-      'for',
-      'from',
-      'get',
-      'give',
-      'go',
-      'have',
-      'he',
-      'her',
-      'here',
-      'him',
-      'his',
-      'how',
-      'I',
-      'if',
-      'in',
-      'into',
-      'it',
-      'its',
-      'just',
-      'know',
-      'like',
-      'look',
-      'make',
-      'man',
-      'many',
-      'me',
-      'more',
-      'my',
-      'new',
-      'no',
-      'not',
-      'now',
-      'of',
-      'on',
-      'one',
-      'only',
-      'or',
-      'other',
-      'our',
-      'out',
-      'people',
-      'say',
-      'see',
-      'she',
-      'so',
-      'some',
-      'take',
-      'tell',
-      'than',
-      'that',
-      'the',
-      'their',
-      'them',
-      'then',
-      'there',
-      'these',
-      'they',
-      'thing',
-      'think',
-      'this',
-      'those',
-      'time',
-      'to',
-      'two',
-      'up',
-      'use',
-      'very',
-      'want',
-      'way',
-      'we',
-      'well',
-      'what',
-      'when',
-      'which',
-      'who',
-      'will',
-      'with',
-      'would',
-      'year',
-      'you',
-      'your'
-    ];
-    return allStrings.where((string) => string.toLowerCase().contains(pattern.toLowerCase())).toList();
   }
 }
