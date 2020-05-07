@@ -35,18 +35,14 @@ class ListTagTile extends StatelessWidget {
               opacity: 0.5,
               child: FaIcon(FontAwesomeIcons.tag, color: Colors.grey, size: 36),
             ),
-            Padding(
-              padding: EdgeInsets.only(bottom: 5),
-              child: Text(
-                listTag.quantity.toString(),
-                style: GoogleFonts.lato(fontSize: 17, fontWeight: FontWeight.bold),
-              ),
-            ),
+            Text(
+              listTag.quantity.toString(),
+              style: GoogleFonts.lato(fontSize: 10, fontWeight: FontWeight.bold),
+            )
           ],
         ),
         onTap: () {
-          dynamicFabKey.currentState.changePage('viewTag');
-          Navigator.of(context).pushNamed('viewTag', arguments: listTag);
+          viewTag(context);
         },
       ),
       secondaryActions: [
@@ -69,5 +65,15 @@ class ListTagTile extends StatelessWidget {
 
   void deleteTag() {
     viewListKey.currentState.deleteTag(listTag.id);
+  }
+
+  void viewTag(BuildContext context) {
+    dynamicFabKey.currentState.changePage('viewTag');
+    Navigator.of(context).pushNamed('viewTag', arguments: listTag)
+    .then((updatedTag) {
+      if (updatedTag != null) {
+        viewListKey.currentState..updateTag(updatedTag);
+      }
+    });
   }
 }

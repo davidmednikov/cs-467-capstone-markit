@@ -4,7 +4,7 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 import 'package:markit/components/common/scaffold/dynamic_fab.dart';
 import 'package:markit/components/common/scaffold/top_scaffold.dart';
-import 'package:markit/components/models/shopping_list_model.dart';
+import 'package:markit/components/models/list_tag_model.dart';
 import 'package:markit/components/service/api_service.dart';
 
 
@@ -151,8 +151,8 @@ class _AddTagState extends State<AddTag> {
                             formKey.currentState.save();
                             buttonPressed = true;
                             setState( () {} );
-                            Map savedList = await saveTag();
-                            ShoppingListModel listModel = ShoppingListModel.fromJson(savedList);
+                            Map savedTag = await saveTag();
+                            ListTagModel listModel = ListTagModel.fromJsonWithListId(savedTag, listId);
                             notifyFabOfPop();
                             Navigator.of(context).pop(listModel);
                           }
@@ -178,7 +178,7 @@ class _AddTagState extends State<AddTag> {
   }
 
   Future<Map> saveTag() async {
-    String url = 'https://markit-api.azurewebsites.net/list/$listId';
+    String url = 'https://markit-api.azurewebsites.net/list/$listId/listTag';
     var body = {
       'tag': {
         'id': tagId,
@@ -187,7 +187,7 @@ class _AddTagState extends State<AddTag> {
       'quantity': quantity,
       'comment': notes,
     };
-    return widget.apiService.patchResponseMap(url, body);
+    return widget.apiService.postResponseMap(url, body);
   }
 
   Future<bool> notifyFabOfPop() {

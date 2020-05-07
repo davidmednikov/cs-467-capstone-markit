@@ -52,19 +52,6 @@ class ViewListState extends State<ViewList> {
     );
   }
 
-  void changeList(ShoppingListModel updatedList) {
-    setState(() {
-      shoppingList = updatedList;
-      tagAddedOrDeleted = true;
-    });
-  }
-
-  Future<bool> notifyFabOfPop() {
-    SystemChannels.textInput.invokeMethod('TextInput.hide');
-    widget.dynamicFabKey.currentState.changePage('myLists');
-    return Future.value(true);
-  }
-
   Widget notesField() {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
@@ -95,10 +82,7 @@ class ViewListState extends State<ViewList> {
                 setState( () {
                   shoppingList.description = notes;
                 } );
-                showSimpleNotification(
-                  Text('Notes saved.'),
-                  background: Color(0xff225dff),
-                );
+                showNotification('Notes updated.');
               },
             ),
           ],
@@ -129,6 +113,36 @@ class ViewListState extends State<ViewList> {
     );
   }
 
+  void showNotification(String message) {
+    showSimpleNotification(
+      Text(message),
+      background: Color(0xff22cbff),
+    );
+  }
+
+  void addTag(ListTagModel newTag) {
+    setState(() {
+      shoppingList.listTags.add(newTag);
+      tagAddedOrDeleted = true;
+    });
+    showNotification('Tag added.');
+  }
+
+  void updateTag(ListTagModel updatedTag) {
+    int index = shoppingList.listTags.indexWhere((listTag) => listTag.id == updatedTag.id);
+    setState(() {
+      shoppingList.listTags[index] = updatedTag;
+      tagAddedOrDeleted = true;
+    });
+    showNotification('Tag updated.');
+  }
+
+  Future<bool> notifyFabOfPop() {
+    SystemChannels.textInput.invokeMethod('TextInput.hide');
+    widget.dynamicFabKey.currentState.changePage('myLists');
+    return Future.value(true);
+  }
+
   Future<Map> saveNotes() async {
     String url = 'https://markit-api.azurewebsites.net/list/${shoppingList.id}';
     var body = {
@@ -146,6 +160,7 @@ class ViewListState extends State<ViewList> {
         shoppingList.listTags.removeWhere((listTag) => listTag.id == listTagId);
         tagAddedOrDeleted = true;
       });
+      showNotification('Tag removed.');
     }
     return statusCode;
   }

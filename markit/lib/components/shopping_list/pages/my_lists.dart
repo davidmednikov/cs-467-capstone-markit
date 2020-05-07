@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:overlay_support/overlay_support.dart';
 
 import 'package:markit/components/common/scaffold/dynamic_fab.dart';
 import 'package:markit/components/common/scaffold/top_scaffold.dart';
@@ -81,6 +82,7 @@ class MyListsState extends State<MyLists> {
     if (statusCode == 200) {
       setState(() {});
     }
+    showNotification('List deleted.');
     return statusCode;
   }
 
@@ -92,6 +94,7 @@ class MyListsState extends State<MyLists> {
     };
     await widget.apiService.patchResponseMap(url, body);
     setState(() {});
+    showNotification('List renamed.');
   }
 
   void showRenameDialog(int listId, String oldName) async {
@@ -103,8 +106,15 @@ class MyListsState extends State<MyLists> {
       okLabel: 'Save',
       cancelLabel: 'Cancel'
     );
-    if (newName != null && newName.length > 0) {
+    if (newName != null && newName.length > 0 && newName[0].length > 0) {
       renameList(listId, newName[0]);
     }
+  }
+
+  void showNotification(String message) {
+    showSimpleNotification(
+      Text(message),
+      background: Color(0xff22cbff),
+    );
   }
 }
