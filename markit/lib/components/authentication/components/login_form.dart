@@ -18,8 +18,8 @@ class _LoginFormState extends State<LoginForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   MarkitUserModel currentUser = MarkitUserModel();
-  AuthService authService = new AuthService();
   ApiService apiService = new ApiService();
+  AuthService authService = new AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +49,7 @@ class _LoginFormState extends State<LoginForm> {
                 return null;
               },
               onSaved: (value) {
-                currentUser.username = value;
+                currentUser.username = value.trim();
               }
             ),
           ),
@@ -76,7 +76,7 @@ class _LoginFormState extends State<LoginForm> {
                 return null;
               },
               onSaved: (value) {
-                currentUser.password = value;
+                currentUser.password = value.trim();
               },
               obscureText: true,
             ),

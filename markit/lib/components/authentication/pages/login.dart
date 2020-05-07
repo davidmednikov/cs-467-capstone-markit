@@ -7,6 +7,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.deepOrange,
       body: SafeArea(
         child: Column(children: <Widget>[
           Spacer(flex: 1),
@@ -25,13 +26,12 @@ class LoginScreen extends StatelessWidget {
             )
           ),
           Expanded(
-            flex: 3,
+            flex: 4,
             child: LoginForm()
           ),
           Spacer(flex: 1)
         ]),
       ),
-      backgroundColor: Colors.deepOrange,
     );
   }
 }

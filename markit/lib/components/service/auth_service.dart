@@ -96,4 +96,27 @@ class AuthService {
     }
     return Future.value(false);
   }
+
+  Future<int> postUserToServer(String firstName, String lastName, String userName, String password) async {
+    String url = 'https://markit-api.azurewebsites.net/user';
+    Response response = await post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      }, body: jsonEncode({
+        'firstName' : firstName,
+        'lastName'  : lastName,
+        'userName'  : userName,
+        'password'  : password,
+      })
+    );
+    if (response.statusCode != 200) {
+      return null;
+    }
+    Map body = jsonDecode(response.body);
+    if (body['statusCode'] == 200) {
+      return Future.value(body['data']['id']);
+    }
+    return Future.value(null);;
+  }
 }
