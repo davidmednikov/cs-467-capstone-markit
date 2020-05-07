@@ -132,9 +132,10 @@ class _NewListState extends State<NewList> {
   }
 
   Future<Map> saveList() async {
+    int userId = await widget.apiService.getUserId();
     String url = 'https://markit-api.azurewebsites.net/list';
     var body = {
-      'userId': 10,
+      'userId': userId,
       'name': name,
       'description': notes
     };

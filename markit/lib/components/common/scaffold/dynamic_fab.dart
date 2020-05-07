@@ -96,7 +96,7 @@ class DynamicFabState extends State<DynamicFab> {
         child: Material(
           child: Text(
             label,
-            style: GoogleFonts.lato(fontStyle: FontStyle.italic, fontWeight: FontWeight.bold, fontSize: 20, color: Colors.deepOrange),
+            style: GoogleFonts.lato(fontStyle: FontStyle.italic, fontWeight: FontWeight.bold, fontSize: 15, color: Colors.deepOrange),
           ),
         ),
       ),

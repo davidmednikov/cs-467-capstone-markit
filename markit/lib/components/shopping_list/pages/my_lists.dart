@@ -7,6 +7,7 @@ import 'package:markit/components/common/scaffold/dynamic_fab.dart';
 import 'package:markit/components/common/scaffold/top_scaffold.dart';
 import 'package:markit/components/models/shopping_list_model.dart';
 import 'package:markit/components/service/api_service.dart';
+import 'package:markit/components/service/auth_service.dart';
 import 'package:markit/components/shopping_list/components/shopping_list_tile.dart';
 
 
@@ -18,6 +19,7 @@ class MyLists extends StatefulWidget {
   MyLists({Key key, this.dynamicFabKey}) : super(key: key);
 
   ApiService apiService = new ApiService();
+  AuthService authService = new AuthService();
 
   @override
   MyListsState createState() => MyListsState();
@@ -72,7 +74,8 @@ class MyListsState extends State<MyLists> {
   }
 
   Future<List> getLists() async {
-    String url = 'https://markit-api.azurewebsites.net/user/10/lists';
+    int userId = await widget.authService.getUserIdFromStorage();
+    String url = 'https://markit-api.azurewebsites.net/user/$userId/lists';
     return widget.apiService.getList(url);
   }
 
@@ -87,9 +90,10 @@ class MyListsState extends State<MyLists> {
   }
 
   void renameList(int listId, String newName) async {
+    int userId = await widget.authService.getUserIdFromStorage();
     String url = 'https://markit-api.azurewebsites.net/list/${listId}';
     var body = {
-      'userId': 10,
+      'userId': userId,
       'name': newName
     };
     await widget.apiService.patchResponseMap(url, body);

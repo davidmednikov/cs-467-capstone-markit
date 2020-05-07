@@ -8,6 +8,7 @@ import 'package:markit/components/common/scaffold/top_scaffold.dart';
 import 'package:markit/components/models/list_tag_model.dart';
 import 'package:markit/components/models/shopping_list_model.dart';
 import 'package:markit/components/service/api_service.dart';
+import 'package:markit/components/service/auth_service.dart';
 import 'package:markit/components/shopping_list/components/list_tag_tile.dart';
 
 class ViewList extends StatefulWidget {
@@ -17,6 +18,7 @@ class ViewList extends StatefulWidget {
   ViewList({Key key, this.dynamicFabKey}) : super(key: key);
 
   ApiService apiService = new ApiService();
+  AuthService authService = new AuthService();
 
   @override
   ViewListState createState() => ViewListState();
@@ -144,9 +146,10 @@ class ViewListState extends State<ViewList> {
   }
 
   Future<Map> saveNotes() async {
+    int userId = await widget.authService.getUserIdFromStorage();
     String url = 'https://markit-api.azurewebsites.net/list/${shoppingList.id}';
     var body = {
-      'userId': 10,
+      'userId': userId,
       'description': notes
     };
     return widget.apiService.patchResponseMap(url, body);

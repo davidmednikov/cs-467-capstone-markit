@@ -166,4 +166,10 @@ class ApiService {
     }
     return Future.value(response);
   }
+
+  Future<int> getUserId() async {
+    String url = 'https://markit-api.azurewebsites.net/user/currentUser';
+    Map response = await getMap(url);
+    return Future.value(response['id']);
+  }
 }
