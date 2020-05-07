@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../components/login_form.dart';
+import 'package:markit/components/authentication/components/login_form.dart';
 
 class LoginScreen extends StatelessWidget {
 
@@ -8,32 +8,30 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.all(5),
-          child: Column(children: <Widget>[
-            Spacer(flex: 1),
-            Expanded(
-              flex: 1,
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width * 0.9,
-                height: MediaQuery.of(context).size.height * 0.25,
-                child: Container(
-                  color: Colors.deepOrange,
-                  child: Container(
-                    margin: EdgeInsets.all(10),
-                    child: Image.asset('assets/img/splash.png')
-                  )
-                )
+        child: Column(children: <Widget>[
+          Spacer(flex: 1),
+          Expanded(
+            flex: 1,
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.9,
+              height: MediaQuery.of(context).size.height * 0.25,
+              child: Container(
+                margin: EdgeInsets.all(10),
+                child: FractionallySizedBox(
+                  widthFactor: 0.75,
+                  child: Image.asset('assets/img/splash.png'),
+                ),
               )
-            ),
-            Expanded(
-              flex: 3,
-              child: LoginForm()
-            ),
-            Spacer(flex: 1)
-          ]),
-        ),
+            )
+          ),
+          Expanded(
+            flex: 3,
+            child: LoginForm()
+          ),
+          Spacer(flex: 1)
+        ]),
       ),
+      backgroundColor: Colors.deepOrange,
     );
   }
 }

@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:overlay_support/overlay_support.dart';
 
-import 'package:markit/components/service/auth_service.dart';
-import 'package:markit/components/common/scaffold/bottom_scaffold.dart';
 import 'package:markit/components/authentication/pages/login.dart';
 import 'package:markit/components/authentication/pages/registration.dart';
+import 'package:markit/components/common/scaffold/bottom_scaffold.dart';
+import 'package:markit/components/service/auth_service.dart';
 
 
 void main() async {
@@ -16,9 +16,6 @@ void main() async {
     DeviceOrientation.portraitUp
   ]);
   AuthService authService = new AuthService();
-  authService.logout();
-  authService.storeUsername('test3');
-  authService.storePassword('password');
   String token = await authService.getToken();
   runApp(Markit(token: token));
 }
@@ -43,9 +40,9 @@ class Markit extends StatelessWidget {
   }
 
   String getInitialRoute() {
-    // if (token != 'NOT_AUTHENTICATED') {
-    //   return 'home';
-    // }
+    if (token != 'NOT_AUTHENTICATED') {
+      return 'home';
+    }
     return 'auth';
   }
 

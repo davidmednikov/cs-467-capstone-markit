@@ -50,7 +50,7 @@ class ListsNavigatorState extends State<ListsNavigator> {
             widget.viewListKey.currentState.addTag(newTag);
           }
         });
-      }
+      // }
     }
   }
 }

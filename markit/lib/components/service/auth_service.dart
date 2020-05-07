@@ -74,6 +74,12 @@ class AuthService {
     await storage.write(key: 'password', value: password);
   }
 
+  void login(String username, String password, int userId) {
+    storeUsername(username);
+    storePassword(password);
+    storeUserId(userId);
+  }
+
   void logout() {
     storage.deleteAll();
   }

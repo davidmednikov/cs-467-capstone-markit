@@ -50,6 +50,7 @@ List<Widget> getNavigators(GlobalKey listsNav, GlobalKey liveFeedNav, GlobalKey 
     ),
     ProfilesNavigator(
       key: profilesNav,
+      dynamicFabKey: dynamicFabKey,
     ),
   ];
 }
@@ -77,9 +78,9 @@ Map<String, Widget> getStoresRoutes() {
   };
 }
 
-Map<String, Widget> getProfileRoutes() {
+Map<String, Widget> getProfileRoutes(GlobalKey dynamicFab) {
   return {
-    '/': MyProfile(),
+    '/': MyProfile(dynamicFabKey: dynamicFab),
     // 'userProfile' : UserProfile()
   };
 }
