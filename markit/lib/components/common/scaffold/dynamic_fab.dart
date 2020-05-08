@@ -11,9 +11,9 @@ class DynamicFab extends StatefulWidget {
   String page;
 
   var onSpeedDialAction;
-  var onBarcodeButtonPressed;
+  var onMainFabPressed;
 
-  DynamicFab({Key key, this.page, this.onSpeedDialAction, this.onBarcodeButtonPressed }) : super(key: key);
+  DynamicFab({Key key, this.page, this.onSpeedDialAction, this.onMainFabPressed }) : super(key: key);
 
   @override
   DynamicFabState createState() => DynamicFabState();
@@ -71,21 +71,21 @@ class DynamicFabState extends State<DynamicFab> {
   Widget _getBarcodeScannerFab() {
     return FloatingActionButton(
       child: FaIcon(FontAwesomeIcons.qrcode),
-      onPressed: widget.onBarcodeButtonPressed,
+      onPressed: widget.onMainFabPressed,
     );
   }
 
   Widget _getPriceRunFab() {
     return FloatingActionButton(
       child: FaIcon(FontAwesomeIcons.searchDollar),
-      onPressed: widget.onBarcodeButtonPressed,
+      onPressed: widget.onMainFabPressed,
     );
   }
 
   Widget _getCheckmarkFab() {
     return FloatingActionButton(
       child: FaIcon(FontAwesomeIcons.check),
-      onPressed: widget.onBarcodeButtonPressed,
+      onPressed: widget.onMainFabPressed,
     );
   }
 

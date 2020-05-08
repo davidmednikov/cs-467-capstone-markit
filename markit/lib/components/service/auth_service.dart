@@ -81,7 +81,10 @@ class AuthService {
   }
 
   void logout() {
-    storage.deleteAll();
+    storage.delete(key: 'username');
+    storage.delete(key: 'password');
+    storage.delete(key: 'token');
+    storage.delete(key: 'userId');
   }
 
   Future<bool> updateToken() async {

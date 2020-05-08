@@ -37,11 +37,14 @@ class ListsNavigatorState extends State<ListsNavigator> {
     );
   }
 
-  void navigate() async {
+  void navigate(int actionIndex) async {
     if (widget.viewListKey.currentContext == null) {
       widget.dynamicFabKey.currentState.changePage('newList');
       Navigator.of(widget.myListsKey.currentContext).pushNamed('newList');
     } else {
+      if (actionIndex == 0) {
+        print('runprice');
+      } else {
         widget.dynamicFabKey.currentState.changePage('addTag');
         int listId = widget.viewListKey.currentState.shoppingList.id;
         Navigator.of(widget.viewListKey.currentContext).pushNamed('addTag', arguments: listId)
@@ -50,7 +53,7 @@ class ListsNavigatorState extends State<ListsNavigator> {
             widget.viewListKey.currentState.addTag(newTag);
           }
         });
-      // }
+      }
     }
   }
 }

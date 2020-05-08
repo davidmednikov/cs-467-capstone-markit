@@ -1,4 +1,8 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 import 'package:markit/components/common/navigation/lists_navigator.dart';
 import 'package:markit/components/common/navigation/live_feed_navigator.dart';
@@ -8,6 +12,7 @@ import 'package:markit/components/common/navigation/stores_navigator.dart';
 import 'package:markit/components/common/scaffold/bottom_nav_bar.dart';
 import 'package:markit/components/common/scaffold/dynamic_fab.dart';
 import 'package:markit/components/common/scan_barcode.dart';
+import 'package:markit/components/service/tutorial_service.dart';
 
 class BottomScaffold extends StatefulWidget {
   BottomScaffold({Key key }) : super(key: key);
@@ -15,10 +20,12 @@ class BottomScaffold extends StatefulWidget {
   List<Map<String, String>> pages = getPages();
 
   @override
-  _BottomScaffoldState createState() => _BottomScaffoldState();
+  BottomScaffoldState createState() => BottomScaffoldState();
+
+  TutorialService tutorialService = new TutorialService();
 }
 
-class _BottomScaffoldState extends State<BottomScaffold> {
+class BottomScaffoldState extends State<BottomScaffold> {
 
   int _selectedIndex = 0;
 
@@ -37,6 +44,7 @@ class _BottomScaffoldState extends State<BottomScaffold> {
   void initState() {
     super.initState();
     _navigators =  getNavigators(listsNavigatorState, liveFeedNavigatorState, storesNavigatorState, profilesNavigatorState, dynamicFabState);
+    WidgetsBinding.instance.addPostFrameCallback((_) => showTutorialIfFirstTime());
   }
 
   @override
@@ -52,7 +60,7 @@ class _BottomScaffoldState extends State<BottomScaffold> {
         key: dynamicFabState,
         page: getPage(),
         onSpeedDialAction: _onSpeedDialAction,
-        onBarcodeButtonPressed: _onBarcodeButtonPressed,
+        onMainFabPressed: _onMainFabPressed,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
@@ -66,15 +74,15 @@ class _BottomScaffoldState extends State<BottomScaffold> {
   }
 
   void _onSpeedDialAction(int actionIndex) {
-    if (actionIndex == 0) {
-      _onBarcodeButtonPressed();
+    if (actionIndex == 0 && listsNavigatorState.currentState.widget.viewListKey.currentState == null) {
+      _onMainFabPressed();
     } else {
-      listsNavigatorState.currentState.navigate();
+      listsNavigatorState.currentState.navigate(actionIndex);
     }
   }
 
-  void _onBarcodeButtonPressed() async {
-    // could be a save button - not necessarily barcode
+  void _onMainFabPressed() async {
+    // // could be a save button - not necessarily barcode
     Future<String> barcode = scanBarcode();
     barcode.then((String upc) {
       // _onItemTapped(null); // how to select none of the tabs?
@@ -115,5 +123,206 @@ class _BottomScaffoldState extends State<BottomScaffold> {
     String route = ModalRoute.of(theKey.currentContext).settings.name;
     String title = widget.pages[_selectedIndex][route];
     return title;
+  }
+
+  Future<void> showTutorialIfFirstTime() async {
+    if (await widget.tutorialService.shouldShowHomeTutorial()) {
+      widget.tutorialService.homeTutorialWatched();
+      await new Future.delayed(const Duration(seconds : 1));
+      showTutorial();
+    }
+  }
+
+  void showTutorial() {
+    TutorialCoachMark(
+      context,
+      targets: getTargets(),
+      colorShadow: Colors.deepOrange,
+      finish: (){},
+      clickTarget: (target){},
+      clickSkip: (){}
+    )..show();
+  }
+
+  List<TargetFocus> getTargets() {
+    return <TargetFocus>[
+      TargetFocus(
+        keyTarget: dynamicFabState,
+        contents: [
+          ContentTarget(
+            align:AlignContent.top,
+            child: Container(
+              padding: EdgeInsets.only(bottom: 65),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          'Welcome to Markit',
+                          style: GoogleFonts.lato(fontStyle: FontStyle.italic, fontWeight: FontWeight.bold, fontSize: 30, color: Colors.white),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 190,
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          'There\'s more than 1 way to Markit. Tap the button to get started.',
+                          style: GoogleFonts.lato(fontStyle: FontStyle.italic, fontSize: 20, color: Colors.white),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+      TargetFocus(
+        keyTarget: dynamicFabState,
+        contents: [
+          ContentTarget(
+            align:AlignContent.top,
+            child: Container(
+              padding: EdgeInsets.only(bottom: 65),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          'Tap this icon to scan a barcode.',
+                          style: GoogleFonts.lato(fontStyle: FontStyle.italic, fontWeight: FontWeight.bold, fontSize: 30, color: Colors.white),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 50,
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Center(
+                          child: ClipOval(
+                            child: Container(
+                              color: Colors.white,
+                              child: SizedBox(
+                                width: 50,
+                                height: 50,
+                                child: Padding(
+                                  padding: EdgeInsets.only(top: 8, left: 12),
+                                  child: FaIcon(FontAwesomeIcons.qrcode, color: Colors.deepOrange, size: 30),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 50,
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          'Climb the ranks by getting points for each price you add.',
+                          style: GoogleFonts.lato(fontStyle: FontStyle.italic, fontSize: 20, color: Colors.white),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+      TargetFocus(
+        keyTarget: dynamicFabState,
+        contents: [
+          ContentTarget(
+            align:AlignContent.top,
+            child: Container(
+              padding: EdgeInsets.only(bottom: 65),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          'Or, tap this icon to create a new shopping list.',
+                          style: GoogleFonts.lato(fontStyle: FontStyle.italic, fontWeight: FontWeight.bold, fontSize: 30, color: Colors.white),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 50,
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Center(
+                          child: ClipOval(
+                            child: Container(
+                              color: Colors.white,
+                              child: SizedBox(
+                                width: 50,
+                                height: 50,
+                                child: Padding(
+                                  padding: EdgeInsets.only(top: 8, left: 12),
+                                  child: FaIcon(FontAwesomeIcons.plus, color: Colors.deepOrange, size: 30),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 50,
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          'Add tags and start saving money now.',
+                          style: GoogleFonts.lato(fontStyle: FontStyle.italic, fontSize: 20, color: Colors.white),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    ];
   }
 }

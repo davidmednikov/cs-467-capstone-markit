@@ -4,6 +4,7 @@ import 'package:overlay_support/overlay_support.dart';
 import 'package:markit/components/models/markit_user_model.dart';
 import 'package:markit/components/service/api_service.dart';
 import 'package:markit/components/service/auth_service.dart';
+import 'package:markit/components/service/tutorial_service.dart';
 
 
 class RegistrationForm extends StatefulWidget {
@@ -20,6 +21,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
   MarkitUserModel newUser = MarkitUserModel();
   ApiService apiService = new ApiService();
   AuthService authService = new AuthService();
+  TutorialService tutorialService = new TutorialService();
 
   @override
   Widget build(BuildContext context) {
@@ -151,13 +153,8 @@ class _RegistrationFormState extends State<RegistrationForm> {
                   if (token != null) {
                     authService.storeToken(token);
                     authService.login(newUser.username, newUser.password, userId);
-                    Navigator.pushReplacementNamed(
-                      context,
-                      'home',
-                      arguments: <String, bool> {
-                        'firstLogin': true
-                      }
-                    );
+                    tutorialService.storeAllTutorialsUnwatched(userId);
+                    Navigator.pushReplacementNamed(context, 'home');
                   } else {
                     showNotification('Registration error.');
                   }
