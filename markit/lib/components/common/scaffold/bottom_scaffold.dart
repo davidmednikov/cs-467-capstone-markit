@@ -60,34 +60,53 @@ class BottomScaffoldState extends State<BottomScaffold> {
         key: dynamicFabState,
         page: getPage(),
         onSpeedDialAction: _onSpeedDialAction,
-        onMainFabPressed: _onMainFabPressed,
+        onBarcodeButtonPressed: _onBarcodeButtonPressed,
+        onPriceCheckButtonPresed: _onPriceCheckButtonPresed,
+        onCheckmarkButtonPressed: _onCheckmarkButtonPressed,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 
   void _onItemTapped(int index) {
-    dynamicFabState.currentState.tabChanged();
+    if (index != _selectedIndex) {
+      dynamicFabState.currentState.tabChanged();
+    }
     setState(() {
       _selectedIndex = index;
     });
   }
 
   void _onSpeedDialAction(int actionIndex) {
-    if (actionIndex == 0 && listsNavigatorState.currentState.widget.viewListKey.currentState == null) {
-      _onMainFabPressed();
+    if (listsNavigatorState.currentState.widget.viewListKey.currentState == null) {
+      if (actionIndex == 0) {
+        _onBarcodeButtonPressed();
+      } else {
+        dynamicFabState.currentState.changePage('newList');
+        listsNavigatorState.currentState.navigateToNewList();
+      }
+    } else if (actionIndex == 0) {
+      listsNavigatorState.currentState.navigateToPriceCheck(false);
     } else {
-      listsNavigatorState.currentState.navigate(actionIndex);
+      dynamicFabState.currentState.changePage('addTag');
+      listsNavigatorState.currentState.navigateToAddTag();
     }
   }
 
-  void _onMainFabPressed() async {
-    // // could be a save button - not necessarily barcode
+  void _onBarcodeButtonPressed() async {
     Future<String> barcode = scanBarcode();
     barcode.then((String upc) {
       // _onItemTapped(null); // how to select none of the tabs?
       print(upc);
     });
+  }
+
+  void _onPriceCheckButtonPresed() {
+    listsNavigatorState.currentState.navigateToPriceCheck(true);
+  }
+
+  void _onCheckmarkButtonPressed() {
+    print('checkmark');
   }
 
   String getPage() {

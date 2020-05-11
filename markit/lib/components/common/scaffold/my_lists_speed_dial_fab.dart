@@ -30,6 +30,12 @@ class MyListsSpeedDialFabState extends State<MyListsSpeedDialFab> {
     );
   }
 
+  @override
+  void dispose() {
+    // this.dispose();
+    super.dispose();
+  }
+
   List<SpeedDialAction> _getMyListsIcons() {
     return [
       SpeedDialAction(

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:markit/components/common/navigation/navigation_options.dart';
 import 'package:markit/components/common/navigation/tab_navigator.dart';
 import 'package:markit/components/common/scaffold/dynamic_fab.dart';
+import 'package:markit/components/models/shopping_list_model.dart';
 import 'package:markit/components/shopping_list/pages/my_lists.dart';
 import 'package:markit/components/shopping_list/pages/view_list.dart';
 
@@ -37,23 +38,32 @@ class ListsNavigatorState extends State<ListsNavigator> {
     );
   }
 
-  void navigate(int actionIndex) async {
-    if (widget.viewListKey.currentContext == null) {
-      widget.dynamicFabKey.currentState.changePage('newList');
-      Navigator.of(widget.myListsKey.currentContext).pushNamed('newList');
-    } else {
-      if (actionIndex == 0) {
-        print('runprice');
-      } else {
-        widget.dynamicFabKey.currentState.changePage('addTag');
-        int listId = widget.viewListKey.currentState.shoppingList.id;
-        Navigator.of(widget.viewListKey.currentContext).pushNamed('addTag', arguments: listId)
-        .then((newTag) {
-          if (newTag != null) {
-            widget.viewListKey.currentState.addTag(newTag);
-          }
-        });
+  void navigateToNewList() {
+    Navigator.of(widget.myListsKey.currentContext).pushNamed('newList');
+  }
+
+  void navigateToPriceCheck(bool replaceRoute) {
+    ShoppingListModel list = widget.viewListKey.currentState.shoppingList;
+    if (list.listTags.length > 0) {
+      widget.dynamicFabKey.currentState.changePage('priceCheck');
+      if (!replaceRoute) {
+        Navigator.of(widget.viewListKey.currentContext).pushNamed('priceCheck',
+          arguments: widget.viewListKey.currentState.shoppingList);
       }
+      Navigator.of(widget.viewListKey.currentContext).pushReplacementNamed('priceCheck',
+        arguments: widget.viewListKey.currentState.shoppingList);
+    } else {
+      widget.viewListKey.currentState.showError('Price Check requires at least 1 tag.');
     }
+  }
+
+  void navigateToAddTag() {
+    int listId = widget.viewListKey.currentState.shoppingList.id;
+    Navigator.of(widget.viewListKey.currentContext).pushNamed('addTag', arguments: listId)
+    .then((newTag) {
+      if (newTag != null) {
+        widget.viewListKey.currentState.addTag(newTag);
+      }
+    });
   }
 }
