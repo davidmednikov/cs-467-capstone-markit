@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:markit/components/common/scaffold/top_scaffold.dart';
 import 'package:markit/components/live_feed/price_mark.dart';
 import 'package:markit/components/live_feed/review_mark.dart';
+import 'package:markit/components/live_feed/timeline_view.dart';
 
 class LiveFeed extends StatelessWidget {
 
@@ -44,36 +45,37 @@ class LiveFeed extends StatelessWidget {
   Widget build(BuildContext context) {
     return TopScaffold(
       title: 'Live Feed',
-      view: ListView.builder(
-        itemCount: markData.length,
-        itemBuilder: (context, index) {
-          if (markData[index]["price"] != null) {
-            return Container(
-              padding: EdgeInsets.all(10),
-              height: MediaQuery.of(context).size.height * 0.25,
-              child: PriceMark(
-                tags: markData[index]["tags"],
-                store: markData[index]["store"],
-                user: markData[index]["user"],
-                date: markData[index]["date"],
-                price: markData[index]["price"],
-              )
-            );
-          } else {
-            return Container(
-              padding: EdgeInsets.all(10),
-              height: MediaQuery.of(context).size.height * 0.25,
-              child: ReviewMark(
-                comment: markData[index]["comment"],
-                rating: markData[index]["rating"],
-                store: markData[index]["store"],
-                user: markData[index]["user"],
-                date: markData[index]["date"],
-              )
-            );
-          }
-        }
-      ),
+      // view: ListView.builder(
+      //   itemCount: markData.length,
+      //   itemBuilder: (context, index) {
+      //     if (markData[index]["price"] != null) {
+      //       return Container(
+      //         padding: EdgeInsets.all(10),
+      //         height: MediaQuery.of(context).size.height * 0.25,
+      //         child: PriceMark(
+      //           tags: markData[index]["tags"],
+      //           store: markData[index]["store"],
+      //           user: markData[index]["user"],
+      //           date: markData[index]["date"],
+      //           price: markData[index]["price"],
+      //         )
+      //       );
+      //     } else {
+      //       return Container(
+      //         padding: EdgeInsets.all(10),
+      //         height: MediaQuery.of(context).size.height * 0.25,
+      //         child: ReviewMark(
+      //           comment: markData[index]["comment"],
+      //           rating: markData[index]["rating"],
+      //           store: markData[index]["store"],
+      //           user: markData[index]["user"],
+      //           date: markData[index]["date"],
+      //         )
+      //       );
+      //     }
+      //   }
+      // ),
+      view: TimelineView(items: markData)
     );
   }
 }

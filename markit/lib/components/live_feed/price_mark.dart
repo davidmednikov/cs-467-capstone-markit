@@ -19,49 +19,42 @@ class PriceMark extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 5,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15.0)
+      ),
+      elevation: 8,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
           Padding(
-            padding: EdgeInsets.all(10),
+            padding: EdgeInsets.all(5),
             child: Align(
-              alignment: Alignment.topLeft,
-              child: Text(date)
+              alignment: Alignment.topCenter,
+              child: Text(
+                date,
+                style: TextStyle(
+                  color: Colors.grey
+                )
+              )
             )
           ),
-          Spacer(flex: 3),
-          Column(children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Text(tags[0]),
-                Text(tags[1])
-              ],
-            ),
-            Padding(
-              padding: EdgeInsets.all(5),
-              child: Align(
-                alignment: Alignment(0, 0),
-                child: Text(price.toString()),
-              ),
-            )
-          ]),
-          Spacer(flex: 3),
-          Align(
-            alignment: Alignment(0, 0),
-            child: Column(children: <Widget>[
-              Text(store)
-            ],)
-          ),
-          Spacer(flex: 10),
+          Spacer(flex: 1),
+          Text(tags[0]),
+          Text(tags[1]),
+          Spacer(flex: 1),
+          Text(
+            '\$${price.toString()} at $store',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold
+            )),
+          Spacer(flex: 1),
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              Text(user),
-              Text("<Icon>")
-            ],
-          ),
+            Text('by $user'),
+            Text("<Icon>"),
+          ]),
           Spacer(flex: 1)
       ])
     );
