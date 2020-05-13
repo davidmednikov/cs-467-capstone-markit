@@ -37,7 +37,7 @@ class ViewListSpeedDialFabState extends State<ViewListSpeedDialFab> {
         label: widget.getSpeedDialLabelWidget('Price Check'),
       ),
       SpeedDialAction(
-        child: FaIcon(FontAwesomeIcons.plus),
+        child: FaIcon(FontAwesomeIcons.cartPlus),
         label: widget.getSpeedDialLabelWidget('Add Tag'),
       ),
     ];

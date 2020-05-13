@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+
 import 'package:markit/components/common/scaffold/app_bar_bottom_buttons.dart';
+import 'package:markit/components/shopping_list/components/price_check_list.dart';
 
 class MarkitAppBar extends StatefulWidget implements PreferredSizeWidget {
 
   String titleProp;
 
-  MarkitAppBar({Key key, this.titleProp }) : super(key: key);
+  GlobalKey<PriceCheckListState> priceCheckListKey;
+
+  MarkitAppBar({Key key, this.titleProp, this.priceCheckListKey }) : super(key: key);
 
   @override
   _MarkitAppBarState createState() => _MarkitAppBarState();
@@ -69,7 +73,9 @@ class _MarkitAppBarState extends State<MarkitAppBar> {
 
   Widget getBottomButtons() {
     if (_title == 'Price Check') {
-      return AppBarBottomButtons();
+      return AppBarBottomButtons(
+        priceCheckListKey: widget.priceCheckListKey,
+      );
     }
     return null;
   }

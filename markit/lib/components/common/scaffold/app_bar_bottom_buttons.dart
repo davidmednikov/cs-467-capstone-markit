@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:easy_dialog/easy_dialog.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart' as frb;
+import 'package:google_fonts/google_fonts.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:rating_bar/rating_bar.dart' as rb;
+
+import 'package:markit/components/shopping_list/components/price_check_list.dart';
 
 class AppBarBottomButtons extends StatefulWidget implements PreferredSizeWidget {
 
   List<Widget> buttons;
 
-  AppBarBottomButtons({Key key, this.buttons }) : super(key: key);
+  GlobalKey<PriceCheckListState> priceCheckListKey;
+
+  AppBarBottomButtons({Key key, this.buttons, this.priceCheckListKey }) : super(key: key);
 
   @override
   _AppBarBottomButtonsState createState() => _AppBarBottomButtonsState();
@@ -16,11 +25,14 @@ class AppBarBottomButtons extends StatefulWidget implements PreferredSizeWidget 
 class _AppBarBottomButtonsState extends State<AppBarBottomButtons> {
 
   bool starFilterEnabled = false;
+  double minStars = 0;
+
+  String sort = 'Price Only';
+  List<String> sortOptions = ['Price Only', 'Price & Staleness'];
 
   @override
   Widget build(BuildContext context) {
     return Theme(
-      // data: Theme.of(context),
       data: Theme.of(context).copyWith(accentColor: Colors.white),
       child: Expanded(
         child: Row(
@@ -28,23 +40,56 @@ class _AppBarBottomButtonsState extends State<AppBarBottomButtons> {
             Expanded(
               child: Column(
                 children: [
-                  RaisedButton(
-                    onPressed: priceFilter,
-                    shape: StadiumBorder(),
-                    color: Colors.white,
+                  Container(
+                    decoration: ShapeDecoration(shape: StadiumBorder(), color: Colors.white),
+                    margin: EdgeInsets.only(top: 6, left: 15),
+                    padding: EdgeInsets.symmetric(vertical: 6, horizontal: 10),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton<String>(
+                        value: sort,
+                        icon: FaIcon(FontAwesomeIcons.sortAmountDown, color: Colors.deepOrange),
+                        onChanged: (String newValue) {
+                          widget.priceCheckListKey.currentState.changeSorting(newValue);
+                          setState(() {
+                            sort = newValue;
+                          });
+                        },
+                        style: GoogleFonts.lato(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.black),
+                        items: sortOptions.map((option) => DropdownMenuItem(
+                          value: option,
+                          child: Center(
+                            child: Text(
+                              option,
+                            ),
+                          ),
+                        )).toList(),
+                        isExpanded: true,
+                        isDense: true,
+                      )
+                    ),
                   )
                 ],
               ),
             ),
             Expanded(
-              child: Column(
-                children: [
-                  RaisedButton(
-                    onPressed: starFilter,
-                    shape: StadiumBorder(),
-                    color: getStarFilterColor(),
-                  )
-                ],
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  children: [
+                    RaisedButton(
+                      onPressed: starFilter,
+                      shape: StadiumBorder(),
+                      color: getStarFilterColor(),
+                      child: rb.RatingBar.readOnly(
+                        initialRating: minStars,
+                        isHalfAllowed: false,
+                        emptyIcon: FontAwesomeIcons.star,
+                        filledIcon: FontAwesomeIcons.solidStar,
+                        size: 20,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
@@ -65,9 +110,68 @@ class _AppBarBottomButtonsState extends State<AppBarBottomButtons> {
   }
 
   void starFilter() {
-    print('starFilter');
-    setState(() {
-      starFilterEnabled = !starFilterEnabled;
-    });
+    EasyDialog(
+      cornerRadius: 15.0,
+      fogOpacity: 0.1,
+      width: 280,
+      height: 180,
+      contentPadding: EdgeInsets.only(top: 12.0), // Needed for the button design
+      contentList: [
+        FaIcon(FontAwesomeIcons.searchDollar, color: Colors.deepOrange),
+        SizedBox(height: 10),
+        Text('Minimum store rating:', style: GoogleFonts.lato(fontSize: 18, color: Colors.black)),
+        SizedBox(height: 10),
+        Expanded(
+          child: Container(
+            child: Builder(
+            builder: (context) =>
+              frb.RatingBar(
+                initialRating: minStars,
+                minRating: 0,
+                direction: Axis.horizontal,
+                allowHalfRating: false,
+                itemCount: 5,
+                itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                ratingWidget: frb.RatingWidget(
+                  empty: FaIcon(FontAwesomeIcons.star, color: Color(0xffffc422)),
+                  half: FaIcon(FontAwesomeIcons.solidStar, color: Color(0xffffc422)),
+                  full: FaIcon(FontAwesomeIcons.solidStar, color: Color(0xffffc422))
+                ),
+                onRatingUpdate: (rating) {
+                  minStars = rating;
+                  starFilterEnabled = true;
+                  Navigator.pop(context);
+                  setState(() {});
+                },
+              ),
+            ),
+          ),
+        ),
+        Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Color(0xffff2226),
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(10.0),
+              bottomRight: Radius.circular(10.0)
+            )
+          ),
+          child: Builder(
+            builder: (context) =>
+              FlatButton(
+                onPressed: () {
+                  minStars = 0;
+                  starFilterEnabled = false;
+                  Navigator.pop(context);
+                  setState(() {});
+                },
+                child: Text("Cancel",
+                  textScaleFactor: 1.3,
+                ),
+              ),
+          ),
+        ),
+      ],
+    ).show(context);
   }
 }

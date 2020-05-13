@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:markit/components/common/scaffold/markit_app_bar.dart';
+import 'package:markit/components/shopping_list/components/price_check_list.dart';
 
 class TopScaffold extends StatelessWidget {
 
@@ -8,13 +9,16 @@ class TopScaffold extends StatelessWidget {
 
   Widget view;
 
-  TopScaffold({Key key, this.title, this.view }) : super(key: key);
+  GlobalKey<PriceCheckListState> priceCheckListKey;
+
+  TopScaffold({Key key, this.title, this.view, this.priceCheckListKey }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MarkitAppBar(
         titleProp: title,
+        priceCheckListKey: priceCheckListKey,
       ),
       body: SafeArea(
         child: Padding(
