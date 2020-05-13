@@ -50,6 +50,8 @@ class DynamicFabState extends State<DynamicFab> {
       );
     } else if (_currentPage == 'viewTag' || _currentPage == 'addTag') {
       return _getPriceCheckFab();
+    } else if (_currentPage == 'priceCheck') {
+      return _getAddFeedbackFab();
     } else if (_currentPage == 'markit') {
       return _getCheckmarkFab();
     }
@@ -80,6 +82,13 @@ class DynamicFabState extends State<DynamicFab> {
   Widget _getPriceCheckFab() {
     return FloatingActionButton(
       child: FaIcon(FontAwesomeIcons.searchDollar),
+      onPressed: widget.onPriceCheckButtonPresed,
+    );
+  }
+
+  Widget _getAddFeedbackFab() {
+    return FloatingActionButton(
+      child: Icon(Icons.add_comment, size: 32),
       onPressed: widget.onPriceCheckButtonPresed,
     );
   }
