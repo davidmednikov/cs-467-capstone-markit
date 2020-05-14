@@ -10,6 +10,7 @@ import 'package:markit/components/profile/my_profile.dart';
 import 'package:markit/components/shopping_list/pages/add_tag.dart';
 import 'package:markit/components/shopping_list/pages/my_lists.dart';
 import 'package:markit/components/shopping_list/pages/new_list.dart';
+import 'package:markit/components/shopping_list/pages/price_check.dart';
 import 'package:markit/components/shopping_list/pages/view_list.dart';
 import 'package:markit/components/shopping_list/pages/view_tag.dart';
 import 'package:markit/components/store/view_stores.dart';
@@ -62,6 +63,7 @@ Map<String, Widget> getListsRoutes(GlobalKey myListsKey, GlobalKey viewListKey, 
     'addTag': AddTag(dynamicFabKey: dynamicFab),
     'viewList': ViewList(key: viewListKey, dynamicFabKey: dynamicFab),
     'viewTag': ViewTag(dynamicFabKey: dynamicFab),
+    'priceCheck': PriceCheck(dynamicFabKey: dynamicFab),
   };
 }
 

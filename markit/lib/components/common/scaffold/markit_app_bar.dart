@@ -1,16 +1,28 @@
 import 'package:flutter/material.dart';
 
+import 'package:markit/components/common/scaffold/app_bar_bottom_buttons.dart';
+import 'package:markit/components/shopping_list/components/price_check_list.dart';
+
 class MarkitAppBar extends StatefulWidget implements PreferredSizeWidget {
 
   String titleProp;
 
-  MarkitAppBar({Key key, this.titleProp }) : super(key: key);
+  GlobalKey<PriceCheckListState> priceCheckListKey;
+
+  MarkitAppBar({Key key, this.titleProp, this.priceCheckListKey }) : super(key: key);
 
   @override
   _MarkitAppBarState createState() => _MarkitAppBarState();
 
   @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => calcAppBarSize();
+
+  Size calcAppBarSize() {
+    if (titleProp == 'Price Check') {
+      return Size.fromHeight(AppBar().preferredSize.height + TabBar(tabs: []).preferredSize.height);
+    }
+    return AppBar().preferredSize;
+  }
 }
 
 class _MarkitAppBarState extends State<MarkitAppBar> {
@@ -31,6 +43,7 @@ class _MarkitAppBarState extends State<MarkitAppBar> {
       title: Text(_title),
       centerTitle: true,
       actions: getActions(context),
+      bottom: getBottomButtons(),
     );
   }
 
@@ -58,8 +71,13 @@ class _MarkitAppBarState extends State<MarkitAppBar> {
     return [];
   }
 
-  void selectedInPopup(var value) {
-    print(value);
+  Widget getBottomButtons() {
+    if (_title == 'Price Check') {
+      return AppBarBottomButtons(
+        priceCheckListKey: widget.priceCheckListKey,
+      );
+    }
+    return null;
   }
 
   void mapViewToggled(bool isMapView) {

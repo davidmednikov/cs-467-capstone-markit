@@ -97,9 +97,12 @@ class ViewListState extends State<ViewList> {
     if (shoppingList.listTags.length == 0) {
       return Expanded(
         child:Center(
-          child: Opacity(
-            opacity: 0.35,
-            child: FaIcon(FontAwesomeIcons.shoppingBasket, size: 125, color: Colors.grey),
+          child: Padding(
+            padding: EdgeInsets.only(bottom: 50),
+            child: Opacity(
+              opacity: 0.35,
+              child: FaIcon(FontAwesomeIcons.shoppingBasket, size: 125, color: Colors.grey),
+            ),
           ),
         ),
       );
@@ -119,6 +122,13 @@ class ViewListState extends State<ViewList> {
     showSimpleNotification(
       Text(message),
       background: Color(0xff22cbff),
+    );
+  }
+
+  void showError(String error) {
+    showSimpleNotification(
+      Text(error),
+      background: Color(0xfffff2226),
     );
   }
 
