@@ -61,7 +61,8 @@ class BottomScaffoldState extends State<BottomScaffold> {
         page: getPage(),
         onSpeedDialAction: _onSpeedDialAction,
         onBarcodeButtonPressed: _onBarcodeButtonPressed,
-        onPriceCheckButtonPresed: _onPriceCheckButtonPresed,
+        onPriceCheckButtonPressed: _onPriceCheckButtonPressed,
+        onAddRatingButtonPressed: _onAddRatingButtonPressed,
         onCheckmarkButtonPressed: _onCheckmarkButtonPressed,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -101,8 +102,12 @@ class BottomScaffoldState extends State<BottomScaffold> {
     });
   }
 
-  void _onPriceCheckButtonPresed() {
+  void _onPriceCheckButtonPressed() {
     listsNavigatorState.currentState.navigateToPriceCheck(true);
+  }
+
+  void _onAddRatingButtonPressed() {
+    listsNavigatorState.currentState.navigateToAddRating();
   }
 
   void _onCheckmarkButtonPressed() {

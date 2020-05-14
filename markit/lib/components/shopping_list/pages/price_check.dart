@@ -9,9 +9,9 @@ class PriceCheck extends StatefulWidget {
 
   GlobalKey<DynamicFabState> dynamicFabKey;
 
-  PriceCheck({Key key, this.dynamicFabKey}) : super(key: key);
+  GlobalKey<PriceCheckListState> priceCheckListKey;
 
-  GlobalKey<PriceCheckListState> priceCheckListState = GlobalKey<PriceCheckListState>();
+  PriceCheck({Key key, this.priceCheckListKey, this.dynamicFabKey}) : super(key: key);
 
   @override
   PriceCheckState createState() => PriceCheckState();
@@ -33,13 +33,13 @@ class PriceCheckState extends State<PriceCheck> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             PriceCheckList(
-              key: widget.priceCheckListState,
+              key: widget.priceCheckListKey,
               shoppingList: shoppingList,
               dynamicFabKey: widget.dynamicFabKey,
             )
           ],
         ),
-        priceCheckListKey: widget.priceCheckListState,
+        priceCheckListKey: widget.priceCheckListKey,
       ),
       onWillPop: notifyFabOfPop,
     );

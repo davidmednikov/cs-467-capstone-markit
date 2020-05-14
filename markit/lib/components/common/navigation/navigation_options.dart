@@ -11,8 +11,10 @@ import 'package:markit/components/shopping_list/pages/add_tag.dart';
 import 'package:markit/components/shopping_list/pages/my_lists.dart';
 import 'package:markit/components/shopping_list/pages/new_list.dart';
 import 'package:markit/components/shopping_list/pages/price_check.dart';
+import 'package:markit/components/shopping_list/pages/price_check_store.dart';
 import 'package:markit/components/shopping_list/pages/view_list.dart';
 import 'package:markit/components/shopping_list/pages/view_tag.dart';
+import 'package:markit/components/shopping_list/pages/add_rating.dart';
 import 'package:markit/components/store/view_stores.dart';
 
 
@@ -56,14 +58,16 @@ List<Widget> getNavigators(GlobalKey listsNav, GlobalKey liveFeedNav, GlobalKey 
   ];
 }
 
-Map<String, Widget> getListsRoutes(GlobalKey myListsKey, GlobalKey viewListKey, GlobalKey dynamicFab) {
+Map<String, Widget> getListsRoutes(GlobalKey myListsKey, GlobalKey viewListKey, GlobalKey priceCheckListKey, GlobalKey priceCheckStoreKey, GlobalKey dynamicFab) {
   return {
     '/': MyLists(key: myListsKey, dynamicFabKey: dynamicFab),
     'newList': NewList(dynamicFabKey: dynamicFab),
     'addTag': AddTag(dynamicFabKey: dynamicFab),
     'viewList': ViewList(key: viewListKey, dynamicFabKey: dynamicFab),
     'viewTag': ViewTag(dynamicFabKey: dynamicFab),
-    'priceCheck': PriceCheck(dynamicFabKey: dynamicFab),
+    'priceCheck': PriceCheck(priceCheckListKey: priceCheckListKey, dynamicFabKey: dynamicFab),
+    'priceCheckStore': PriceCheckStore(key: priceCheckStoreKey, dynamicFabKey: dynamicFab),
+    'addRating': AddRating(dynamicFabKey: dynamicFab),
   };
 }
 

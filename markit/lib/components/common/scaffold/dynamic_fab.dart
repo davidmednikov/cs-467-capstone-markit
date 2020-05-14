@@ -12,10 +12,11 @@ class DynamicFab extends StatefulWidget {
 
   var onSpeedDialAction;
   var onBarcodeButtonPressed;
-  var onPriceCheckButtonPresed;
+  var onPriceCheckButtonPressed;
+  var onAddRatingButtonPressed;
   var onCheckmarkButtonPressed;
 
-  DynamicFab({Key key, this.page, this.onSpeedDialAction, this.onBarcodeButtonPressed, this.onPriceCheckButtonPresed, this.onCheckmarkButtonPressed }) : super(key: key);
+  DynamicFab({Key key, this.page, this.onSpeedDialAction, this.onBarcodeButtonPressed, this.onPriceCheckButtonPressed, this.onAddRatingButtonPressed, this.onCheckmarkButtonPressed }) : super(key: key);
 
   @override
   DynamicFabState createState() => DynamicFabState();
@@ -50,8 +51,10 @@ class DynamicFabState extends State<DynamicFab> {
       );
     } else if (_currentPage == 'viewTag' || _currentPage == 'addTag') {
       return _getPriceCheckFab();
-    } else if (_currentPage == 'priceCheck') {
+    } else if (_currentPage == 'priceCheck' || _currentPage == 'priceCheckStore') {
       return _getAddFeedbackFab();
+    } else if (_currentPage == 'addRating') {
+      return _getCancelFab();
     } else if (_currentPage == 'markit') {
       return _getCheckmarkFab();
     }
@@ -82,14 +85,21 @@ class DynamicFabState extends State<DynamicFab> {
   Widget _getPriceCheckFab() {
     return FloatingActionButton(
       child: FaIcon(FontAwesomeIcons.searchDollar),
-      onPressed: widget.onPriceCheckButtonPresed,
+      onPressed: widget.onPriceCheckButtonPressed,
     );
   }
 
   Widget _getAddFeedbackFab() {
     return FloatingActionButton(
       child: Icon(Icons.add_comment, size: 32),
-      onPressed: widget.onPriceCheckButtonPresed,
+      onPressed: widget.onAddRatingButtonPressed,
+    );
+  }
+
+  Widget _getCancelFab() {
+    return FloatingActionButton(
+      child: FaIcon(FontAwesomeIcons.times),
+      onPressed: widget.onAddRatingButtonPressed,
     );
   }
 

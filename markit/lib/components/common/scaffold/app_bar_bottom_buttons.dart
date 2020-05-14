@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:easy_dialog/easy_dialog.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart' as frb;
+import 'package:flutter_rating_bar/flutter_rating_bar.dart' as flutter_rating_bar;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:rating_bar/rating_bar.dart' as rb;
+import 'package:rating_bar/rating_bar.dart' as rating_bar;
 
 import 'package:markit/components/shopping_list/components/price_check_list.dart';
 
@@ -80,7 +80,7 @@ class _AppBarBottomButtonsState extends State<AppBarBottomButtons> {
                       onPressed: starFilter,
                       shape: StadiumBorder(),
                       color: getStarFilterColor(),
-                      child: rb.RatingBar.readOnly(
+                      child: rating_bar.RatingBar.readOnly(
                         initialRating: minStars,
                         isHalfAllowed: false,
                         emptyIcon: FontAwesomeIcons.star,
@@ -105,10 +105,6 @@ class _AppBarBottomButtonsState extends State<AppBarBottomButtons> {
     return Colors.white;
   }
 
-  void priceFilter() {
-    print('priceFilter');
-  }
-
   void starFilter() {
     EasyDialog(
       cornerRadius: 15.0,
@@ -125,14 +121,14 @@ class _AppBarBottomButtonsState extends State<AppBarBottomButtons> {
           child: Container(
             child: Builder(
             builder: (context) =>
-              frb.RatingBar(
+              flutter_rating_bar.RatingBar(
                 initialRating: minStars,
                 minRating: 0,
                 direction: Axis.horizontal,
                 allowHalfRating: false,
                 itemCount: 5,
                 itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                ratingWidget: frb.RatingWidget(
+                ratingWidget: flutter_rating_bar.RatingWidget(
                   empty: FaIcon(FontAwesomeIcons.star, color: Color(0xffffc422)),
                   half: FaIcon(FontAwesomeIcons.solidStar, color: Color(0xffffc422)),
                   full: FaIcon(FontAwesomeIcons.solidStar, color: Color(0xffffc422))
