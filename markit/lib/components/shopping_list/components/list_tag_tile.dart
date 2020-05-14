@@ -37,7 +37,7 @@ class ListTagTile extends StatelessWidget {
             ),
             Text(
               listTag.quantity.toString(),
-              style: GoogleFonts.lato(fontSize: 10, fontWeight: FontWeight.bold),
+              style: GoogleFonts.lato(fontSize: 12, fontWeight: FontWeight.bold),
             )
           ],
         ),

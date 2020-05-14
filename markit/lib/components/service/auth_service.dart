@@ -120,6 +120,6 @@ class AuthService {
     if (body['statusCode'] == 200) {
       return Future.value(body['data']['id']);
     }
-    return Future.value(null);;
+    return Future.value(null);
   }
 }

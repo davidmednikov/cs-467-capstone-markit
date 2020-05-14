@@ -4,7 +4,10 @@ import 'package:markit/components/common/navigation/navigation_options.dart';
 import 'package:markit/components/common/navigation/tab_navigator.dart';
 import 'package:markit/components/common/scaffold/dynamic_fab.dart';
 import 'package:markit/components/models/shopping_list_model.dart';
+import 'package:markit/components/models/store_model.dart';
+import 'package:markit/components/shopping_list/components/price_check_list.dart';
 import 'package:markit/components/shopping_list/pages/my_lists.dart';
+import 'package:markit/components/shopping_list/pages/price_check_store.dart';
 import 'package:markit/components/shopping_list/pages/view_list.dart';
 
 
@@ -16,6 +19,8 @@ class ListsNavigator extends StatefulWidget {
 
   GlobalKey<MyListsState> myListsKey = GlobalKey<MyListsState>();
   GlobalKey<ViewListState> viewListKey = GlobalKey<ViewListState>();
+  GlobalKey<PriceCheckListState> priceCheckListKey = GlobalKey<PriceCheckListState>();
+  GlobalKey<PriceCheckStoreState> priceCheckStoreKey = GlobalKey<PriceCheckStoreState>();
 
   @override
   ListsNavigatorState createState() => ListsNavigatorState();
@@ -28,7 +33,7 @@ class ListsNavigatorState extends State<ListsNavigator> {
   @override
   void initState() {
     super.initState();
-    _routesToPageMap = getListsRoutes(widget.myListsKey, widget.viewListKey, widget.dynamicFabKey);
+    _routesToPageMap = getListsRoutes(widget.myListsKey, widget.viewListKey, widget.priceCheckListKey, widget.priceCheckStoreKey, widget.dynamicFabKey);
   }
 
   @override
@@ -65,5 +70,26 @@ class ListsNavigatorState extends State<ListsNavigator> {
         widget.viewListKey.currentState.addTag(newTag);
       }
     });
+  }
+
+  void navigateToAddRating() async {
+    ShoppingListModel list = widget.priceCheckListKey.currentState.widget.shoppingList;
+    if (widget.priceCheckStoreKey.currentState == null) {
+      StoreModel store = await widget.priceCheckListKey.currentState.promptForStore();
+      if (store != null) {
+        widget.dynamicFabKey.currentState.changePage('addRating');
+        Navigator.of(widget.viewListKey.currentContext).pushNamed('addRating', arguments: {
+          'shoppingList': list,
+          'store': store,
+        });
+      }
+    } else {
+      StoreModel store = widget.priceCheckStoreKey.currentState.store;
+      widget.dynamicFabKey.currentState.changePage('addRating');
+      Navigator.of(widget.viewListKey.currentContext).pushReplacementNamed('addRating', arguments: {
+        'shoppingList': list,
+        'store': store,
+      });
+    }
   }
 }

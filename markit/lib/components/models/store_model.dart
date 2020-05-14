@@ -45,6 +45,15 @@ class StoreModel {
     theStore.priceRunPriceStalenessRank = json['priceAndStalenessRank'];
     return theStore;
   }
+
+  @override
+  String toString() => name;
+
+  @override
+  operator ==(o) => o is StoreModel && o.id == id;
+
+  @override
+  int get hashCode => id.hashCode^name.hashCode;
 }
 
 List<ListTagModel> getListTagsFromObjects(List<Object> listTags, int listId) {
