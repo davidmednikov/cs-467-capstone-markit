@@ -14,9 +14,10 @@ class DynamicFab extends StatefulWidget {
   var onBarcodeButtonPressed;
   var onPriceCheckButtonPressed;
   var onAddRatingButtonPressed;
+  var onCancelButtonPressed;
   var onCheckmarkButtonPressed;
 
-  DynamicFab({Key key, this.page, this.onSpeedDialAction, this.onBarcodeButtonPressed, this.onPriceCheckButtonPressed, this.onAddRatingButtonPressed, this.onCheckmarkButtonPressed }) : super(key: key);
+  DynamicFab({Key key, this.page, this.onSpeedDialAction, this.onBarcodeButtonPressed, this.onPriceCheckButtonPressed, this.onAddRatingButtonPressed, this.onCancelButtonPressed, this.onCheckmarkButtonPressed }) : super(key: key);
 
   @override
   DynamicFabState createState() => DynamicFabState();
@@ -99,7 +100,7 @@ class DynamicFabState extends State<DynamicFab> {
   Widget _getCancelFab() {
     return FloatingActionButton(
       child: FaIcon(FontAwesomeIcons.times),
-      onPressed: widget.onAddRatingButtonPressed,
+      onPressed: widget.onCancelButtonPressed,
     );
   }
 

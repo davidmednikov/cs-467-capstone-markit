@@ -47,6 +47,16 @@ class ListsNavigatorState extends State<ListsNavigator> {
     Navigator.of(widget.myListsKey.currentContext).pushNamed('newList');
   }
 
+  void navigateToAddTag() {
+    int listId = widget.viewListKey.currentState.shoppingList.id;
+    Navigator.of(widget.viewListKey.currentContext).pushNamed('addTag', arguments: listId)
+    .then((newTag) {
+      if (newTag != null) {
+        widget.viewListKey.currentState.addTag(newTag);
+      }
+    });
+  }
+
   void navigateToPriceCheck(bool replaceRoute) {
     ShoppingListModel list = widget.viewListKey.currentState.shoppingList;
     if (list.listTags.length > 0) {
@@ -60,16 +70,6 @@ class ListsNavigatorState extends State<ListsNavigator> {
     } else {
       widget.viewListKey.currentState.showError('Price Check requires at least 1 tag.');
     }
-  }
-
-  void navigateToAddTag() {
-    int listId = widget.viewListKey.currentState.shoppingList.id;
-    Navigator.of(widget.viewListKey.currentContext).pushNamed('addTag', arguments: listId)
-    .then((newTag) {
-      if (newTag != null) {
-        widget.viewListKey.currentState.addTag(newTag);
-      }
-    });
   }
 
   void navigateToAddRating() async {
@@ -91,5 +91,10 @@ class ListsNavigatorState extends State<ListsNavigator> {
         'store': store,
       });
     }
+  }
+
+  void popBackToPriceCheck() async {
+    widget.dynamicFabKey.currentState.changePage('priceCheck');
+    Navigator.of(widget.priceCheckListKey.currentContext).pop();
   }
 }
