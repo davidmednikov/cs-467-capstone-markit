@@ -63,6 +63,7 @@ class BottomScaffoldState extends State<BottomScaffold> {
         onBarcodeButtonPressed: _onBarcodeButtonPressed,
         onPriceCheckButtonPressed: _onPriceCheckButtonPressed,
         onAddRatingButtonPressed: _onAddRatingButtonPressed,
+        onCancelButtonPressed: _onCancelButtonPressed,
         onCheckmarkButtonPressed: _onCheckmarkButtonPressed,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -108,6 +109,10 @@ class BottomScaffoldState extends State<BottomScaffold> {
 
   void _onAddRatingButtonPressed() {
     listsNavigatorState.currentState.navigateToAddRating();
+  }
+
+  void _onCancelButtonPressed() {
+    listsNavigatorState.currentState.popBackToPriceCheck();
   }
 
   void _onCheckmarkButtonPressed() {
