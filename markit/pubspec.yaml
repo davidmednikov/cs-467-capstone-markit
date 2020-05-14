@@ -34,6 +34,7 @@ dependencies:
   flutter_secure_storage: ^3.3.3
   location: ^2.5.3
   overlay_support: ^1.0.3
+  timeline_list: ^0.0.3
   rating_bar: ^0.2.0
   tutorial_coach_mark: ^0.3.0
 

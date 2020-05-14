@@ -21,39 +21,40 @@ class ReviewMark extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 5,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15.0)
+      ),
+      elevation: 8,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
           Padding(
-            padding: EdgeInsets.all(10),
-            child: Align(
-              alignment: Alignment.topLeft,
-              child: Text(date)
-            )
-          ),
-          Spacer(flex: 3),
-          Align(
-            alignment: Alignment(0, 0),
-            child: Text(comment),
-          ),
-          Padding(
             padding: EdgeInsets.all(5),
             child: Align(
-              alignment: Alignment(0, 0),
-              child: Text(rating.toString())
+              alignment: Alignment.topCenter,
+              child: Text(
+                date,
+                style: TextStyle(
+                  color: Colors.grey
+                )
+              )
             )
           ),
-          Spacer(flex: 3),
-          Align(
-            alignment: Alignment(0, 0),
-            child: Text(store)
+          Spacer(flex: 1),
+          Text(comment),
+          Spacer(flex: 1),
+          Text(
+            '<${rating.toString()} stars> at $store',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold
+            )
           ),
-          Spacer(flex: 10),
+          Spacer(flex: 1),
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              Text(user),
+              Text('by $user'),
               Text("<Icon>")
             ],
           ),
