@@ -7,22 +7,22 @@ import 'package:rating_bar/rating_bar.dart' as rating_bar;
 
 import 'package:markit/components/shopping_list/components/price_check_list.dart';
 
-class AppBarBottomButtons extends StatefulWidget implements PreferredSizeWidget {
+class PriceCheckAppBarButtons extends StatefulWidget implements PreferredSizeWidget {
 
   List<Widget> buttons;
 
   GlobalKey<PriceCheckListState> priceCheckListKey;
 
-  AppBarBottomButtons({Key key, this.buttons, this.priceCheckListKey }) : super(key: key);
+  PriceCheckAppBarButtons({Key key, this.buttons, this.priceCheckListKey }) : super(key: key);
 
   @override
-  _AppBarBottomButtonsState createState() => _AppBarBottomButtonsState();
+  _PriceCheckAppBarButtonsState createState() => _PriceCheckAppBarButtonsState();
 
   @override
   Size get preferredSize => TabBar(tabs: []).preferredSize;
 }
 
-class _AppBarBottomButtonsState extends State<AppBarBottomButtons> {
+class _PriceCheckAppBarButtonsState extends State<PriceCheckAppBarButtons> {
 
   bool starFilterEnabled = false;
   double minStars = 0;

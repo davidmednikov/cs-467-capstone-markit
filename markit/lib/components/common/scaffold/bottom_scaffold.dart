@@ -181,7 +181,7 @@ class BottomScaffoldState extends State<BottomScaffold> {
           ContentTarget(
             align:AlignContent.top,
             child: Container(
-              padding: EdgeInsets.only(bottom: 65),
+              padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.1),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -198,7 +198,7 @@ class BottomScaffoldState extends State<BottomScaffold> {
                     ],
                   ),
                   SizedBox(
-                    height: 190,
+                    height: MediaQuery.of(context).size.height * 0.3,
                   ),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -224,7 +224,7 @@ class BottomScaffoldState extends State<BottomScaffold> {
           ContentTarget(
             align:AlignContent.top,
             child: Container(
-              padding: EdgeInsets.only(bottom: 65),
+              padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.1),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -241,7 +241,7 @@ class BottomScaffoldState extends State<BottomScaffold> {
                     ],
                   ),
                   SizedBox(
-                    height: 50,
+                    height: MediaQuery.of(context).size.height * 0.075,
                   ),
                   Row(
                     children: [
@@ -265,7 +265,7 @@ class BottomScaffoldState extends State<BottomScaffold> {
                     ],
                   ),
                   SizedBox(
-                    height: 50,
+                    height: MediaQuery.of(context).size.height * 0.075,
                   ),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -291,7 +291,7 @@ class BottomScaffoldState extends State<BottomScaffold> {
           ContentTarget(
             align:AlignContent.top,
             child: Container(
-              padding: EdgeInsets.only(bottom: 65),
+              padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.15),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -308,7 +308,7 @@ class BottomScaffoldState extends State<BottomScaffold> {
                     ],
                   ),
                   SizedBox(
-                    height: 50,
+                    height: MediaQuery.of(context).size.height * 0.075,
                   ),
                   Row(
                     children: [
@@ -332,7 +332,7 @@ class BottomScaffoldState extends State<BottomScaffold> {
                     ],
                   ),
                   SizedBox(
-                    height: 50,
+                    height: MediaQuery.of(context).size.height * 0.075,
                   ),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,

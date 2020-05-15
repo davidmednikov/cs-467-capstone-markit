@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:markit/components/common/scaffold/app_bar_bottom_buttons.dart';
+import 'package:markit/components/common/scaffold/price_check_app_bar_bottom_buttons.dart';
 import 'package:markit/components/shopping_list/components/price_check_list.dart';
 
 class MarkitAppBar extends StatefulWidget implements PreferredSizeWidget {
@@ -47,12 +47,9 @@ class _MarkitAppBarState extends State<MarkitAppBar> {
     );
   }
 
-  void _changeTitle(String title) {
-    setState(() {
-      _title = title;
-    });
-  }
-
+  /*
+  / This switch will go into the ViewStoresAppBarButtons widget
+  */
   List<Widget> getActions(context) {
     if (_title == 'View Stores') {
       return [
@@ -73,9 +70,15 @@ class _MarkitAppBarState extends State<MarkitAppBar> {
 
   Widget getBottomButtons() {
     if (_title == 'Price Check') {
-      return AppBarBottomButtons(
+      return PriceCheckAppBarButtons(
         priceCheckListKey: widget.priceCheckListKey,
       );
+    } else if (_title == 'Live Feed') {
+      // return LiveFeedAppBarButtons();
+      return null;
+    } else if (_title == 'View Stores') {
+      // return ViewStoresAppBarButtons();
+      return null;
     }
     return null;
   }

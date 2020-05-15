@@ -29,6 +29,7 @@ class PriceCheckState extends State<PriceCheck> {
     return WillPopScope(
       child: TopScaffold(
         title: 'Price Check',
+        priceCheckListKey: widget.priceCheckListKey,
         view: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -39,7 +40,6 @@ class PriceCheckState extends State<PriceCheck> {
             )
           ],
         ),
-        priceCheckListKey: widget.priceCheckListKey,
       ),
       onWillPop: notifyFabOfPop,
     );

@@ -33,7 +33,7 @@ List<BottomNavigationBarItem> getNavTabOptions() {
       title: Text('Stores')
     ),
     BottomNavigationBarItem(
-      icon: FaIcon(FontAwesomeIcons.userCircle),
+      icon: FaIcon(FontAwesomeIcons.solidUserCircle),
       title: Text('My Profile')
     ),
   ];
@@ -94,11 +94,14 @@ Map<String, Widget> getProfileRoutes(GlobalKey dynamicFab) {
 List<Map<String, String>> getPages() {
   return [
     {
-      '/': 'myLists',
-      'newList'   : 'newList',
-      'addTag'    : 'addTag',
-      'viewList'  : 'viewList',
-      'viewTag'   : 'viewTag',
+      '/'                 : 'myLists',
+      'newList'           : 'newList',
+      'addTag'            : 'addTag',
+      'viewList'          : 'viewList',
+      'viewTag'           : 'viewTag',
+      'priceCheck'        : 'priceCheck',
+      'priceCheckStore'   : 'priceCheckStore',
+      'addRating'         : 'addRating',
     },
     {
       '/': 'liveFeed',

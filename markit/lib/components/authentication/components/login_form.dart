@@ -27,7 +27,7 @@ class _LoginFormState extends State<LoginForm> {
     return Form(
       key: _formKey,
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 45),
+        padding: EdgeInsets.symmetric(vertical: 10, horizontal: MediaQuery.of(context).size.width * 0.1),
         child: Column(children: <Widget>[
           Container(
             padding: EdgeInsets.all(6),
@@ -36,6 +36,7 @@ class _LoginFormState extends State<LoginForm> {
               borderRadius: BorderRadius.circular(5.0)
             ),
             child: TextFormField(
+              autocorrect: false,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: "Username",
@@ -63,6 +64,7 @@ class _LoginFormState extends State<LoginForm> {
               borderRadius: BorderRadius.circular(5.0)
             ),
             child:  TextFormField(
+              autocorrect: false,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: "Password",
@@ -82,7 +84,7 @@ class _LoginFormState extends State<LoginForm> {
             ),
           ),
           SizedBox(
-            height: 40,
+            height: MediaQuery.of(context).size.height * 0.075,
           ),
           RaisedButton(
             onPressed: () async {
@@ -116,7 +118,7 @@ class _LoginFormState extends State<LoginForm> {
             )
           ),
           SizedBox(
-            height: 30,
+            height: MediaQuery.of(context).size.height * 0.05,
           ),
           Padding(
             padding: EdgeInsets.all(5),

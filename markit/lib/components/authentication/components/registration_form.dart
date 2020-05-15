@@ -58,7 +58,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                 ),
               ),
               SizedBox(
-                height: 12,
+                height: MediaQuery.of(context).size.height * 0.015,
               ),
               Container(
                 padding: EdgeInsets.all(5),
@@ -85,7 +85,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                 ),
               ),
               SizedBox(
-                height: 12,
+                height: MediaQuery.of(context).size.height * 0.015,
               ),
               Container(
                 padding: EdgeInsets.all(5),
@@ -94,6 +94,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                   borderRadius: BorderRadius.circular(5.0)
                 ),
                 child: TextFormField(
+                  autocorrect: false,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: "Username",
@@ -112,7 +113,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                 ),
               ),
               SizedBox(
-                height: 12,
+                height: MediaQuery.of(context).size.height * 0.015,
               ),
               Container(
                 padding: EdgeInsets.all(5),
@@ -121,6 +122,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                   borderRadius: BorderRadius.circular(5.0)
                 ),
                 child: TextFormField(
+                  autocorrect: false,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: "Password",
@@ -140,7 +142,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                 ),
               ),
               SizedBox(
-                height: 25,
+                height: MediaQuery.of(context).size.height * 0.05,
               ),
               RaisedButton(
                 onPressed: () async {
@@ -176,7 +178,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                 )
               ),
               SizedBox(
-                height: 15,
+                height: MediaQuery.of(context).size.height * 0.04,
               ),
               Padding(
                 padding: EdgeInsets.all(5),

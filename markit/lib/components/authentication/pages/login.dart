@@ -29,7 +29,6 @@ class LoginScreen extends StatelessWidget {
             flex: 4,
             child: LoginForm()
           ),
-          Spacer(flex: 1)
         ]),
       ),
     );
