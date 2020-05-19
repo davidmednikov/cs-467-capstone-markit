@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:overlay_support/overlay_support.dart';
 
 import 'package:markit/components/models/markit_user_model.dart';
 import 'package:markit/components/service/api_service.dart';
 import 'package:markit/components/service/auth_service.dart';
+import 'package:markit/components/service/notification_service.dart';
 import 'package:markit/components/service/tutorial_service.dart';
-
 
 class RegistrationForm extends StatefulWidget {
 
@@ -21,6 +20,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
   MarkitUserModel newUser = MarkitUserModel();
   ApiService apiService = new ApiService();
   AuthService authService = new AuthService();
+  NotificationService notificationService = new NotificationService();
   TutorialService tutorialService = new TutorialService();
 
   @override
@@ -204,9 +204,6 @@ class _RegistrationFormState extends State<RegistrationForm> {
   }
 
   void showNotification(String message) {
-    showSimpleNotification(
-      Text(message),
-      background: Color(0xfffff2226),
-    );
+    notificationService.showErrorNotification(message);
   }
 }

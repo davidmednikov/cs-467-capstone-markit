@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:overlay_support/overlay_support.dart';
 
 import 'package:markit/components/common/scaffold/dynamic_fab.dart';
 import 'package:markit/components/common/scaffold/top_scaffold.dart';
 import 'package:markit/components/models/shopping_list_model.dart';
 import 'package:markit/components/service/api_service.dart';
 import 'package:markit/components/service/auth_service.dart';
+import 'package:markit/components/service/notification_service.dart';
 import 'package:markit/components/shopping_list/components/shopping_list_tile.dart';
 
 
@@ -20,6 +20,7 @@ class MyLists extends StatefulWidget {
 
   ApiService apiService = new ApiService();
   AuthService authService = new AuthService();
+  NotificationService notificationService = new NotificationService();
 
   @override
   MyListsState createState() => MyListsState();
@@ -116,9 +117,6 @@ class MyListsState extends State<MyLists> {
   }
 
   void showNotification(String message) {
-    showSimpleNotification(
-      Text(message),
-      background: Color(0xff22cbff),
-    );
+    widget.notificationService.showSuccessNotification(message);
   }
 }

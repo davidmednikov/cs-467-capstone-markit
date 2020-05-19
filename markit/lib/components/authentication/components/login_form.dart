@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:overlay_support/overlay_support.dart';
 
 import 'package:markit/components/models/markit_user_model.dart';
 import 'package:markit/components/service/api_service.dart';
 import 'package:markit/components/service/auth_service.dart';
+import 'package:markit/components/service/notification_service.dart';
 
 
 class LoginForm extends StatefulWidget {
@@ -20,6 +20,7 @@ class _LoginFormState extends State<LoginForm> {
   MarkitUserModel currentUser = MarkitUserModel();
   ApiService apiService = new ApiService();
   AuthService authService = new AuthService();
+  NotificationService notificationService = new NotificationService();
 
   @override
   Widget build(BuildContext context) {
@@ -98,10 +99,7 @@ class _LoginFormState extends State<LoginForm> {
                   Navigator.pushReplacementNamed(context, 'home');
                 }
                 else {
-                  showSimpleNotification(
-                    Text('Invalid credentials.'),
-                    background: Color(0xfffff2226),
-                  );
+                  notificationService.showErrorNotification('Invalid credentials.');
                 }
               }
             },
