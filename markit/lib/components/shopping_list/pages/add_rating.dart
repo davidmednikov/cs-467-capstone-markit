@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:overlay_support/overlay_support.dart';
 
 import 'package:markit/components/common/scaffold/dynamic_fab.dart';
 import 'package:markit/components/common/scaffold/top_scaffold.dart';
@@ -11,6 +10,7 @@ import 'package:markit/components/models/shopping_list_model.dart';
 import 'package:markit/components/models/store_model.dart';
 import 'package:markit/components/service/api_service.dart';
 import 'package:markit/components/service/auth_service.dart';
+import 'package:markit/components/service/notification_service.dart';
 
 
 class AddRating extends StatefulWidget {
@@ -20,6 +20,7 @@ class AddRating extends StatefulWidget {
 
   ApiService apiService = new ApiService();
   AuthService authService = new AuthService();
+  NotificationService notificationService = new NotificationService();
 
   @override
   AddRatingState createState() => AddRatingState();
@@ -31,6 +32,7 @@ class AddRatingState extends State<AddRating> {
 
   ShoppingListModel shoppingList;
   StoreModel store;
+  bool pickedFromList;
 
   double stars;
   String details;
@@ -42,6 +44,7 @@ class AddRatingState extends State<AddRating> {
     Map arguments = ModalRoute.of(context).settings.arguments;
     shoppingList = arguments['shoppingList'];
     store = arguments['store'];
+    pickedFromList = arguments['pickedFromList'];
     return WillPopScope(
       child: TopScaffold(
         title: '${store.name}',
@@ -135,14 +138,11 @@ class AddRatingState extends State<AddRating> {
                             formKey.currentState.save();
                             buttonPressed = true;
                             setState( () {} );
-                            Map response = await saveComment();
-                            if (response['statusCode'] == 200) {
+                            Map savedComment = await saveComment();
+                            if (savedComment['id'] != null) {
                               notifyFabOfPop();
                               Navigator.of(context).pop();
-                              showSimpleNotification(
-                                Text('Rating added.'),
-                                background: Color(0xff22cbff),
-                              );
+                              widget.notificationService.showSuccessNotification('Rating added.');
                             }
                           }
                         },
@@ -172,7 +172,7 @@ class AddRatingState extends State<AddRating> {
     var body = {
       'userId': userId,
       'store': {
-        'id': store.id, // change to an int to make it work. ALso support multiple ratins per user
+        'id': store.id,
       },
       'comment': details,
       'points': stars.floor(),
@@ -182,7 +182,7 @@ class AddRatingState extends State<AddRating> {
 
   Future<bool> notifyFabOfPop() {
     SystemChannels.textInput.invokeMethod('TextInput.hide');
-    widget.dynamicFabKey.currentState.changePage('priceCheck');
+    widget.dynamicFabKey.currentState.changePage(pickedFromList ? 'priceCheck' : 'priceCheckStore');
     return Future.value(true);
   }
 }
