@@ -100,9 +100,10 @@ class ListsNavigatorState extends State<ListsNavigator> {
   void popBackToPriceCheck() async {
     if (widget.priceCheckStoreKey.currentState == null) {
       widget.dynamicFabKey.currentState.changePage('priceCheck');
+      Navigator.of(widget.priceCheckListKey.currentContext).pop();
     } else {
       widget.dynamicFabKey.currentState.changePage('priceCheckStore');
+      Navigator.of(widget.priceCheckStoreKey.currentContext).pop();
     }
-    Navigator.of(widget.priceCheckStoreKey.currentContext).pop();
   }
 }
