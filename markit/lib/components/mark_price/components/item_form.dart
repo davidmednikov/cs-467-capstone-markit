@@ -1,10 +1,10 @@
 import 'package:google_maps_webservice/places.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:flutter_tags/flutter_tags.dart';
 import 'package:overlay_support/overlay_support.dart'; // still need to display post-scan notification
 
+import 'package:markit/components/mark_price/credentials/credentials.dart';
 import 'package:markit/components/models/item_price_model.dart';
 import 'package:markit/components/service/api_service.dart';
 
@@ -19,8 +19,6 @@ class ItemForm extends StatefulWidget {
 class _ItemFormState extends State<ItemForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final GlobalKey<TagsState> _tagStateKey = GlobalKey<TagsState>();
-
-  static const placesApiKey = "AIzaSyCHYk9JmFkxepLYaHqcpx7e-irbRX7w8Fc";
 
 // how should item/store internal ids be generated - is this done automatically by the API?
   ApiService apiService = new ApiService();
@@ -135,7 +133,7 @@ class _ItemFormState extends State<ItemForm> {
 // Google Places API autocomplete implemented using flutter_google_places plugin at https://pub.dev/packages/flutter_google_places
                   Prediction p = await PlacesAutocomplete.show(
                     context: context,
-                    apiKey: placesApiKey,
+                    apiKey: PLACES_API_KEY,
                     mode: Mode.overlay,
                     language: 'en',
                   );
@@ -270,7 +268,7 @@ class _ItemFormState extends State<ItemForm> {
 
   Future<Null> displayPrediction(Prediction p) async {
     if (p != null) {
-      PlacesDetailsResponse details = await GoogleMapsPlaces(apiKey: placesApiKey).getDetailsByPlaceId(p.placeId);
+      PlacesDetailsResponse details = await GoogleMapsPlaces(apiKey: PLACES_API_KEY).getDetailsByPlaceId(p.placeId);
       var addrData = details.result.addressComponents;
       var returnedStreetAddress, city, state, postalCode;
 
