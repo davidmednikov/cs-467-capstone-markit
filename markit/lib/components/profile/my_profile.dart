@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:markit/components/common/scaffold/dynamic_fab.dart';
 // import 'package:markit/components/profile/user_profile.dart';
 import 'package:markit/components/service/auth_service.dart';
+import 'package:markit/components/mark_price/pages/mark_price.dart';
 
 class MyProfile extends StatefulWidget {
 
@@ -24,10 +25,11 @@ class _MyProfileState extends State<MyProfile> {
     // return UserProfile(
     //  user: thisUser,
     // );
-    return RaisedButton(
-      onPressed: () => logout(),
-      child: const Text('Logout', style: TextStyle(fontSize: 20)),
-    );
+    // return RaisedButton(
+    //   onPressed: () => logout(),
+    //   child: const Text('Logout', style: TextStyle(fontSize: 20)),
+    // );
+    return MarkPrice();
   }
 
   void logout() {
