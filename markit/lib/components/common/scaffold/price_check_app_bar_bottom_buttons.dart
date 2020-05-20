@@ -28,7 +28,7 @@ class _PriceCheckAppBarButtonsState extends State<PriceCheckAppBarButtons> {
   double minStars = 0;
 
   String sort = 'Price Only';
-  List<String> sortOptions = ['Price Only', 'Price & Staleness'];
+  List<String> sortOptions = ['Price Only', 'Price & Staleness', 'Staleness Only'];
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +60,7 @@ class _PriceCheckAppBarButtonsState extends State<PriceCheckAppBarButtons> {
                           child: Center(
                             child: Text(
                               option,
+                              textAlign: TextAlign.center,
                             ),
                           ),
                         )).toList(),

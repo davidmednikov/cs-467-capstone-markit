@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:overlay_support/overlay_support.dart';
 
 import 'package:markit/components/common/scaffold/dynamic_fab.dart';
 import 'package:markit/components/common/scaffold/top_scaffold.dart';
 import 'package:markit/components/models/shopping_list_model.dart';
 import 'package:markit/components/service/api_service.dart';
+import 'package:markit/components/service/notification_service.dart';
 
 
 class NewList extends StatefulWidget {
   GlobalKey<DynamicFabState> dynamicFabKey;
 
   ApiService apiService = new ApiService();
+  NotificationService notificationService = new NotificationService();
 
   NewList({Key key, this.dynamicFabKey}) : super(key: key);
 
@@ -105,10 +106,7 @@ class _NewListState extends State<NewList> {
                             SystemChannels.textInput.invokeMethod('TextInput.hide');
                             widget.dynamicFabKey.currentState.changePage('viewList');
                             Navigator.of(context).pushReplacementNamed('viewList', arguments: list);
-                            showSimpleNotification(
-                              Text('List created.'),
-                              background: Color(0xff22cbff),
-                            );
+                            widget.notificationService.showSuccessNotification('List created.');
                           }
                         },
                         color: Colors.deepOrange,

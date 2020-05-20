@@ -78,23 +78,32 @@ class ListsNavigatorState extends State<ListsNavigator> {
       StoreModel store = await widget.priceCheckListKey.currentState.promptForStore();
       if (store != null) {
         widget.dynamicFabKey.currentState.changePage('addRating');
-        Navigator.of(widget.viewListKey.currentContext).pushNamed('addRating', arguments: {
+        Map arguments = {
           'shoppingList': list,
           'store': store,
-        });
+        };
+        arguments['pickedFromList'] = true;
+        Navigator.of(widget.viewListKey.currentContext).pushNamed('addRating', arguments: arguments);
       }
     } else {
-      StoreModel store = widget.priceCheckStoreKey.currentState.store;
+      StoreModel store = widget.priceCheckStoreKey.currentState.priceCheckStore.store;
       widget.dynamicFabKey.currentState.changePage('addRating');
-      Navigator.of(widget.viewListKey.currentContext).pushReplacementNamed('addRating', arguments: {
+      Map arguments = {
         'shoppingList': list,
         'store': store,
-      });
+      };
+      arguments['pickedFromList'] = false;
+      Navigator.of(widget.viewListKey.currentContext).pushNamed('addRating', arguments: arguments);
     }
   }
 
   void popBackToPriceCheck() async {
-    widget.dynamicFabKey.currentState.changePage('priceCheck');
-    Navigator.of(widget.priceCheckListKey.currentContext).pop();
+    if (widget.priceCheckStoreKey.currentState == null) {
+      widget.dynamicFabKey.currentState.changePage('priceCheck');
+      Navigator.of(widget.priceCheckListKey.currentContext).pop();
+    } else {
+      widget.dynamicFabKey.currentState.changePage('priceCheckStore');
+      Navigator.of(widget.priceCheckStoreKey.currentContext).pop();
+    }
   }
 }

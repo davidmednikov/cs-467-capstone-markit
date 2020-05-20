@@ -1,5 +1,3 @@
-import 'list_tag_model.dart';
-
 class StoreModel {
   int id;
   String name;
@@ -8,41 +6,26 @@ class StoreModel {
   String state;
   String postalCode;
 
-  double priceRunTotal;
-  int priceRunStaleness;
-  int priceRunPriceRank;
-  int priceRunPriceStalenessRank;
+  double latitude;
+  double longitude;
+  String googlePlaceId;
 
-  List<ListTagModel> listTags;
-
-
-  StoreModel({this.id, this.name, this.streetAddress, this.city, this.state, this.postalCode, this.priceRunTotal, this.priceRunStaleness, this.priceRunPriceRank, this.priceRunPriceStalenessRank, this.listTags});
+  StoreModel({this.id, this.name, this.streetAddress, this.city, this.state, this.postalCode, this.latitude, this.longitude, this.googlePlaceId});
 
   factory StoreModel.fromJson(Map<String, dynamic> json) {
-    return StoreModel(
+    StoreModel theStore = StoreModel(
       id: json['id'],
       name: json['name'],
       streetAddress: json['streetAddress'],
       city: json['city'],
       state: json['state'],
       postalCode: json['postalCode'],
+      googlePlaceId: json['googlePlaceId'],
     );
-  }
-
-  factory StoreModel.fromJsonForPriceRun(Map<String, dynamic> json) {
-    Map storeInfo = json['store'];
-    StoreModel theStore = StoreModel(
-      id: storeInfo['id'],
-      name: storeInfo['name'],
-      streetAddress: storeInfo['streetAddress'],
-      city: storeInfo['city'],
-      state: storeInfo['state'],
-      postalCode: storeInfo['postalCode'],
-    );
-    theStore.priceRunTotal = json['totalPrice'];
-    theStore.priceRunStaleness = json['staleness'];
-    theStore.priceRunPriceRank = json['priceRank'];
-    theStore.priceRunPriceStalenessRank = json['priceAndStalenessRank'];
+    if (json['coordinate'] != null) {
+      theStore.latitude = json['coordinate']['latitude'];
+      theStore.longitude = json['coordinate']['longitude'];
+    }
     return theStore;
   }
 
@@ -54,8 +37,4 @@ class StoreModel {
 
   @override
   int get hashCode => id.hashCode^name.hashCode;
-}
-
-List<ListTagModel> getListTagsFromObjects(List<Object> listTags, int listId) {
-  return listTags.map((tag) => ListTagModel.fromJsonWithListId(tag, listId)).toList();
 }

@@ -3,12 +3,14 @@ import 'package:location/location.dart';
 import 'package:select_dialog/select_dialog.dart';
 
 import 'package:markit/components/common/scaffold/dynamic_fab.dart';
+import 'package:markit/components/models/price_check_model.dart';
 import 'package:markit/components/models/shopping_list_model.dart';
 import 'package:markit/components/models/store_model.dart';
 import 'package:markit/components/service/api_service.dart';
 import 'package:markit/components/service/auth_service.dart';
 import 'package:markit/components/service/location_service.dart';
-import 'package:markit/components/shopping_list/components/price_check_tile.dart';
+import 'package:markit/components/service/notification_service.dart';
+import 'package:markit/components/shopping_list/components/price_check_store_tile.dart';
 
 class PriceCheckList extends StatefulWidget {
 
@@ -21,6 +23,7 @@ class PriceCheckList extends StatefulWidget {
   ApiService apiService = new ApiService();
   AuthService authService = new AuthService();
   LocationService locationService = new LocationService();
+  NotificationService notificationService = new NotificationService();
 
   @override
   PriceCheckListState createState() => PriceCheckListState();
@@ -35,6 +38,10 @@ class PriceCheckListState extends State<PriceCheckList> {
 
   List<StoreModel> storesInPriceCheck;
 
+  LocationData locationData;
+
+  bool showNotifications = true;
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -43,41 +50,58 @@ class PriceCheckListState extends State<PriceCheckList> {
     );
   }
 
-  Widget showStoreTiles(BuildContext context, AsyncSnapshot<Map> snapshot) {
+  Widget showStoreTiles(BuildContext context, AsyncSnapshot<List> snapshot) {
     if (snapshot.hasData) {
-      List<Object> storeObjects = snapshot.data['rankings'];
-      return buildStoreList(storeObjects);
+      return buildStoreList(List<Map>.from(snapshot.data));
     }
     return Center(
       child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.blueGrey)),
     );
   }
 
-  Widget buildStoreList(List<Object> storeObjects) {
-    List<Map> storeMaps = List<Map>.from(storeObjects);
+  Widget buildStoreList(List<Map> storeMaps) {
     if (sortBy == 'Price Only') {
-        storeMaps.sort((a, b) => a['priceRank'].compareTo(b['priceRank']));
+      storeMaps.sort((a, b) => a['priceRank'].compareTo(b['priceRank']));
     } else if (sortBy == 'Price & Staleness') {
       storeMaps.sort((a, b) => a['priceAndStalenessRank'].compareTo(b['priceAndStalenessRank']));
+    } else if (sortBy == 'Staleness Only') {
+      storeMaps.sort((a, b) => a['stalenessRank'].compareTo(b['stalenessRank']));
     }
-    List<StoreModel> storeModels = storeMaps.map((store) => StoreModel.fromJsonForPriceRun(store)).toList();
-    storesInPriceCheck = storeModels;
+    List<PriceCheckModel> priceCheckStores = storeMaps.map((store) => PriceCheckModel.fromJson(store)).toList();
+    storesInPriceCheck = priceCheckStores.map((store) => store.store).toList();
     return Expanded(
       child: ListView.builder(
-        itemCount: storeModels.length,
+        itemCount: priceCheckStores.length,
         itemBuilder: (context, index) {
-          StoreModel store = storeModels[index];
-          return PriceCheckTile(dynamicFabKey: widget.dynamicFabKey, storePriceRun: store, shoppingList: widget.shoppingList);
+          PriceCheckModel store = priceCheckStores[index];
+          return PriceCheckStoreTile(dynamicFabKey: widget.dynamicFabKey, storePriceCheck: store, shoppingList: widget.shoppingList, userLocation: locationData);
         },
       ),
     );
   }
 
-  Future<Map> runPriceCheck() async {
+  Future<List> runPriceCheck() async {
     int userId = await widget.authService.getUserIdFromStorage();
-    LocationData location = await widget.locationService.getLocation();
-    String url = 'https://markit-api.azurewebsites.net/user/$userId/list/${widget.shoppingList.id}/analyze?latitude=${location.latitude}&longitude=${location.longitude}';
-    return widget.apiService.getMap(url);
+    locationData = await widget.locationService.getLocation();
+    String url = 'https://markit-api.azurewebsites.net/user/$userId/list/${widget.shoppingList.id}/analyze?latitude=${locationData.latitude}&longitude=${locationData.longitude}';
+    Map priceCheckResponse = await widget.apiService.getMap(url);
+    if (priceCheckResponse['errors'] != null && priceCheckResponse['statusCode'] == 400) {
+      showNotification('No nearby stores found.');
+      return [];
+    } else {
+      List<Map> storeMaps = List.from(priceCheckResponse['rankings']);
+      storeMaps.removeWhere((store) => store['missingItems'] == true);
+      if (storeMaps.length == 0) {
+        showNotification('No nearby stores match all tags in your list.');
+      }
+      return storeMaps;
+    }
+  }
+
+  void showNotification(String message) {
+    if (showNotifications) {
+      widget.notificationService.showErrorNotification(message);
+    }
   }
 
   void changeSorting(String newSortBy) {
@@ -100,24 +124,28 @@ class PriceCheckListState extends State<PriceCheckList> {
     }
   }
 
-  Future<bool> notifyFabOfPop() {
-    widget.dynamicFabKey.currentState.changePage('viewList');
-    return Future.value(true);
+  void stopShowingNotifications() {
+    showNotifications = false;
   }
 
   Future<StoreModel> promptForStore() async {
     StoreModel store;
-    await SelectDialog.showModal<StoreModel>(
-      context,
-      label: "Which Store did you shop at?",
-      selectedValue: storesInPriceCheck[0],
-      items: List.generate(storesInPriceCheck.length, (index) => storesInPriceCheck[index]),
-      onChange: (StoreModel selected) {
-        setState(() {
-          store = selected;
-        });
-      },
-    );
-    return store;
+    if (storesInPriceCheck.length > 0) {
+      await SelectDialog.showModal<StoreModel>(
+        context,
+        label: 'Which Store did you shop at?',
+        selectedValue: storesInPriceCheck[0],
+        items: List.generate(storesInPriceCheck.length, (index) => storesInPriceCheck[index]),
+        onChange: (StoreModel selected) {
+          setState(() {
+            store = selected;
+          });
+        },
+      );
+      return Future.value(store);
+    } else {
+      widget.notificationService.showErrorNotification('No available stores to review.');
+      return Future.value(null);
+    }
   }
 }

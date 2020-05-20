@@ -23,7 +23,7 @@ class ApiService {
     if (body['statusCode'] == 200) {
       return body['data'];
     }
-    return Future.value({});
+    return Future.value(body);
   }
 
   Future<Response> makeGetCall(String url, bool retry) async {

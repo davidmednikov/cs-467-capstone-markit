@@ -47,6 +47,7 @@ class PriceCheckState extends State<PriceCheck> {
 
   Future<bool> notifyFabOfPop() {
     widget.dynamicFabKey.currentState.changePage('viewList');
+    widget.priceCheckListKey.currentState.stopShowingNotifications();
     return Future.value(true);
   }
 }
