@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:flutter_tags/flutter_tags.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:markit/components/service/google_maps_api_service.dart';
-import 'package:overlay_support/overlay_support.dart'; // still need to display post-scan notification
 
+import 'package:markit/components/mark_price/components/mark_price_tags.dart';
 import 'package:markit/components/models/item_price_model.dart';
 import 'package:markit/components/models/store_model.dart';
-import 'package:markit/components/mark_price/components/tags.dart';
 import 'package:markit/components/service/api_service.dart';
+import 'package:markit/components/service/auth_service.dart';
+import 'package:markit/components/service/google_maps_api_service.dart';
 import 'package:markit/components/service/location_service.dart';
+import 'package:markit/components/service/notification_service.dart';
 import 'package:markit/components/service/tag_service.dart';
 
 class ItemForm extends StatefulWidget {
@@ -29,13 +31,16 @@ class ItemForm extends StatefulWidget {
 class _ItemFormState extends State<ItemForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final GlobalKey<TagsState> _tagStateKey = GlobalKey<TagsState>();
+  final GlobalKey<MarkPriceTagsState> _markPriceTagsStateKey = GlobalKey<MarkPriceTagsState>();
 
   String mapsApiKey;
 
 // how should item/store internal ids be generated - is this done automatically by the API?
   ApiService apiService = new ApiService();
+  AuthService authService = new AuthService();
   GoogleMapsApiService googleMapsApiService = new GoogleMapsApiService();
   LocationService locationService = new LocationService();
+  NotificationService notificationService = new NotificationService();
   TagService tagService = new TagService();
 
   ItemPriceModel newItem = ItemPriceModel(tags: [], isSalePrice: false);
@@ -76,7 +81,7 @@ class _ItemFormState extends State<ItemForm> {
                 Expanded(
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                    child: MarkPriceTags(tagStateKey: _tagStateKey, existingTags: widget.matchingTags.map((tag) => tag['name'].toString()).toList()),
+                    child: MarkPriceTags(key: _markPriceTagsStateKey, tagStateKey: _tagStateKey, existingTags: widget.matchingTags.map((tag) => tag['name'].toString()).toList()),
                   ),
                 ),
               ],
@@ -119,120 +124,139 @@ class _ItemFormState extends State<ItemForm> {
                           )
                         ],
                       ),
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(color: Colors.grey[100], width: 2),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                     )
                   ),
                 ),
               ],
             ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.5,
-              height: MediaQuery.of(context).size.height * 0.05,
-              child: RaisedButton(
-                onPressed: () async {
-// Google Places API autocomplete implemented using flutter_google_places plugin at https://pub.dev/packages/flutter_google_places
-                  print('hi');
-                },
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
+            Row(
+              children: [
+                Padding(
+                 padding: EdgeInsets.only(top: 15),
+                 child: Opacity(
+                    opacity: 0.7,
+                    child: Text('Enter the price:', style: GoogleFonts.lato(fontSize: 20, color: Colors.black)),
+                  ),
                 ),
-                child: Text(
-                  "Enter a store",
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.white
-                  )),
-                color: Colors.deepOrange
-              )
-            ),
-            SizedBox(
-              height: 30
+              ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Expanded(
-                  flex: 4,
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                      hintText: "Enter a price",
-                      contentPadding: EdgeInsets.fromLTRB(5, 0, 0, 0)
+                  flex: 3,
+                  child: Padding(
+                    padding: EdgeInsets.only(right: 30),
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        prefixText: "\$ ",
+                        contentPadding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                      ),
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return "Add item price.";
+                        } else if (double.tryParse(value.trim()) == null) {
+                          return "Price must be a number.";
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        newItem.price = double.parse(value.trim());
+                      },
+                      keyboardType: TextInputType.numberWithOptions(decimal: true),
+                      inputFormatters: [
+                          BlacklistingTextInputFormatter(RegExp("[^0-9.]")),
+                      ],
                     ),
-                    validator: (value) {
-// may need to add more validation here
-                      if (value.isEmpty) {
-                        return "Please add the listed item price.";
-                      }
-                      return null;
-                    },
-                    onSaved: (value) {
-                      newItem.price = double.parse(value.trim());
-                    }
                   ),
                 ),
                 Expanded(
-                  flex: 3,
-                  child: CheckboxListTile(
-                    title: Text(
-                      "On sale?",
-                      style: TextStyle(
-                        color: Colors.grey[600]
-                      )),
-                    value: newItem.isSalePrice,
-                    onChanged: (value) => setState(() => newItem.isSalePrice = value)
-                  )
+                  flex: 2,
+                  child: Text(
+                    "On \$ale?",
+                    style: TextStyle(
+                      color: Colors.green,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    )
+                  ),
+                ),
+                Switch(
+                  value: newItem.isSalePrice,
+                  onChanged: (value) => setState(() => newItem.isSalePrice = value),
                 )
               ],
             ),
-            SizedBox(
-              height: 30
-            ),
-            // RaisedButton(
-            //   onPressed: () async {
-            //     if (_formKey.currentState.validate()) {
-            //       _formKey.currentState.save();
-            //       int userId = await apiService.getUserId();
-            //       List<String> tagsToSubmit = createTagsForSubmittal(createdTags);
-            //       setState(() {
-            //         newItem.userId = userId;
-            //         newItem.tags = tagsToSubmit;
-            //       });
+            Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 40, vertical: 50),
+                    child: RaisedButton(
+                    onPressed: () async {
+                      if (_formKey.currentState.validate()) {
+                        _formKey.currentState.save();
+                        int userId = await authService.getUserIdFromStorage();
+                        List<String> tagsToSubmit = createTagsForSubmittal(_markPriceTagsStateKey.currentState.tags);
+                        if (tagsToSubmit.isEmpty) {
+                          String input = _markPriceTagsStateKey.currentState.widget.tagStateKey.currentState.lastInput;
+                          if (input.length >= 3) {
+                            tagsToSubmit = createTagsListFromInput(input);
+                          } else {
+                            notificationService.showErrorNotification('Need at least 1 tag.');
+                          }
+                        }
+                        if (tagsToSubmit.isNotEmpty) {
+                          setState(() {
+                            newItem.userId = userId;
+                            newItem.tags = tagsToSubmit;
+                          });
 
-            //       const url = "https://markit-api.azurewebsites.net/item";
-            //       final Map<String, Object> itemPost = {
-            //         "userId": newItem.userId,
-            //         "storeId": newItem.storeId,
-            //         "upc": "123456789123",
-            //         "price": newItem.price,
-            //         "isSalePrice": newItem.isSalePrice,
-            //         "tags": newItem.tags
-            //       };
-            //       final Map<String, Object> response = await addItem(itemPost);
-            //       if (response.isNotEmpty) {
-            //         Navigator.pushNamed(context, '/'); // need to navigate to correct route
-            //       } else {
-            //         showSimpleNotification(
-            //           Text('An error occurred when saving the item. Please try again!'),
-            //           background: Color(0xfffff2226),
-            //         );
-            //       }
-            //     }
-            //   },
-            //   shape: RoundedRectangleBorder(
-            //     borderRadius: BorderRadius.all(Radius.circular(10))
-            //   ),
-            //   color: Colors.deepOrange,
-            //   padding: EdgeInsets.fromLTRB(50, 15, 50, 15),
-            //   child: Text(
-            //     "Markit!",
-            //     style: TextStyle(
-            //       fontSize: 20,
-            //       fontWeight: FontWeight.bold,
-            //       color: Colors.white,
-            //     )
-            //   )
-            // ),
-          ])
-      )
+                          int storeId = newItem.storeId != null ? newItem.storeId : widget.guessedStore.id;
+
+                          final Map<String, Object> itemPost = {
+                            "userId": newItem.userId,
+                            "storeId": storeId,
+                            "upc": widget.upc,
+                            "price": newItem.price,
+                            "isSalePrice": newItem.isSalePrice,
+                            "tags": newItem.tags
+                          };
+                          final Map<String, Object> response = await addItem(itemPost);
+                          if (response.isNotEmpty) {
+                            Navigator.pushNamed(context, '/');
+                            notificationService.showSuccessNotification('Price added.');
+                          } else {
+                            notificationService.showErrorNotification('Error adding price.');
+                          }
+                        }
+                      }
+                    },
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10))
+                    ),
+                    color: Colors.deepOrange,
+                    padding: EdgeInsets.fromLTRB(50, 15, 50, 15),
+                    child: Text(
+                      "Markit!",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      )
+                    )
+                  ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -242,12 +266,16 @@ class _ItemFormState extends State<ItemForm> {
     return createdTags;
   }
 
+  static List<String> createTagsListFromInput(String input) {
+    return [input];
+  }
+
   Future<Null> displayPrediction(Prediction p) async {
     if (p != null) {
       PlacesDetailsResponse details = await GoogleMapsPlaces(apiKey: mapsApiKey).getDetailsByPlaceId(p.placeId);
       StoreModel store = googleMapsApiService.castPlaceDetailsToStoreModel(details.result);
       Map<String, Object> storeMap = {
-        'googlePlaceId': store.googlePlaceId,
+        'googleId': store.googleId,
         'name': store.name,
         'streetAddress': store.streetAddress,
         'city': store.city,

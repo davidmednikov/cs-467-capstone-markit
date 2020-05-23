@@ -1,8 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:location/location.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 import 'package:markit/components/common/navigation/lists_navigator.dart';
@@ -14,7 +15,6 @@ import 'package:markit/components/common/scaffold/bottom_nav_bar.dart';
 import 'package:markit/components/common/scaffold/dynamic_fab.dart';
 import 'package:markit/components/common/scan_barcode.dart';
 import 'package:markit/components/service/location_service.dart';
-import 'package:markit/components/service/notification_service.dart';
 import 'package:markit/components/service/tutorial_service.dart';
 import 'package:markit/components/service/tag_service.dart';
 
@@ -27,7 +27,6 @@ class BottomScaffold extends StatefulWidget {
   BottomScaffoldState createState() => BottomScaffoldState();
 
   LocationService locationService = new LocationService();
-  NotificationService notificationService = new NotificationService();
   TagService tagService = new TagService();
   TutorialService tutorialService = new TutorialService();
 }
@@ -103,18 +102,24 @@ class BottomScaffoldState extends State<BottomScaffold> {
   }
 
   void _onBarcodeButtonPressed() async {
-    // String barcode = await scanBarcode();
-    // if (barcode != null) {
-      widget.notificationService.showSuccessNotification('Scanned barcode.');
-      LocationData locationData = await widget.locationService.getLocation();
-      List<Map> tags = List<Map>.from(await widget.tagService.getTagsForUpc('016000126855'));
+    String barcode = await scanBarcode();
+    if (barcode != null) {
+      String currentPage = dynamicFabState.currentState.currentPage;
+      final ProgressDialog dialog = ProgressDialog(context);
+      await dialog.show();
+      Position position = await widget.locationService.getLocation();
+      List<Map> tags = List<Map>.from(await widget.tagService.getTagsForUpc(barcode));
+      await dialog.hide();
+      dynamicFabState.currentState.changePage('markit');
       Navigator.of(context).pushNamed('markit', arguments: {
-        'upc': '016000126855',
+        'upc': barcode,
         'tags': tags,
-        'latitude': locationData.latitude,
-        'longitude': locationData.longitude,
+        'latitude': position.latitude,
+        'longitude': position.longitude,
+        'dynamicFabKey': dynamicFabState,
+        'pushedFrom': currentPage,
       });
-    // }
+    }
   }
 
   void _onPriceCheckButtonPressed() {

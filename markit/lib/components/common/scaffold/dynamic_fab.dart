@@ -25,7 +25,7 @@ class DynamicFab extends StatefulWidget {
 
 class DynamicFabState extends State<DynamicFab> {
 
-  String _currentPage;
+  String currentPage;
 
   bool stateChangedManually = false;
 
@@ -34,30 +34,30 @@ class DynamicFabState extends State<DynamicFab> {
   @override
   Widget build(BuildContext context) {
     if (!stateChangedManually) {
-      _currentPage = widget.page;
+      currentPage = widget.page;
     }
-    if (_currentPage == 'myLists') {
+    if (currentPage == 'myLists') {
       return MyListsSpeedDialFab(
-        page: _currentPage,
+        page: currentPage,
         controller: _controller,
         onSpeedDialAction: widget.onSpeedDialAction,
         getSpeedDialLabelWidget: getSpeedDialLabelWidget,
       );
-    } else if (_currentPage == 'viewList') {
+    } else if (currentPage == 'viewList') {
       return ViewListSpeedDialFab(
-        page: _currentPage,
+        page: currentPage,
         controller: _controller,
         onSpeedDialAction: widget.onSpeedDialAction,
         getSpeedDialLabelWidget: getSpeedDialLabelWidget,
       );
-    } else if (_currentPage == 'viewTag' || _currentPage == 'addTag') {
+    } else if (currentPage == 'viewTag' || currentPage == 'addTag') {
       return _getPriceCheckFab();
-    } else if (_currentPage == 'priceCheck' || _currentPage == 'priceCheckStore') {
+    } else if (currentPage == 'priceCheck' || currentPage == 'priceCheckStore') {
       return _getAddFeedbackFab();
-    } else if (_currentPage == 'addRating') {
+    } else if (currentPage == 'addRating') {
       return _getCancelFab();
-    } else if (_currentPage == 'markit') {
-      return _getCheckmarkFab();
+    } else if (currentPage == 'markit') {
+      return Container(width: 0, height: 0);
     }
     return _getBarcodeScannerFab();
   }
@@ -66,7 +66,7 @@ class DynamicFabState extends State<DynamicFab> {
     _controller.unfold();
     setState(() {
       stateChangedManually = true;
-      _currentPage = newPage;
+      currentPage = newPage;
     });
   }
 
