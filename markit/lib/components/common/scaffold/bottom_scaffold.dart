@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:location/location.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 import 'package:markit/components/common/navigation/lists_navigator.dart';
@@ -12,7 +13,10 @@ import 'package:markit/components/common/navigation/stores_navigator.dart';
 import 'package:markit/components/common/scaffold/bottom_nav_bar.dart';
 import 'package:markit/components/common/scaffold/dynamic_fab.dart';
 import 'package:markit/components/common/scan_barcode.dart';
+import 'package:markit/components/service/location_service.dart';
+import 'package:markit/components/service/notification_service.dart';
 import 'package:markit/components/service/tutorial_service.dart';
+import 'package:markit/components/service/tag_service.dart';
 
 class BottomScaffold extends StatefulWidget {
   BottomScaffold({Key key }) : super(key: key);
@@ -22,6 +26,9 @@ class BottomScaffold extends StatefulWidget {
   @override
   BottomScaffoldState createState() => BottomScaffoldState();
 
+  LocationService locationService = new LocationService();
+  NotificationService notificationService = new NotificationService();
+  TagService tagService = new TagService();
   TutorialService tutorialService = new TutorialService();
 }
 
@@ -96,11 +103,18 @@ class BottomScaffoldState extends State<BottomScaffold> {
   }
 
   void _onBarcodeButtonPressed() async {
-    Future<String> barcode = scanBarcode();
-    barcode.then((String upc) {
-      // _onItemTapped(null); // how to select none of the tabs?
-      print(upc);
-    });
+    // String barcode = await scanBarcode();
+    // if (barcode != null) {
+      widget.notificationService.showSuccessNotification('Scanned barcode.');
+      LocationData locationData = await widget.locationService.getLocation();
+      List<Map> tags = List<Map>.from(await widget.tagService.getTagsForUpc('016000126855'));
+      Navigator.of(context).pushNamed('markit', arguments: {
+        'upc': '016000126855',
+        'tags': tags,
+        'latitude': locationData.latitude,
+        'longitude': locationData.longitude,
+      });
+    // }
   }
 
   void _onPriceCheckButtonPressed() {

@@ -1,16 +1,26 @@
-import 'package:google_maps_webservice/places.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:flutter_tags/flutter_tags.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_maps_webservice/places.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:markit/components/service/google_maps_api_service.dart';
 import 'package:overlay_support/overlay_support.dart'; // still need to display post-scan notification
 
 import 'package:markit/components/models/item_price_model.dart';
+import 'package:markit/components/models/store_model.dart';
+import 'package:markit/components/mark_price/components/tags.dart';
 import 'package:markit/components/service/api_service.dart';
+import 'package:markit/components/service/location_service.dart';
+import 'package:markit/components/service/tag_service.dart';
 
 class ItemForm extends StatefulWidget {
   final String upc;
-  ItemForm({Key key, this.upc}) : super(key: key);
+  final List<Map> matchingTags;
+  final Location location;
+  final StoreModel guessedStore;
+
+  ItemForm({Key key, this.upc, this.matchingTags, this.location, this.guessedStore}) : super(key: key);
 
   @override
   _ItemFormState createState() => _ItemFormState();
@@ -20,34 +30,27 @@ class _ItemFormState extends State<ItemForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final GlobalKey<TagsState> _tagStateKey = GlobalKey<TagsState>();
 
-  static const placesApiKey = "AIzaSyCHYk9JmFkxepLYaHqcpx7e-irbRX7w8Fc";
+  String mapsApiKey;
 
 // how should item/store internal ids be generated - is this done automatically by the API?
   ApiService apiService = new ApiService();
+  GoogleMapsApiService googleMapsApiService = new GoogleMapsApiService();
+  LocationService locationService = new LocationService();
+  TagService tagService = new TagService();
+
   ItemPriceModel newItem = ItemPriceModel(tags: [], isSalePrice: false);
 
-  static final storedTags = [
-    {
-      "id": 239479832742,
-      "name": "Dawn Ultra, 28oz"
-    },
-    {
-      "id": 239479832743,
-      "name": "Dish soap, 28oz"
+  bool changedStore = false;
+  StoreModel selectedStore;
+
+  @override
+  void initState() {
+    super.initState();
+    mapsApiKey = GoogleMapsApiService.mapsKey;
+    if (!changedStore) {
+      selectedStore = widget.guessedStore;
     }
-  ];
-  List<Item> createdTags = createTagsFromStored(storedTags);
-
-// lines 42-50 hold logic for getting tags from database using upc
-  // Map<String, Object> storedTags;
-  // List<Item> createdTags;
-
-  // @override
-  // void initState() {
-  //   getTags(widget.upc, storedTags);
-  //   createdTags = createTagsFromStored(storedTags);
-  //   super.initState();
-  // }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,76 +59,70 @@ class _ItemFormState extends State<ItemForm> {
       child: Container(
         padding: EdgeInsets.symmetric(
           vertical: MediaQuery.of(context).size.height * 0.025,
-          horizontal: MediaQuery.of(context).size.width * 0.05
+          horizontal: MediaQuery.of(context).size.width * 0.04,
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            SizedBox(
-              height: 25,
-            ),
+        child: ListView(
+          children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Expanded(
-// tags functionality implemented using flutter_tags plugin at https://pub.dev/packages/flutter_tags
-                  child: Tags(
-                    key: _tagStateKey,
-// how to cause text field to turn app theme color (deepOrange) after selection?
-                    textField: TagsTextField(
-                      textStyle: TextStyle(fontSize: 16),
-                      onSubmitted: (newTagStr) {
-                        setState(() {
-                          createdTags.add(Item(
-                            index: createdTags.length,
-                            title: newTagStr,
-                            active: true,
-                            customData: true
-                          ));
-                        });
-                      },
-                    ),
-                    itemCount: createdTags.length,
-                    itemBuilder: (int index) {
-                      final item = createdTags[index];
-                      if (item.customData == true) {
-                        return ItemTags(
-                          key: Key(index.toString()),
-                          index: index,
-                          title: item.title,
-                          active: true,
-                          textStyle: TextStyle(fontSize: 16),
-                          activeColor: Colors.deepOrange,
-                          combine: ItemTagsCombine.withTextBefore,
-                          removeButton: ItemTagsRemoveButton(
-                            onRemoved: () {
-                              setState(() {
-                                createdTags.removeAt(index);
-                              });
-                              return true;
-                            }
-                          ),
-                          pressEnabled: false,
-                        );
-                      } else {
-                        return ItemTags(
-                          key: Key(index.toString()),
-                          index: index,
-                          title: item.title,
-                          active: true,
-                          textStyle: TextStyle(fontSize: 16),
-                          activeColor: Colors.deepOrange,
-                          combine: ItemTagsCombine.withTextBefore,
-                          pressEnabled: false,
-                        );
-                      }
-                    }
+              children: [
+               Opacity(
+                    opacity: 0.7,
+                    child: Text('Tags for this item:', style: GoogleFonts.lato(fontSize: 20, color: Colors.black)),
                   ),
-                )
               ],
             ),
-            SizedBox(
-              height: 30,
+            Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                    child: MarkPriceTags(tagStateKey: _tagStateKey, existingTags: widget.matchingTags.map((tag) => tag['name'].toString()).toList()),
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Padding(
+                 padding: EdgeInsets.only(top: 15),
+                 child: Opacity(
+                    opacity: 0.7,
+                    child: Text('Tap to change your store:', style: GoogleFonts.lato(fontSize: 20, color: Colors.black)),
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    child: Card(
+                      child: Column(
+                        children: [
+                          ListTile(
+                            leading: FaIcon(FontAwesomeIcons.locationArrow, color: Colors.deepOrange),
+                            title: Text(selectedStore.name),
+                            subtitle: Text(selectedStore.streetAddress),
+                            onTap: () async {
+                              Prediction p = await PlacesAutocomplete.show(
+                                context: context,
+                                apiKey: mapsApiKey,
+                                mode: Mode.overlay,
+                                language: 'en',
+                                location: widget.location,
+                                types: ['establishment'],
+                                radius: 500,
+                              );
+                              displayPrediction(p);
+                            },
+                          )
+                        ],
+                      ),
+                    )
+                  ),
+                ),
+              ],
             ),
             SizedBox(
               width: MediaQuery.of(context).size.width * 0.5,
@@ -133,13 +130,7 @@ class _ItemFormState extends State<ItemForm> {
               child: RaisedButton(
                 onPressed: () async {
 // Google Places API autocomplete implemented using flutter_google_places plugin at https://pub.dev/packages/flutter_google_places
-                  Prediction p = await PlacesAutocomplete.show(
-                    context: context,
-                    apiKey: placesApiKey,
-                    mode: Mode.overlay,
-                    language: 'en',
-                  );
-                  displayPrediction(p);
+                  print('hi');
                 },
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -158,7 +149,7 @@ class _ItemFormState extends State<ItemForm> {
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
+              children: [
                 Expanded(
                   flex: 4,
                   child: TextFormField(
@@ -187,7 +178,7 @@ class _ItemFormState extends State<ItemForm> {
                         color: Colors.grey[600]
                       )),
                     value: newItem.isSalePrice,
-                    onChanged: (value) => setState(() => newItem.isSalePrice = value)    
+                    onChanged: (value) => setState(() => newItem.isSalePrice = value)
                   )
                 )
               ],
@@ -195,71 +186,54 @@ class _ItemFormState extends State<ItemForm> {
             SizedBox(
               height: 30
             ),
-            RaisedButton(
-              onPressed: () async {
-                if (_formKey.currentState.validate()) {
-                  _formKey.currentState.save();
-                  int userId = await apiService.getUserId();
-                  List<String> tagsToSubmit = createTagsForSubmittal(createdTags);
-                  setState(() {
-                    newItem.userId = userId;
-                    newItem.tags = tagsToSubmit;
-                  });
+            // RaisedButton(
+            //   onPressed: () async {
+            //     if (_formKey.currentState.validate()) {
+            //       _formKey.currentState.save();
+            //       int userId = await apiService.getUserId();
+            //       List<String> tagsToSubmit = createTagsForSubmittal(createdTags);
+            //       setState(() {
+            //         newItem.userId = userId;
+            //         newItem.tags = tagsToSubmit;
+            //       });
 
-                  const url = "https://markit-api.azurewebsites.net/item";
-                  final Map<String, Object> itemPost = {
-                    "userId": newItem.userId,
-                    "storeId": newItem.storeId,
-                    "upc": "123456789123",
-                    "price": newItem.price,
-                    "isSalePrice": newItem.isSalePrice,
-                    "tags": newItem.tags
-                  };
-                  final Map<String, Object> response = await addItem(itemPost);
-                  if (response.isNotEmpty) {
-                    Navigator.pushNamed(context, 'home'); // need to navigate to correct route
-                  } else {
-                    showSimpleNotification(
-                      Text('An error occurred when saving the item. Please try again!'),
-                      background: Color(0xfffff2226),
-                    );
-                  }
-                }
-              },
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(10))
-              ),
-              color: Colors.deepOrange,
-              padding: EdgeInsets.fromLTRB(50, 15, 50, 15),
-              child: Text(
-                "Markit!",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                )
-              )
-            ),
+            //       const url = "https://markit-api.azurewebsites.net/item";
+            //       final Map<String, Object> itemPost = {
+            //         "userId": newItem.userId,
+            //         "storeId": newItem.storeId,
+            //         "upc": "123456789123",
+            //         "price": newItem.price,
+            //         "isSalePrice": newItem.isSalePrice,
+            //         "tags": newItem.tags
+            //       };
+            //       final Map<String, Object> response = await addItem(itemPost);
+            //       if (response.isNotEmpty) {
+            //         Navigator.pushNamed(context, '/'); // need to navigate to correct route
+            //       } else {
+            //         showSimpleNotification(
+            //           Text('An error occurred when saving the item. Please try again!'),
+            //           background: Color(0xfffff2226),
+            //         );
+            //       }
+            //     }
+            //   },
+            //   shape: RoundedRectangleBorder(
+            //     borderRadius: BorderRadius.all(Radius.circular(10))
+            //   ),
+            //   color: Colors.deepOrange,
+            //   padding: EdgeInsets.fromLTRB(50, 15, 50, 15),
+            //   child: Text(
+            //     "Markit!",
+            //     style: TextStyle(
+            //       fontSize: 20,
+            //       fontWeight: FontWeight.bold,
+            //       color: Colors.white,
+            //     )
+            //   )
+            // ),
           ])
       )
     );
-  }
-
-  static List<Item> createTagsFromStored(tags) {
-    List<Item> createdTags = [];
-    int ind = 0;
-    tags.forEach((tag) => {
-      createdTags.add(
-        Item(
-          index: ind,
-          title: tag["name"].toString(),
-          active: true,
-          customData: false
-        )
-      )
-    });
-    ind++;
-    return createdTags;
   }
 
   static List<String> createTagsForSubmittal(tags) {
@@ -270,47 +244,28 @@ class _ItemFormState extends State<ItemForm> {
 
   Future<Null> displayPrediction(Prediction p) async {
     if (p != null) {
-      PlacesDetailsResponse details = await GoogleMapsPlaces(apiKey: placesApiKey).getDetailsByPlaceId(p.placeId);
-      var addrData = details.result.addressComponents;
-      var returnedStreetAddress, city, state, postalCode;
-
-      if (addrData[0].types[0] == 'floor') {
-        returnedStreetAddress = '${addrData[1].longName} ${addrData[2].longName}';
-      } else {
-        returnedStreetAddress = '${addrData[0].longName} ${addrData[1].longName}';
-      }
-
-      addrData.forEach((addrComponent) {
-        addrComponent.types.forEach((type) {
-          if (type == "locality") {
-            city = addrComponent.longName;
-          }
-          else if (type == "administrative_area_level_1") {
-            state = addrComponent.longName;
-          }
-          else if (type == "postal_code") {
-            postalCode = addrComponent.longName;
-          }
-        });
-      });
-
-      Map<String, Object> selectedStore = {
-        'googleId': p.placeId,
-        'name': details.result.name,
-        'streetAddress': returnedStreetAddress,
-        'city': city,
-        'state': state,
-        'postalCode': postalCode,
+      PlacesDetailsResponse details = await GoogleMapsPlaces(apiKey: mapsApiKey).getDetailsByPlaceId(p.placeId);
+      StoreModel store = googleMapsApiService.castPlaceDetailsToStoreModel(details.result);
+      Map<String, Object> storeMap = {
+        'googlePlaceId': store.googlePlaceId,
+        'name': store.name,
+        'streetAddress': store.streetAddress,
+        'city': store.city,
+        'state': store.state,
+        'postalCode': store.postalCode,
         'coordinate': {
-          'latitude': details.result.geometry.location.lat,
-          'longitude': details.result.geometry.location.lng,
+          'latitude': store.latitude,
+          'longitude': store.longitude,
         }
       };
 
-      Map<String, Object> response = await addStore(selectedStore);
+      Map<String, Object> response = await addStore(storeMap);
       final int storeId = response['id'];
 
-      setState(() => newItem.storeId = storeId);
+      setState(() {
+        newItem.storeId = storeId;
+        selectedStore = store;
+      });
     }
   }
 
@@ -322,10 +277,5 @@ class _ItemFormState extends State<ItemForm> {
   Future<Map> addItem(newItem) {
     String url = 'https://markit-api.azurewebsites.net/item';
     return apiService.postResponseMap(url, newItem);
-  }
-
-  void getTags(upc, storedTags) async {
-    String url = 'https://markit-api.azurewebsites.net/query?upc=$upc';
-     storedTags = await apiService.getMap(url);
   }
 }
