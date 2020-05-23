@@ -5,6 +5,7 @@ import 'package:markit/components/common/scaffold/dynamic_fab.dart';
 import 'package:markit/components/common/scaffold/top_scaffold.dart';
 import 'package:markit/components/models/list_tag_model.dart';
 import 'package:markit/components/service/api_service.dart';
+import 'package:markit/components/service/tag_service.dart';
 
 class ViewTag extends StatefulWidget {
 
@@ -15,6 +16,7 @@ class ViewTag extends StatefulWidget {
   ViewTag({Key key, this.dynamicFabKey}) : super(key: key);
 
   ApiService apiService = new ApiService();
+  TagService tagService = new TagService();
 
   @override
   _ViewTagState createState() => _ViewTagState();
@@ -158,17 +160,7 @@ class _ViewTagState extends State<ViewTag> {
   }
 
    Future<Map> saveTag() async {
-    String url = 'https://markit-api.azurewebsites.net/list/${listTag.listId}/listTag/${listTag.id}';
-    var body = {
-      'id': listTag.id,
-      'tag': {
-        'id': listTag.tagId,
-        'name': listTag.tagName,
-      },
-      'quantity': quantity,
-      'comment': notes,
-    };
-    return widget.apiService.patchResponseMap(url, body);
+    return widget.tagService.updateTag(listTag.listId, listTag.id, listTag.tagId, listTag.tagName, quantity, notes);
   }
 
   Future<bool> notifyFabOfPop() {
