@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:markit/components/mark_price/pages/mark_price.dart';
 import 'package:overlay_support/overlay_support.dart';
 
 import 'package:markit/components/authentication/pages/login.dart';
@@ -15,6 +17,7 @@ void main() async {
     DeviceOrientation.landscapeRight,
     DeviceOrientation.portraitUp
   ]);
+  await DotEnv().load('env/api_key.env'); // API Key
   AuthService authService = new AuthService();
   String token = await authService.getToken();
   runApp(Markit(token: token));
@@ -41,7 +44,7 @@ class Markit extends StatelessWidget {
 
   String getInitialRoute() {
     if (token != 'NOT_AUTHENTICATED') {
-      return 'home';
+      return '/';
     }
     return 'auth';
   }
@@ -49,8 +52,9 @@ class Markit extends StatelessWidget {
   Map<String, WidgetBuilder> getRoutes() {
     return {
       'auth': (context) => LoginScreen(),
-      'home': (context) => BottomScaffold(),
-      'register': (context) => RegistrationScreen()
+      '/': (context) => BottomScaffold(),
+      'register': (context) => RegistrationScreen(),
+      'markit': (context) => MarkPrice(),
     };
   }
 }

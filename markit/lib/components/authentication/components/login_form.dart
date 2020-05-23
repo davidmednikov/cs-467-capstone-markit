@@ -96,7 +96,7 @@ class _LoginFormState extends State<LoginForm> {
                   authService.storeToken(token);
                   int userId = await apiService.getUserId();
                   authService.login(currentUser.username, currentUser.password, userId);
-                  Navigator.pushReplacementNamed(context, 'home');
+                  Navigator.pushReplacementNamed(context, '/');
                 }
                 else {
                   notificationService.showErrorNotification('Invalid credentials.');
