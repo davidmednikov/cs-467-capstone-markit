@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tags/flutter_tags.dart';
 
 // InputSuggestions version 0.0.1
 // currently yield inline suggestions
@@ -13,12 +14,14 @@ typedef OnSubmittedCallback = void Function(String string);
 
 class SuggestionsTextField extends StatefulWidget {
   SuggestionsTextField(
-      {@required this.tagsTextField, this.onSubmitted, Key key})
+      {@required this.tagsTextField, this.onSubmitted, this.tagsStateKey, Key key})
       : assert(tagsTextField != null),
         super(key: key);
 
   final TagsTextField tagsTextField;
   final OnSubmittedCallback onSubmitted;
+
+  GlobalKey<TagsState> tagsStateKey;
 
   @override
   _SuggestionsTextFieldState createState() => _SuggestionsTextFieldState();
@@ -150,6 +153,7 @@ class _SuggestionsTextFieldState extends State<SuggestionsTextField> {
 
   ///Check onChanged
   void _checkOnChanged(String str) {
+    widget.tagsStateKey.currentState.updateLastInput(str);
     if (_suggestions != null) {
       _matches =
           _suggestions.where((String sgt) => sgt.toLowerCase().startsWith(str.toLowerCase())).toList();

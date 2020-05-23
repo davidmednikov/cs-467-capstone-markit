@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tags/flutter_tags.dart';
-import 'package:overlay_support/overlay_support.dart';
 
 import 'package:markit/components/service/notification_service.dart';
 import 'package:markit/components/service/tag_service.dart';
@@ -8,15 +7,15 @@ import 'package:markit/components/service/tag_service.dart';
 class MarkPriceTags extends StatefulWidget {
 
   final List<String> existingTags;
-  final GlobalKey tagStateKey;
+  final GlobalKey<TagsState> tagStateKey;
 
   MarkPriceTags({Key key, this.existingTags, this.tagStateKey}) : super(key: key);
 
   @override
-  _MarkPriceTagsState createState() => _MarkPriceTagsState();
+  MarkPriceTagsState createState() => MarkPriceTagsState();
 }
 
-class _MarkPriceTagsState extends State<MarkPriceTags> {
+class MarkPriceTagsState extends State<MarkPriceTags> {
 
   NotificationService notificationService = new NotificationService();
   TagService tagService = new TagService();
@@ -39,7 +38,6 @@ class _MarkPriceTagsState extends State<MarkPriceTags> {
   Widget build(BuildContext context) {
     return Tags(
       key: widget.tagStateKey,
-      // how to cause text field to turn app theme color (deepOrange) after selection?
       textField: TagsTextField(
         duplicates: true,
         suggestions: suggestions,

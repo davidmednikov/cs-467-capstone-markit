@@ -105,6 +105,8 @@ class TagsState extends State<Tags> {
     });
   }
 
+  String lastInput;
+
   @override
   Widget build(BuildContext context) {
     // essential to avoid infinite loop of addPostFrameCallback
@@ -160,6 +162,7 @@ class TagsState extends State<Tags> {
             alignment: Alignment.center,
             width: widget.symmetry ? _widthCalc() : widget.textField.width,
             child: SuggestionsTextField(
+              tagsStateKey: widget.key,
               tagsTextField: widget.textField,
               onSubmitted: (String str) {
                 if (!widget.textField.duplicates) {
@@ -226,6 +229,10 @@ class TagsState extends State<Tags> {
     double width = (_width > 1) ? (_width - subtraction) / columns : _width;
 
     return width;
+  }
+
+  void updateLastInput(String input) {
+    lastInput = input;
   }
 }
 
