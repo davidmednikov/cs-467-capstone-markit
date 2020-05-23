@@ -135,10 +135,12 @@ class _PriceCheckAppBarButtonsState extends State<PriceCheckAppBarButtons> {
                   full: FaIcon(FontAwesomeIcons.solidStar, color: Color(0xffffc422))
                 ),
                 onRatingUpdate: (rating) {
-                  minStars = rating;
-                  starFilterEnabled = true;
+                  setState(() {
+                    minStars = rating;
+                    starFilterEnabled = true;
+                  });
                   Navigator.pop(context);
-                  setState(() {});
+                  widget.priceCheckListKey.currentState.setStarFilter(minStars.floor());
                 },
               ),
             ),
@@ -157,10 +159,12 @@ class _PriceCheckAppBarButtonsState extends State<PriceCheckAppBarButtons> {
             builder: (context) =>
               FlatButton(
                 onPressed: () {
-                  minStars = 0;
-                  starFilterEnabled = false;
+                  setState(() {
+                    minStars = 0;
+                    starFilterEnabled = false;
+                  });
                   Navigator.pop(context);
-                  setState(() {});
+                  widget.priceCheckListKey.currentState.setStarFilter(minStars.floor());
                 },
                 child: Text("Cancel",
                   textScaleFactor: 1.3,

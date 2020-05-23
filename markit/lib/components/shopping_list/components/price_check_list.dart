@@ -34,7 +34,7 @@ class PriceCheckListState extends State<PriceCheckList> {
   String sortBy = 'Price Only';
 
   int minStars;
-  bool starFilterEnabled;
+  bool starFilterEnabled = false;
 
   List<StoreModel> storesInPriceCheck;
 
@@ -60,14 +60,17 @@ class PriceCheckListState extends State<PriceCheckList> {
   }
 
   Widget buildStoreList(List<Map> storeMaps) {
-    if (sortBy == 'Price Only') {
-      storeMaps.sort((a, b) => a['priceRank'].compareTo(b['priceRank']));
-    } else if (sortBy == 'Price & Staleness') {
-      storeMaps.sort((a, b) => a['priceAndStalenessRank'].compareTo(b['priceAndStalenessRank']));
-    } else if (sortBy == 'Staleness Only') {
-      storeMaps.sort((a, b) => a['stalenessRank'].compareTo(b['stalenessRank']));
-    }
     List<PriceCheckModel> priceCheckStores = storeMaps.map((store) => PriceCheckModel.fromJson(store)).toList();
+    if (sortBy == 'Price Only') {
+      priceCheckStores.sort((a, b) => a.priceRank.compareTo(b.priceRank));
+    } else if (sortBy == 'Price & Staleness') {
+      priceCheckStores.sort((a, b) => a.priceAndStalenessRank.compareTo(b.priceAndStalenessRank));
+    } else if (sortBy == 'Staleness Only') {
+      priceCheckStores.sort((a, b) => a.stalenessRank.compareTo(b.stalenessRank));
+    }
+    if (starFilterEnabled) {
+      priceCheckStores.removeWhere((store) => store.store.averageRating == null || store.store.averageRating < minStars);
+    }
     storesInPriceCheck = priceCheckStores.map((store) => store.store).toList();
     return Expanded(
       child: ListView.builder(
@@ -111,7 +114,7 @@ class PriceCheckListState extends State<PriceCheckList> {
   }
 
   void setStarFilter(int stars) {
-    if (stars != null) {
+    if (stars != null && stars > 0) {
       setState(() {
         minStars = stars;
         starFilterEnabled = true;
