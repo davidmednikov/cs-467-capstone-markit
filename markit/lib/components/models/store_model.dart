@@ -9,9 +9,9 @@ class StoreModel {
 
   double latitude;
   double longitude;
-  String googlePlaceId;
+  String googleId;
 
-  StoreModel({this.id, this.name, this.streetAddress, this.city, this.state, this.postalCode, this.averageRating, this.latitude, this.longitude, this.googlePlaceId});
+  StoreModel({this.id, this.name, this.streetAddress, this.city, this.state, this.postalCode, this.averageRating, this.latitude, this.longitude, this.googleId});
 
   factory StoreModel.fromJson(Map<String, dynamic> json) {
     StoreModel theStore = StoreModel(
@@ -22,7 +22,7 @@ class StoreModel {
       state: json['state'],
       postalCode: json['postalCode'],
       averageRating: json['averageRating'],
-      googlePlaceId: json['googlePlaceId'],
+      googleId: json['googleId'],
     );
     if (json['coordinate'] != null) {
       theStore.latitude = json['coordinate']['latitude'];
