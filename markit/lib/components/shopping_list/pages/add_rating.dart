@@ -167,7 +167,7 @@ class AddRatingState extends State<AddRating> {
   }
 
   Future<Map> saveComment() async {
-    int userId = await widget.apiService.getUserId();
+    int userId = await widget.authService.getUserIdFromStorage();
     String url = 'https://markit-api.azurewebsites.net/rating';
     var body = {
       'userId': userId,

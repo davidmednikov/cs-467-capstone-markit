@@ -5,6 +5,7 @@ import 'package:markit/components/common/scaffold/dynamic_fab.dart';
 import 'package:markit/components/common/scaffold/top_scaffold.dart';
 import 'package:markit/components/models/shopping_list_model.dart';
 import 'package:markit/components/service/api_service.dart';
+import 'package:markit/components/service/auth_service.dart';
 import 'package:markit/components/service/notification_service.dart';
 
 
@@ -12,6 +13,7 @@ class NewList extends StatefulWidget {
   GlobalKey<DynamicFabState> dynamicFabKey;
 
   ApiService apiService = new ApiService();
+  AuthService authService = new AuthService();
   NotificationService notificationService = new NotificationService();
 
   NewList({Key key, this.dynamicFabKey}) : super(key: key);
@@ -130,7 +132,7 @@ class _NewListState extends State<NewList> {
   }
 
   Future<Map> saveList() async {
-    int userId = await widget.apiService.getUserId();
+    int userId = await widget.authService.getUserIdFromStorage();
     String url = 'https://markit-api.azurewebsites.net/list';
     var body = {
       'userId': userId,
