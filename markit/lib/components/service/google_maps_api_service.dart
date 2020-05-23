@@ -1,6 +1,6 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_webservice/places.dart';
-import 'package:location/location.dart' as flutter_location;
 
 import 'package:markit/components/models/store_model.dart';
 import 'package:markit/components/service/location_service.dart';
@@ -14,13 +14,12 @@ class GoogleMapsApiService {
   GoogleMapsPlaces places = GoogleMapsPlaces(apiKey: mapsKey);
 
   Future<StoreModel> getClosestStore() async {
-    flutter_location.LocationData locationData = await locationService.getLocation();
+    Position position = await locationService.getLocation();
     PlacesSearchResponse placesResponse = await places.searchNearbyWithRankBy(
-      Location(locationData.latitude, locationData.longitude),
+      Location(position.latitude, position.longitude),
       'distance',
       type: 'grocery_or_supermarket',
     );
-    print(placesResponse.results);
     if (placesResponse.results.isEmpty) {
       return null;
     }
@@ -55,7 +54,7 @@ class GoogleMapsApiService {
     });
 
     return StoreModel(
-      googlePlaceId: details.placeId,
+      googleId: details.placeId,
       name: details.name,
       streetAddress: returnedStreetAddress,
       city: city,
@@ -65,7 +64,7 @@ class GoogleMapsApiService {
       longitude: details.geometry.location.lng,
     );
   }
-    
+
   //   Map<String, Object> selectedStore = {
   //     'googleId': p.placeId,
   //     'name': details.name,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:location/location.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:select_dialog/select_dialog.dart';
 
 import 'package:markit/components/common/scaffold/dynamic_fab.dart';
@@ -38,7 +38,7 @@ class PriceCheckListState extends State<PriceCheckList> {
 
   List<StoreModel> storesInPriceCheck;
 
-  LocationData locationData;
+  Position position;
 
   bool showNotifications = true;
 
@@ -77,7 +77,7 @@ class PriceCheckListState extends State<PriceCheckList> {
         itemCount: priceCheckStores.length,
         itemBuilder: (context, index) {
           PriceCheckModel store = priceCheckStores[index];
-          return PriceCheckStoreTile(dynamicFabKey: widget.dynamicFabKey, storePriceCheck: store, shoppingList: widget.shoppingList, userLocation: locationData);
+          return PriceCheckStoreTile(dynamicFabKey: widget.dynamicFabKey, storePriceCheck: store, shoppingList: widget.shoppingList, userLocation: position);
         },
       ),
     );
@@ -85,8 +85,8 @@ class PriceCheckListState extends State<PriceCheckList> {
 
   Future<List> runPriceCheck() async {
     int userId = await widget.authService.getUserIdFromStorage();
-    locationData = await widget.locationService.getLocation();
-    String url = 'https://markit-api.azurewebsites.net/user/$userId/list/${widget.shoppingList.id}/analyze?latitude=${locationData.latitude}&longitude=${locationData.longitude}';
+    position = await widget.locationService.getLocation();
+    String url = 'https://markit-api.azurewebsites.net/user/$userId/list/${widget.shoppingList.id}/analyze?latitude=${position.latitude}&longitude=${position.longitude}';
     Map priceCheckResponse = await widget.apiService.getMap(url);
     if (priceCheckResponse['errors'] != null && priceCheckResponse['statusCode'] == 400) {
       showNotification('No nearby stores found.');
