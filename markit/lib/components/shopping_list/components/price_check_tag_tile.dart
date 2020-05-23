@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:markit/components/common/scaffold/dynamic_fab.dart';
 import 'package:markit/components/models/list_tag_model.dart';
 import 'package:markit/components/models/price_check_model.dart';
+import 'package:markit/components/models/price_check_tag_model.dart';
 
 class PriceCheckTagTile extends StatelessWidget {
 
@@ -12,11 +13,11 @@ class PriceCheckTagTile extends StatelessWidget {
 
   ListTagModel listTag;
 
-  double unitPrice;
+  PriceCheckTagModel priceCheckTag;
 
   GlobalKey<DynamicFabState> dynamicFabKey;
 
-  PriceCheckTagTile({Key key, this.storePriceCheck, this.listTag, this.unitPrice, this.dynamicFabKey}) : super(key: key);
+  PriceCheckTagTile({Key key, this.storePriceCheck, this.listTag, this.priceCheckTag, this.dynamicFabKey}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +25,7 @@ class PriceCheckTagTile extends StatelessWidget {
       title: Text(
         listTag.tagName,
         style: TextStyle(fontSize: 20),
+        overflow: TextOverflow.ellipsis,
       ),
       subtitle: Text(
         getSubtitle(),
@@ -36,7 +38,7 @@ class PriceCheckTagTile extends StatelessWidget {
   }
 
   String getSubtitle() {
-    return '${listTag.quantity} x \$$unitPrice';
+    return '${listTag.quantity} x \$${priceCheckTag.price} --- 3 days ago by ${priceCheckTag.priceSubmittedBy.username} <${priceCheckTag.priceSubmittedBy.userReputation}>';
   }
 
   List<Widget> getChildren() {
@@ -44,7 +46,7 @@ class PriceCheckTagTile extends StatelessWidget {
       Padding(
         padding: EdgeInsets.only(bottom: 2),
         child: Text(
-          '\$${(listTag.quantity * unitPrice).toStringAsFixed(2)}',
+          '\$${(listTag.quantity * priceCheckTag.price).toStringAsFixed(2)}',
           style: getGoogleFont(),
         ),
       ),

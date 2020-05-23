@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:location/location.dart';
 
 import 'package:markit/components/common/scaffold/dynamic_fab.dart';
 import 'package:markit/components/models/price_check_model.dart';
@@ -14,7 +14,7 @@ class PriceCheckStoreTile extends StatelessWidget {
 
   ShoppingListModel shoppingList;
 
-  LocationData userLocation;
+  Position userLocation;
 
   GlobalKey<DynamicFabState> dynamicFabKey;
 

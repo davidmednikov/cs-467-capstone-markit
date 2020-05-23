@@ -155,7 +155,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                         authService.storeToken(token);
                         authService.login(newUser.username, newUser.password, userId);
                         tutorialService.storeAllTutorialsUnwatched(userId);
-                        Navigator.pushReplacementNamed(context, 'home');
+                        Navigator.pushReplacementNamed(context, '/');
                       } else {
                         showNotification('Registration error.');
                       }

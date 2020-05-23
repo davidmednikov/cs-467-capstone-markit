@@ -6,6 +6,7 @@ import 'package:markit/components/common/scaffold/dynamic_fab.dart';
 import 'package:markit/components/common/scaffold/top_scaffold.dart';
 import 'package:markit/components/models/list_tag_model.dart';
 import 'package:markit/components/service/api_service.dart';
+import 'package:markit/components/service/tag_service.dart';
 
 
 class AddTag extends StatefulWidget {
@@ -17,6 +18,7 @@ class AddTag extends StatefulWidget {
   AddTag({Key key, this.dynamicFabKey}) : super(key: key);
 
   ApiService apiService = new ApiService();
+  TagService tagService = new TagService();
 
   @override
   _AddTagState createState() => _AddTagState();
@@ -178,16 +180,7 @@ class _AddTagState extends State<AddTag> {
   }
 
   Future<Map> saveTag() async {
-    String url = 'https://markit-api.azurewebsites.net/list/$listId/listTag';
-    var body = {
-      'tag': {
-        'id': tagId,
-        'name': tagName,
-      },
-      'quantity': quantity,
-      'comment': notes,
-    };
-    return widget.apiService.postResponseMap(url, body);
+    return widget.tagService.addTagToList(listId, tagId, tagName, quantity, notes);
   }
 
   Future<bool> notifyFabOfPop() {
@@ -197,7 +190,6 @@ class _AddTagState extends State<AddTag> {
   }
 
   Future<List<Map<String, Object>>> getSuggestions(String pattern) async {
-    String url = 'https://markit-api.azurewebsites.net/tags/query?name=$pattern';
-    return List<Map<String, Object>>.from(await widget.apiService.getList(url));
+    return List<Map<String, Object>>.from(await widget.tagService.getSuggestions(pattern));
   }
 }

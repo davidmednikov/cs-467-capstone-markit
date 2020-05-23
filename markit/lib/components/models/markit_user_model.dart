@@ -3,10 +3,20 @@ class MarkitUserModel {
   String firstName;
   String lastName;
   String username;
-  String email;
   String password;
-  var reputation; // need type
+  int userReputation; // need type
+  String userLevel; // need type
   DateTime reputationLastUpdated;
   DateTime createdDate;
   DateTime updatedDate;
+
+  MarkitUserModel({this.id, this.firstName, this.lastName, this.username, this.password, this.userReputation, this.userLevel, this.reputationLastUpdated});
+
+  factory MarkitUserModel.fromJsonForPriceCheck(Map<String, dynamic> json) {
+    return MarkitUserModel(
+      username: json['userName'],
+      userReputation: json['userReputation'],
+      userLevel: json['userLevel'],
+    );
+  }
 }

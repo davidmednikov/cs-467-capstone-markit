@@ -37,14 +37,14 @@ class MyListsState extends State<MyLists> {
         children: [
           FutureBuilder(
             future: getLists(),
-            builder: (context, snapshot) => showListOrLoading(context, snapshot),
+            builder: (context, snapshot) => showListOrLoading(snapshot),
           ),
         ],
       ),
     );
   }
 
-  Widget showListOrLoading(BuildContext context, AsyncSnapshot<List> snapshot) {
+  Widget showListOrLoading(AsyncSnapshot<List> snapshot) {
     if (snapshot.hasData) {
       List<Object> listObjects = snapshot.data;
       return showListOrIcon(listObjects);

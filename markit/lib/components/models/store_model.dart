@@ -5,12 +5,13 @@ class StoreModel {
   String city;
   String state;
   String postalCode;
+  double averageRating;
 
   double latitude;
   double longitude;
-  String googlePlaceId;
+  String googleId;
 
-  StoreModel({this.id, this.name, this.streetAddress, this.city, this.state, this.postalCode, this.latitude, this.longitude, this.googlePlaceId});
+  StoreModel({this.id, this.name, this.streetAddress, this.city, this.state, this.postalCode, this.averageRating, this.latitude, this.longitude, this.googleId});
 
   factory StoreModel.fromJson(Map<String, dynamic> json) {
     StoreModel theStore = StoreModel(
@@ -20,7 +21,8 @@ class StoreModel {
       city: json['city'],
       state: json['state'],
       postalCode: json['postalCode'],
-      googlePlaceId: json['googlePlaceId'],
+      averageRating: json['averageRating'],
+      googleId: json['googleId'],
     );
     if (json['coordinate'] != null) {
       theStore.latitude = json['coordinate']['latitude'];

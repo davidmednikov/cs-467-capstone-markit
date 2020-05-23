@@ -6,6 +6,7 @@ import 'package:markit/components/common/scaffold/dynamic_fab.dart';
 import 'package:markit/components/common/scaffold/top_scaffold.dart';
 import 'package:markit/components/models/list_tag_model.dart';
 import 'package:markit/components/models/price_check_model.dart';
+import 'package:markit/components/models/price_check_tag_model.dart';
 import 'package:markit/components/models/shopping_list_model.dart';
 import 'package:markit/components/service/api_service.dart';
 import 'package:markit/components/service/auth_service.dart';
@@ -91,15 +92,15 @@ class PriceCheckStoreState extends State<PriceCheckStore> {
         itemCount: shoppingList.listTags.length,
         itemBuilder: (context, index) {
           ListTagModel tag = shoppingList.listTags[index];
-          double unitPrice = getMatchingPrice(tag);
-          return PriceCheckTagTile(listTag: tag, unitPrice: unitPrice, dynamicFabKey: widget.dynamicFabKey);
+          PriceCheckTagModel priceCheckTag = getMatchingPriceCheckTag(tag);
+          return PriceCheckTagTile(listTag: tag, priceCheckTag: priceCheckTag, dynamicFabKey: widget.dynamicFabKey);
         },
       ),
     );
   }
 
-  double getMatchingPrice(ListTagModel tag) {
-    return priceCheckStore.tagPrices.where((tagPrice) => tagPrice.tagNames.contains(tag.tagName)).toList()[0].price;
+  PriceCheckTagModel getMatchingPriceCheckTag(ListTagModel tag) {
+    return priceCheckStore.tagPrices.where((tagPrice) => tagPrice.tagNames.contains(tag.tagName)).toList()[0];
   }
 
   Future<bool> notifyFabOfPop() {
