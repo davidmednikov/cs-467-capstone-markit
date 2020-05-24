@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../common/scaffold/top_scaffold.dart';
+import '../../common/scaffold/top_scaffold.dart';
 
 class Mark extends StatelessWidget {
 

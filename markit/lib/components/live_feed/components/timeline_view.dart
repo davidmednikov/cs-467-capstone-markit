@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:timeline_list/timeline.dart';
 import 'package:timeline_list/timeline_model.dart';
 
-import 'package:markit/components/live_feed/price_mark.dart';
-import 'package:markit/components/live_feed/review_mark.dart';
+import 'package:markit/components/live_feed/components/price_mark.dart';
+import 'package:markit/components/live_feed/components/review_mark.dart';
 
 // code for TimelineView class modified from Flutter Timeline plug-in by Furkan Tektas at:
 // https://github.com/furkantektas/timeline_list/blob/master/example/lib/timeline.dart#L38
