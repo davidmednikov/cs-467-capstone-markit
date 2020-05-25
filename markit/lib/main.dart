@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:markit/components/mark_price/pages/mark_price.dart';
 import 'package:overlay_support/overlay_support.dart';
 
@@ -35,6 +36,9 @@ class Markit extends StatelessWidget {
         title: 'Markit',
         theme: ThemeData(
           primarySwatch: Colors.deepOrange,
+          textTheme: GoogleFonts.latoTextTheme(
+            Theme.of(context).textTheme,
+          ),
         ),
         routes: getRoutes(),
         initialRoute: getInitialRoute(),
