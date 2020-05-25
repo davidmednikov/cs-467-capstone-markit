@@ -19,9 +19,9 @@ class StoreListingTile extends StatelessWidget {
   Widget build(BuildContext context) {
     double distance = locationService.locationBetweenInMiles(store.latitude, store.longitude, position.latitude, position.longitude);
     return Card(
-      elevation: 8,
+      elevation: 2,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15.0)
+        borderRadius: BorderRadius.circular(5.0)
       ),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
