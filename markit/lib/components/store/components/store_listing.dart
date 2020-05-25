@@ -23,7 +23,8 @@ class StoreListing extends StatelessWidget {
           Text(
             name,
             style: TextStyle(
-              fontSize: 20
+              fontSize: 20,
+              fontWeight: FontWeight.bold
             )),
           SizedBox(height: MediaQuery.of(context).size.height * 0.01),
           Text('$streetAddress'),
