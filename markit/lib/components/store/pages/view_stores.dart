@@ -85,7 +85,6 @@ class ViewStores extends StatelessWidget {
       List<Object> stores = snapshot.data;
       return showStores(stores);
     }
-    print(snapshot.data);
     return Center(
       child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.blueGrey)),
     );
@@ -93,7 +92,6 @@ class ViewStores extends StatelessWidget {
 
 // should an icon be shown when no stores are returned?
   Widget showStores(stores) {
-    print(stores);
     return Expanded(
       flex: 3,
         child: ListView.builder(

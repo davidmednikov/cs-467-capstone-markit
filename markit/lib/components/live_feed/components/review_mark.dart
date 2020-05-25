@@ -1,3 +1,4 @@
+import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 
 class ReviewMark extends StatelessWidget {
@@ -20,6 +21,9 @@ class ReviewMark extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    DateTime convertedDate = DateTime.parse(date);
+    String strDate = formatDate(convertedDate, [mm, '/', dd, '/', yy]);
+
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15.0)
@@ -33,7 +37,7 @@ class ReviewMark extends StatelessWidget {
             child: Align(
               alignment: Alignment.topCenter,
               child: Text(
-                date,
+                '$strDate',
                 style: TextStyle(
                   color: Colors.grey
                 )
