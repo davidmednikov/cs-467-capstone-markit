@@ -5,7 +5,7 @@ class MarkitUserModel {
   String username;
   String password;
   int userReputation; // need type
-  String userLevel; // need type
+  int userLevel; // need type
   DateTime reputationLastUpdated;
   DateTime createdDate;
   DateTime updatedDate;

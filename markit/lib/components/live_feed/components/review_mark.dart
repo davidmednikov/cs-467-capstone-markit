@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 
-class PriceMark extends StatelessWidget {
+class ReviewMark extends StatelessWidget {
   final List<String> tags;
   final String store;
-  final double price;
   final String user;
   final String date;
+  final String comment;
+  final int rating;
 
-  PriceMark({
+  ReviewMark({
     Key key,
     this.tags,
     this.store,
     this.user,
     this.date,
-    this.price,
+    this.comment,
+    this.rating
   }) : super(key: key);
 
   @override
@@ -38,23 +40,24 @@ class PriceMark extends StatelessWidget {
               )
             )
           ),
-          Spacer(flex: 1),
-          Text(tags[0]),
-          Text(tags[1]),
-          Spacer(flex: 1),
+          SizedBox(height: MediaQuery.of(context).size.height * 0.025),
           Text(
-            '\$${price.toString()} at $store',
+            '<${rating.toString()} stars> at $store',
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold
-            )),
-          Spacer(flex: 1),
+            )
+          ),
+          SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+          Text('"$comment"'),
+          SizedBox(height: MediaQuery.of(context).size.height * 0.01),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-            Text('by $user'),
-            Text("<Icon>"),
-          ]),
+              Text('by $user'),
+              Text('<Icon>')
+            ],
+          ),
           Spacer(flex: 1)
       ])
     );

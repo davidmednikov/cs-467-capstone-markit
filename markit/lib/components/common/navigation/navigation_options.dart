@@ -5,8 +5,8 @@ import 'package:markit/components/common/navigation/lists_navigator.dart';
 import 'package:markit/components/common/navigation/live_feed_navigator.dart';
 import 'package:markit/components/common/navigation/profiles_navigator.dart';
 import 'package:markit/components/common/navigation/stores_navigator.dart';
-import 'package:markit/components/live_feed/live_feed.dart';
-import 'package:markit/components/profile/my_profile.dart';
+import 'package:markit/components/live_feed/pages/live_feed.dart';
+import 'package:markit/components/profile/pages/my_profile.dart';
 import 'package:markit/components/shopping_list/pages/add_tag.dart';
 import 'package:markit/components/shopping_list/pages/my_lists.dart';
 import 'package:markit/components/shopping_list/pages/new_list.dart';
@@ -15,7 +15,7 @@ import 'package:markit/components/shopping_list/pages/price_check_store.dart';
 import 'package:markit/components/shopping_list/pages/view_list.dart';
 import 'package:markit/components/shopping_list/pages/view_tag.dart';
 import 'package:markit/components/shopping_list/pages/add_rating.dart';
-import 'package:markit/components/store/view_stores.dart';
+import 'package:markit/components/store/pages/view_stores.dart';
 
 
 List<BottomNavigationBarItem> getNavTabOptions() {
