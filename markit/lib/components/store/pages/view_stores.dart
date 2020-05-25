@@ -1,117 +1,69 @@
-import 'package:geolocator/geolocator.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 
 import 'package:markit/components/common/scaffold/top_scaffold.dart';
+import 'package:markit/components/models/store_model.dart';
 import 'package:markit/components/service/api_service.dart';
 import 'package:markit/components/service/location_service.dart';
-import 'package:markit/components/store/components/store_listing.dart';
+import 'package:markit/components/store/components/view_stores_page.dart';
 
-class ViewStores extends StatelessWidget {
+class ViewStores extends StatefulWidget {
 
   ApiService apiService = new ApiService();
   LocationService locationService = new LocationService();
 
+  GlobalKey<ViewStoresPageState> viewStoresPageKey = new GlobalKey();
+
   ViewStores({Key key}) : super(key: key);
 
-  final storeData = [
-    { 
-      "name": "Whole Foods",
-      "city": "Berkeley",
-      "state": "California"
-    },
-        { 
-      "name": "Sprouts",
-      "city": "Oakland",
-      "state": "California"
-    },
-    { 
-      "name": "Trader Joe's",
-      "city": "Berkeley",
-      "state": "California"
-    },
-    { 
-      "name": "Safeway",
-      "city": "Oakland",
-      "state": "California"
-    },
-  ];
+  @override
+  ViewStoresState createState() => ViewStoresState();
+}
+
+class ViewStoresState extends State<ViewStores> {
+  Position location;
+  bool locationChanged = false;
 
   @override
   Widget build(BuildContext context) {
     return TopScaffold(
       title: 'View Stores',
-      view: Column(children: <Widget>[
-        Expanded(
-          flex: 1,
-          child: Row(children: <Widget>[
-            Expanded(
-              child: RaisedButton(
-                onPressed: () {},
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
-                ),
-                color: Colors.white,
-                child: Text("Change location"),
-                padding: EdgeInsets.all(20)
-              )
+      view: Column(
+        children: [
+          Expanded(
+            child: FutureBuilder(
+              future: getStores(),
+              builder: (context, snapshot) => viewStoresPageOrLoading(snapshot),
             ),
-            Expanded(
-              child: RaisedButton(
-                onPressed: () {},
-                shape: CircleBorder(),
-                color: Colors.white,
-                child: Text("Map View"),
-                padding: EdgeInsets.all(40)
-              )
-            )
-          ])
-        ),
-        FutureBuilder(
-          future: getStores(),
-          builder: (context, snapshot) => showStoresOrLoading(context, snapshot)
-        )
-      ]),
+          ),
+        ],
+      ),
+      viewStoresKey: widget.key,
     );
   }
 
   Future<List> getStores() async {
-    Position location = await locationService.getLocation();
+    if (!locationChanged) {
+      location = await widget.locationService.getLocation();
+    }
     final String url = 'https://markit-api.azurewebsites.net/store/query?latitude=${location.latitude}&longitude=${location.longitude}';
-    return apiService.getList(url);
+    return widget.apiService.getList(url);
   }
 
-  Widget showStoresOrLoading(context, snapshot) {
+  Widget viewStoresPageOrLoading(AsyncSnapshot<List> snapshot) {
     if (snapshot.hasData) {
-      List<Object> stores = snapshot.data;
-      return showStores(stores);
+      List<StoreModel> stores = List<Map>.from(snapshot.data).map((store) => StoreModel.fromJson(store)).toList();
+      return ViewStoresPage(key: widget.viewStoresPageKey, storesNearMe: stores, location: location);
     }
-    print(snapshot.data);
     return Center(
       child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.blueGrey)),
     );
   }
 
-// should an icon be shown when no stores are returned?
-  Widget showStores(stores) {
-    print(stores);
-    return Expanded(
-      flex: 3,
-        child: ListView.builder(
-          itemCount: stores.length,
-          itemBuilder: (context, index) {
-            return Container(
-              padding: EdgeInsets.all(10),
-              height: MediaQuery.of(context).size.height * 0.25,
-              child: StoreListing(
-                name: stores[index]['name'],
-                streetAddress: stores[index]['streetAddress'],
-                city: stores[index]['city'],
-                state: stores[index]['state'],
-                postalCode: stores[index]['postalCode']
-              )
-            );
-          }
-        ),
-    );
+  void changeLocation(Position position) {
+    locationChanged = true;
+    setState(() {
+      location = position;
+    });
   }
 }

@@ -9,6 +9,11 @@ class LocationService {
     return position;
   }
 
+  Future<double> milesFromHere(Position position) async {
+    Position here = await getLocation();
+    return locationBetweenInMiles(position.latitude, position.longitude, here.latitude, here.longitude);
+  }
+
   double locationBetweenInMeters(double latitude1, double longitude1, double latitude2, double longitude2) {
     return SphericalUtil.computeDistanceBetween(
       LatLng(latitude1, longitude1),

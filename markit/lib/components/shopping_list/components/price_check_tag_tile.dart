@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:markit/components/common/scaffold/dynamic_fab.dart';
 import 'package:markit/components/common/status_icon.dart';
@@ -49,14 +50,10 @@ class PriceCheckTagTile extends StatelessWidget {
         padding: EdgeInsets.only(bottom: 2),
         child: Text(
           '\$${(listTag.quantity * priceCheckTag.price).toStringAsFixed(2)}',
-          style: getGoogleFont(),
+          style: GoogleFonts.lato(fontSize: 20, fontWeight: FontWeight.bold),
         ),
       ),
     ];
     return widgets;
-  }
-
-  TextStyle getGoogleFont() {
-    return GoogleFonts.lato(fontSize: 20, fontWeight: FontWeight.bold);
   }
 }
