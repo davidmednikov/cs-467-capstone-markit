@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 
 import 'package:markit/components/common/scaffold/price_check_app_bar_bottom_buttons.dart';
+import 'package:markit/components/common/scaffold/view_stores_app_bar_bottom_buttons.dart';
 import 'package:markit/components/shopping_list/components/price_check_list.dart';
+import 'package:markit/components/store/pages/view_stores.dart';
 
 class MarkitAppBar extends StatefulWidget implements PreferredSizeWidget {
 
   String titleProp;
 
   GlobalKey<PriceCheckListState> priceCheckListKey;
+  GlobalKey<ViewStoresState> viewStoresKey;
 
-  MarkitAppBar({Key key, this.titleProp, this.priceCheckListKey }) : super(key: key);
+  MarkitAppBar({Key key, this.titleProp, this.priceCheckListKey, this.viewStoresKey }) : super(key: key);
 
   @override
   _MarkitAppBarState createState() => _MarkitAppBarState();
@@ -18,7 +21,7 @@ class MarkitAppBar extends StatefulWidget implements PreferredSizeWidget {
   Size get preferredSize => calcAppBarSize();
 
   Size calcAppBarSize() {
-    if (titleProp == 'Price Check') {
+    if (titleProp == 'Price Check' || titleProp == 'View Stores') {
       return Size.fromHeight(AppBar().preferredSize.height + TabBar(tabs: []).preferredSize.height);
     }
     return AppBar().preferredSize;
@@ -42,30 +45,8 @@ class _MarkitAppBarState extends State<MarkitAppBar> {
     return AppBar(
       title: Text(_title),
       centerTitle: true,
-      actions: getActions(context),
       bottom: getBottomButtons(),
     );
-  }
-
-  /*
-  / This switch will go into the ViewStoresAppBarButtons widget
-  */
-  List<Widget> getActions(context) {
-    if (_title == 'View Stores') {
-      return [
-        Switch(
-          value: _mapView,
-          onChanged: mapViewToggled,
-          activeColor: Color(0xff225dff),
-          activeTrackColor: Color(0xffffc422),
-          inactiveTrackColor: Colors.deepOrange[900],
-          inactiveThumbColor: Color(0xffffc422),
-          activeThumbImage: AssetImage('assets/img/pin.png'),
-          inactiveThumbImage: AssetImage('assets/img/list.png'),
-        )
-      ];
-    }
-    return [];
   }
 
   Widget getBottomButtons() {
@@ -77,16 +58,10 @@ class _MarkitAppBarState extends State<MarkitAppBar> {
       // return LiveFeedAppBarButtons();
       return null;
     } else if (_title == 'View Stores') {
-      // return ViewStoresAppBarButtons();
-      return null;
+      return ViewStoresAppBarButtons(
+        viewStoresKey: widget.viewStoresKey,
+      );
     }
     return null;
-  }
-
-  void mapViewToggled(bool isMapView) {
-    print(isMapView);
-    setState(() {
-      _mapView = isMapView;
-    });
   }
 }

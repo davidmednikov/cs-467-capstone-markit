@@ -77,9 +77,9 @@ Map<String, Widget> getLiveFeedRoutes() {
   };
 }
 
-Map<String, Widget> getStoresRoutes() {
+Map<String, Widget> getStoresRoutes(GlobalKey viewStoreskey) {
   return {
-    '/':ViewStores(),
+    '/':ViewStores(key: viewStoreskey),
     // 'viewStore' : ViewStore(),
   };
 }

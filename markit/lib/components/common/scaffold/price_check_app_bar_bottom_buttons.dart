@@ -9,11 +9,9 @@ import 'package:markit/components/shopping_list/components/price_check_list.dart
 
 class PriceCheckAppBarButtons extends StatefulWidget implements PreferredSizeWidget {
 
-  List<Widget> buttons;
-
   GlobalKey<PriceCheckListState> priceCheckListKey;
 
-  PriceCheckAppBarButtons({Key key, this.buttons, this.priceCheckListKey }) : super(key: key);
+  PriceCheckAppBarButtons({Key key, this.priceCheckListKey }) : super(key: key);
 
   @override
   _PriceCheckAppBarButtonsState createState() => _PriceCheckAppBarButtonsState();

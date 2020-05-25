@@ -1,1 +1,0 @@
-const PLACES_API_KEY = 'AIzaSyCfzCYz0szhqlONnDZyy01r0hMPMl-4Ro8';
