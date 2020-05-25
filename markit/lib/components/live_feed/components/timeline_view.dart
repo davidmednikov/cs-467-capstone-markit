@@ -8,7 +8,7 @@ import 'package:markit/components/live_feed/components/review_mark.dart';
 // code for TimelineView class modified from Flutter Timeline plug-in by Furkan Tektas at:
 // https://github.com/furkantektas/timeline_list/blob/master/example/lib/timeline.dart#L38
 class TimelineView extends StatelessWidget {
-  final List<Map<String, Object>> items;
+  final List items;
 
   TimelineView({Key key, this.items}) : super(key: key);
 
@@ -24,17 +24,17 @@ class TimelineView extends StatelessWidget {
 
   TimelineModel timelineBuilder(BuildContext context, int index) {
     final item = items[index];
-    if (item["price"] != null) {
+    if (item['price'] != null) {
       return TimelineModel(
         Container(
           padding: EdgeInsets.all(10),
           height: MediaQuery.of(context).size.height * 0.25,
           child: PriceMark(
-            tags: item["tags"],
-            store: item["store"],
-            user: item["user"],
-            date: item["date"],
-            price: item["price"],
+            tags: item['tagNames'],
+            store: item['store']['name'],
+            user: item['userName'],
+            date: item['createdAt'],
+            price: item['price'],
           )
         ),
         position: TimelineItemPosition.left,
@@ -52,11 +52,11 @@ class TimelineView extends StatelessWidget {
           padding: EdgeInsets.all(10),
           height: MediaQuery.of(context).size.height * 0.25,
           child: ReviewMark(
-            comment: item["comment"],
-            rating: item["rating"],
-            store: item["store"],
-            user: item["user"],
-            date: item["date"],
+            comment: item['comment'],
+            rating: item['points'],
+            store: item['store']['name'],
+            user: item['userName'],
+            date: item['createdAt'],
           )
         ),
         position: TimelineItemPosition.left,
