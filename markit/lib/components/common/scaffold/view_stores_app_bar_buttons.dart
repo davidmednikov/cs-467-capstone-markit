@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:google_maps_webservice/places.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_maps_place_picker/google_maps_place_picker.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
@@ -58,8 +58,8 @@ class _ViewStoresAppBarButtonsState extends State<ViewStoresAppBarButtons> {
                         child: Row(
                           children: [
                             Expanded(
-                              flex: 2,
-                              child: Text('My Location', style: GoogleFonts.lato(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.black),),
+                              flex: 9,
+                              child: Text('Change Location', style: GoogleFonts.lato(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.black),),
                             ),
                             Expanded(
                               flex: 1,
@@ -139,23 +139,28 @@ class _ViewStoresAppBarButtonsState extends State<ViewStoresAppBarButtons> {
       location = widget.viewStoresKey.currentState.location;
     }
     double lat = location.latitude;
-    double lang =  location.longitude;
-    Prediction p = await PlacesAutocomplete.show(
-      context: context,
-      apiKey: mapsApiKey,
-      mode: Mode.overlay,
-      language: 'en',
-      location: Location(lat, lang), // why this crashes
+    double lng =  location.longitude;
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => PlacePicker(
+          apiKey: mapsApiKey,
+          onPlacePicked: (result) {
+            changeLocation(result);
+            Navigator.of(context).pop();
+          },
+          initialPosition: LatLng(lat, lng),
+          useCurrentLocation: false,
+        ),
+      ),
     );
-    changeLocation(p);
   }
 
-  Future<Null> changeLocation(Prediction p) async {
-    if (p != null) {
+  Future<Null> changeLocation(PickResult result) async {
+    if (result != null) {
       final ProgressDialog dialog = ProgressDialog(context);
       await dialog.show();
-      PlacesDetailsResponse details = await GoogleMapsPlaces(apiKey: mapsApiKey).getDetailsByPlaceId(p.placeId);
-      Position newLocation = Position(latitude: details.result.geometry.location.lat, longitude: details.result.geometry.location.lng);
+      Position newLocation = Position(latitude: result.geometry.location.lat, longitude: result.geometry.location.lng);
       widget.viewStoresKey.currentState.changeLocation(newLocation);
       await dialog.hide();
     }
