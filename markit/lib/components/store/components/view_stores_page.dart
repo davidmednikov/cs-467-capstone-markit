@@ -35,8 +35,7 @@ class ViewStoresPageState extends State<ViewStoresPage> {
   @override
   void initState() {
     super.initState();
-    // getMarkersForMap();
-    WidgetsBinding.instance.addPostFrameCallback((_) => getMarkersForMap());
+    getMarkersForMap();
   }
 
   @override
