@@ -18,6 +18,7 @@ class RatingBar extends StatefulWidget {
     this.emptyColor = Colors.grey,
     this.halfFilledColor,
     this.size = 40,
+    this.align = Alignment.center,
   })  : _readOnly = false,
         assert(maxRating != null),
         assert(initialRating != null),
@@ -40,6 +41,7 @@ class RatingBar extends StatefulWidget {
     this.emptyColor = Colors.grey,
     this.halfFilledColor,
     this.size = 40,
+    this.align = Alignment.center,
   })  : _readOnly = true,
         onRatingChanged = null,
         assert(maxRating != null),
@@ -63,6 +65,7 @@ class RatingBar extends StatefulWidget {
   final double size;
   final bool isHalfAllowed;
   final bool _readOnly;
+  final Alignment align;
 
   @override
   _RatingBarState createState() {
@@ -86,7 +89,7 @@ class _RatingBarState extends State<RatingBar> {
   @override
   Widget build(BuildContext context) {
     return Align(
-      alignment: Alignment.centerRight,
+      alignment: widget.align,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: List.generate(widget.maxRating, (index) {

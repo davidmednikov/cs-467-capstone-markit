@@ -44,7 +44,7 @@ class ItemTags extends StatefulWidget {
       this.textColor = Colors.black,
       this.textActiveColor = Colors.white,
       this.color = Colors.white,
-      this.activeColor = Colors.blueGrey,
+      this.activeColor = Colors.deepOrange,
       this.highlightColor,
       this.splashColor,
       this.colorShowDuplicate = Colors.red,

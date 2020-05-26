@@ -85,6 +85,7 @@ class _PriceCheckAppBarButtonsState extends State<PriceCheckAppBarButtons> {
                         emptyIcon: FontAwesomeIcons.star,
                         filledIcon: FontAwesomeIcons.solidStar,
                         size: 20,
+                        align: Alignment.center,
                       ),
                     ),
                   ],

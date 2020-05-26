@@ -33,11 +33,14 @@ class ListTagTile extends StatelessWidget {
           children: [
             Opacity(
               opacity: 0.5,
-              child: FaIcon(FontAwesomeIcons.tag, color: Colors.grey, size: 36),
+              child: FaIcon(FontAwesomeIcons.tags, color: Colors.grey, size: 36),
             ),
-            Text(
-              listTag.quantity.toString(),
-              style: GoogleFonts.lato(fontSize: 12, fontWeight: FontWeight.bold),
+            Padding(
+              padding: EdgeInsets.only(right: 10),
+              child: Text(
+                listTag.quantity.toString(),
+                style: GoogleFonts.lato(fontSize: 12, fontWeight: FontWeight.bold),
+              )
             )
           ],
         ),

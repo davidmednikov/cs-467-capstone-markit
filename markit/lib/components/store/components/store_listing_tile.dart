@@ -26,19 +26,23 @@ class StoreListingTile extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
         child: ListTile(
-          leading: FractionallySizedBox(
-            child: Align(
-              child: Text(letter),
-              alignment: Alignment.centerLeft
-            ),
-            heightFactor: 1,
-            widthFactor: 0.1,
-          ),
+          leading: getLetterWidget(),
           title: Text(store.name, style: TextStyle(fontSize: 16)),
           subtitle: Text('${store.streetAddress}\n${store.city}, ${store.state}', style: TextStyle(fontSize: 13)),
           trailing: getDistanceAndRatingWidget(distance),
         ),
       ),
+    );
+  }
+
+  Widget getLetterWidget() {
+    return  FractionallySizedBox(
+      child: Align(
+        child: Text(letter),
+        alignment: Alignment.centerLeft
+      ),
+      heightFactor: 1,
+      widthFactor: 0.1,
     );
   }
 
@@ -87,6 +91,7 @@ class StoreListingTile extends StatelessWidget {
       filledIcon: FontAwesomeIcons.solidStar,
       halfFilledIcon: FontAwesomeIcons.starHalfAlt,
       size: 12,
+      align: Alignment.centerRight,
     );
   }
 }

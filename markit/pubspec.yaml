@@ -21,7 +21,6 @@ dependencies:
     sdk: flutter
   adaptive_dialog: ^0.5.0
   barcode_scan: ^3.0.0
-  date_format: ^1.0.8
   distance: ^0.1.1
   easy_dialog: ^1.0.5
   flutter_dotenv: ^2.1.0
