@@ -38,7 +38,7 @@ class StoreListingTile extends StatelessWidget {
   Widget getLetterWidget() {
     return  FractionallySizedBox(
       child: Align(
-        child: Text(letter),
+        child: Image.asset('assets/img/map_markers/letter_${letter.toLowerCase()}.png'),
         alignment: Alignment.centerLeft
       ),
       heightFactor: 1,

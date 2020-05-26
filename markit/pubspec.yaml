@@ -35,7 +35,8 @@ dependencies:
   font_awesome_flutter: ^8.8.1
   geolocator: ^5.3.1
   google_fonts: ^0.5.0+1
-  google_maps_flutter: ^0.5.26
+  google_maps_flutter: ^0.5.28+1
+  google_maps_place_picker: ^0.9.4
   google_maps_webservice: ^0.0.16
   maps_toolkit: ^1.0.1+3
   progress_dialog: ^1.2.3
@@ -61,9 +62,9 @@ dev_dependencies:
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/img/launch_icon.png"
+  image_path: "assets/img/icon/launch_icon.png"
   adaptive_icon_background: "#ff5722"
-  adaptive_icon_foreground: "assets/img/adaptive_icon.png"
+  adaptive_icon_foreground: "assets/img/icon/adaptive_icon.png"
 
 flutter_native_splash:
   image: assets/img/splash.png
@@ -83,9 +84,8 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
    - env/
-   - assets/img/list.png
-   - assets/img/pin.png
    - assets/img/splash.png
+   - assets/img/map_markers/
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

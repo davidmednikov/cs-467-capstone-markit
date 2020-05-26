@@ -1,7 +1,7 @@
 class LiveFeedService {
 
   static String getTimeString(DateTime submittedDate) {
-    Duration difference = DateTime.now().difference(submittedDate);
+    Duration difference = DateTime.now().difference(submittedDate.toLocal());
     if (difference.inDays / 365 >= 1) {
       int years = (difference.inDays / 365).round();
       if (years == 1) {

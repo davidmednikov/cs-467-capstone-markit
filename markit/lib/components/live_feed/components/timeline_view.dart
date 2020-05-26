@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:timeline_list/timeline.dart';
@@ -14,6 +15,8 @@ class TimelineView extends StatelessWidget {
   final Position location;
 
   TimelineView({Key key, this.items, this.location}) : super(key: key);
+
+  final DateFormat formatter = new DateFormat("yyyy-MM-ddTHH:mm:ss");
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +38,7 @@ class TimelineView extends StatelessWidget {
             tags: List<String>.from(item['tagNames']),
             store: StoreModel.fromJson(item['store']),
             user: item['userName'], // Needs to be MarkitUser
-            submittedDate: DateTime.parse(item['createdAt']),
+            submittedDate: formatter.parse(item['createdAt'], true),
             price: item['price'],
             location: location,
           )
@@ -58,7 +61,7 @@ class TimelineView extends StatelessWidget {
             rating: item['points'],
             store: StoreModel.fromJson(item['store']),
             user: item['userName'],
-            submittedDate: DateTime.parse(item['createdAt']),
+            submittedDate: formatter.parse(item['createdAt'], true),
             location: location,
           )
         ),

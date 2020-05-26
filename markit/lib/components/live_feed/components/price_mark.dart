@@ -77,7 +77,7 @@ class PriceMark extends StatelessWidget {
           Row(
             children:[
               Expanded(
-                flex: 4,
+                flex: 3,
                 child: Padding(
                   padding: EdgeInsets.only(left: 15, right: 5, bottom: 5, top: 5),
                   child: Column(
