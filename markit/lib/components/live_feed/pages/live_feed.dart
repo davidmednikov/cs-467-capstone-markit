@@ -21,8 +21,6 @@ class LiveFeed extends StatefulWidget {
 
 class LiveFeedState extends State<LiveFeed> {
 
-//dummy data until GET request to Recent Marks API endpoint is added
-
   List<Map> liveFeedEvents;
 
   Position location;
