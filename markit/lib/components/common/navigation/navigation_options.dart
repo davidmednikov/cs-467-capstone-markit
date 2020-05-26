@@ -71,9 +71,9 @@ Map<String, Widget> getListsRoutes(GlobalKey myListsKey, GlobalKey viewListKey, 
   };
 }
 
-Map<String, Widget> getLiveFeedRoutes() {
+Map<String, Widget> getLiveFeedRoutes(GlobalKey liveFeedKey) {
   return {
-    '/': LiveFeed(),
+    '/': LiveFeed(key: liveFeedKey),
   };
 }
 

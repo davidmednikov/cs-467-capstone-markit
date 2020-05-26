@@ -91,6 +91,7 @@ class StoreListingTile extends StatelessWidget {
       filledIcon: FontAwesomeIcons.solidStar,
       halfFilledIcon: FontAwesomeIcons.starHalfAlt,
       size: 12,
+      align: Alignment.centerRight,
     );
   }
 }

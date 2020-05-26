@@ -27,10 +27,13 @@ class LiveFeedState extends State<LiveFeed> {
 
   Position location;
 
+  String selected = 'All';
+
   @override
   Widget build(BuildContext context) {
     return TopScaffold(
       title: 'Live Feed',
+      liveFeedKey: widget.key,
       view: FutureBuilder(
         future: getLiveFeedEvents(),
         builder: (context, snapshot) => showTimelineOrLoading(snapshot),
@@ -38,24 +41,43 @@ class LiveFeedState extends State<LiveFeed> {
     );
   }
 
+  void changeSelected(String newSelected) {
+    setState(() {
+      selected = newSelected;
+    });
+  }
+
   Future<List<Map>> getLiveFeedEvents() async {
-    List<Map> prices = List<Map>.from(await getRecentPrices());
-    List<Map> ratings = List<Map>.from(await getRecentRatings());
+    if (selected == 'Prices') {
+      return getRecentPrices();
+    } else if (selected == 'Reviews') {
+      return getRecentRatings();
+    }
+    return getCombinedLiveFeed();
+  }
+
+  Future<List<Map>> getCombinedLiveFeed() async {
+    List<Map> prices = await getRecentPrices();
+    List<Map> ratings = await getRecentRatings();
     List combined = prices + ratings;
     combined.sort((b, a) => a['createdAt'].compareTo(b['createdAt']));
     return combined;
   }
 
-  Future<List> getRecentPrices() async {
-    location = await widget.locationService.getLocation();
+  Future<List<Map>> getRecentPrices() async {
+    if (location == null) {
+      location = await widget.locationService.getLocation();
+    }
     String url = 'https://markit-api.azurewebsites.net/prices/query?latitude=${location.latitude}&longitude=${location.longitude}';
-    return widget.apiService.getList(url);
+    return List<Map>.from(await widget.apiService.getList(url));
   }
 
-  Future<List> getRecentRatings() async {
-    location = await widget.locationService.getLocation();
+  Future<List<Map>> getRecentRatings() async {
+    if (location == null) {
+      location = await widget.locationService.getLocation();
+    }
     String url = 'https://markit-api.azurewebsites.net/ratings/query?latitude=${location.latitude}&longitude=${location.longitude}';
-    return widget.apiService.getList(url);
+    return List<Map>.from(await widget.apiService.getList(url));
   }
 
   Widget showTimelineOrLoading(AsyncSnapshot<List<Map>> snapshot) {

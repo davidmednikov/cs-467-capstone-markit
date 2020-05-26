@@ -40,7 +40,7 @@ class ReviewMark extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15.0)
       ),
-      elevation: 8,
+      elevation: 5,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
@@ -184,6 +184,7 @@ class ReviewMark extends StatelessWidget {
       filledIcon: FontAwesomeIcons.solidStar,
       halfFilledIcon: FontAwesomeIcons.starHalfAlt,
       size: 16,
+      align: Alignment.centerRight,
     );
   }
 
