@@ -56,7 +56,7 @@ class ViewStoresState extends State<ViewStores> {
       return ViewStoresPage(key: widget.viewStoresPageKey, storesNearMe: stores, location: location);
     }
     return Center(
-      child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.blueGrey)),
+      child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.deepOrange)),
     );
   }
 

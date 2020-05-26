@@ -55,7 +55,7 @@ class PriceCheckListState extends State<PriceCheckList> {
       return buildStoreList(List<Map>.from(snapshot.data));
     }
     return Center(
-      child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.blueGrey)),
+      child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.deepOrange)),
     );
   }
 

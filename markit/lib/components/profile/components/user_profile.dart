@@ -55,7 +55,7 @@ class UserProfile extends StatelessWidget {
           );
         } else {
           return Center(
-            child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.blueGrey)),
+            child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.deepOrange)),
           );
         }
       }

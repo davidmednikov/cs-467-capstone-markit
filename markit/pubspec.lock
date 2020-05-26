@@ -221,6 +221,11 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.0"
+  flutter_web_plugins:
+    dependency: transitive
+    description: flutter
+    source: sdk
+    version: "0.0.0"
   font_awesome_flutter:
     dependency: "direct main"
     description:
@@ -291,6 +296,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.16.1"
+  js:
+    dependency: transitive
+    description:
+      name: js
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.6.1+1"
+  location:
+    dependency: "direct main"
+    description:
+      name: location
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.2"
   location_permissions:
     dependency: transitive
     description:
@@ -298,6 +317,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.5"
+  location_platform_interface:
+    dependency: transitive
+    description:
+      name: location_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
+  location_web:
+    dependency: transitive
+    description:
+      name: location_web
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
   maps_toolkit:
     dependency: "direct main"
     description:
@@ -406,9 +439,9 @@ packages:
   rating_bar:
     dependency: "direct main"
     description:
-      path: "modified_plugins\\rating_bar-0.2.0-align-fix"
-      relative: true
-    source: path
+      name: rating_bar
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "0.2.0"
   rxdart:
     dependency: transitive

@@ -50,7 +50,7 @@ class MyListsState extends State<MyLists> {
       return showListOrIcon(listObjects);
     }
     return Center(
-      child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.blueGrey)),
+      child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.deepOrange)),
     );
   }
 

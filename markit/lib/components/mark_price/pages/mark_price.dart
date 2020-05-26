@@ -97,7 +97,7 @@ class _MarkPriceState extends State<MarkPrice> {
       return ItemForm(upc: upc, matchingTags: tags, location: location, guessedStore: store);
     }
     return Center(
-      child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.blueGrey)),
+      child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.deepOrange)),
     );
   }
 
