@@ -31,7 +31,7 @@ class TopScaffold extends StatelessWidget {
       ),
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.all(5),
+          padding: EdgeInsets.all(3),
           child: view,
         ),
       ),
