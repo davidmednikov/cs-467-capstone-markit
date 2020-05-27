@@ -4,7 +4,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:markit/components/common/scaffold/top_scaffold.dart';
 import 'package:markit/components/live_feed/components/timeline_view.dart';
 import 'package:markit/components/service/api_service.dart';
-import 'package:markit/components/service/live_feed_service.dart';
+import 'package:markit/components/service/date_service.dart';
 import 'package:markit/components/service/location_service.dart';
 
 class LiveFeed extends StatefulWidget {
@@ -12,7 +12,7 @@ class LiveFeed extends StatefulWidget {
   LiveFeed({Key key}) : super(key: key);
 
   ApiService apiService = new ApiService();
-  LiveFeedService liveFeedService = new LiveFeedService();
+  DateService dateService = new DateService();
   LocationService locationService = new LocationService();
 
 @override

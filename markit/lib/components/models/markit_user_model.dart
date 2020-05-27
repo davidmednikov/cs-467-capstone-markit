@@ -19,4 +19,12 @@ class MarkitUserModel {
       userLevel: json['userLevel'],
     );
   }
+
+  factory MarkitUserModel.fromJsonForLiveFeed(Map<String, dynamic> json) {
+    return MarkitUserModel(
+      username: json['userName'],
+      userReputation: json['reputation'],
+      userLevel: json['level'],
+    );
+  }
 }

@@ -5,15 +5,14 @@ import 'package:geolocator/geolocator.dart';
 import 'package:markit/components/common/status_icon.dart';
 import 'package:markit/components/models/markit_user_model.dart';
 import 'package:markit/components/models/store_model.dart';
-import 'package:markit/components/service/live_feed_service.dart';
+import 'package:markit/components/service/date_service.dart';
 import 'package:markit/components/service/location_service.dart';
 
 class PriceMark extends StatelessWidget {
   final List<String> tags;
   final StoreModel store;
   final double price;
-  final String user;
-  // final MarkitUserModel user;
+  final MarkitUserModel user;
   final DateTime submittedDate;
   final Position location;
 
@@ -50,7 +49,7 @@ class PriceMark extends StatelessWidget {
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                     child: Text(
-                      '${LiveFeedService.getTimeString(submittedDate)}',
+                      '${DateService.getTimeString(submittedDate).item1}',
                       style: TextStyle(
                         color: Colors.grey
                       )
@@ -187,7 +186,7 @@ class PriceMark extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Flexible(
-                        child: Text('$user',
+                        child: Text('${user.username}',
                           style: TextStyle(
                             fontSize: 15,
                             color: Colors.grey,
@@ -197,7 +196,7 @@ class PriceMark extends StatelessWidget {
                       ),
                       Padding(
                         padding: EdgeInsets.only(left: 5),
-                        child: StatusIcon(userReputation: 100),
+                        child: StatusIcon(userReputation: user.userReputation),
                       ),
                     ],
                   ),
