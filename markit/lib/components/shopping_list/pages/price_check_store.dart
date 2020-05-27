@@ -65,10 +65,7 @@ class PriceCheckStoreState extends State<PriceCheckStore> {
           children: [
             Container(
               padding: EdgeInsets.only(left: 10, top: 10, right: 10),
-              child: Opacity(
-                opacity: 0.7,
-                child: Text('Store:', style: GoogleFonts.lato(fontSize: 18, color: Colors.black)),
-              ),
+              child: Text('Store:', style: GoogleFonts.lato(fontSize: 19, color: Colors.deepOrange, fontWeight: FontWeight.bold)),
             ),
           ],
         ),
@@ -97,10 +94,7 @@ class PriceCheckStoreState extends State<PriceCheckStore> {
           children: [
             Container(
               padding: EdgeInsets.only(left: 10, top: 10, right: 10),
-              child: Opacity(
-                opacity: 0.7,
-                child: Text('Markit Total:', style: GoogleFonts.lato(fontSize: 18, color: Colors.black)),
-              ),
+              child: Text('Markit Total:', style: GoogleFonts.lato(fontSize: 19, color: Colors.deepOrange, fontWeight: FontWeight.bold)),
             ),
           ],
         ),

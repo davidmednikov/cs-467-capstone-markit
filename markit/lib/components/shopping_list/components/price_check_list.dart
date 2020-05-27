@@ -63,7 +63,7 @@ class PriceCheckListState extends State<PriceCheckList> {
 
   Widget buildStoreList(List<Map> storeMaps) {
     List<PriceCheckModel> priceCheckStores = storeMaps.map((store) => PriceCheckModel.fromJson(store)).toList();
-    if (priceCheckStores.length >= 1 && priceCheckStores[0].matchedRatio < 1) {
+    if (priceCheckStores.length > 0 && priceCheckStores[0].matchedRatio < 1) {
       priceCheckStores.sort((b, a) => sortByRatioAndPrice(a, b));
     } else {
       if (sortBy == 'Price Only') {

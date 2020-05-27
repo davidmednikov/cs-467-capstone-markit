@@ -23,12 +23,10 @@ class PriceCheckTagTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Expanded(
-        child: Text(
-          listTag.tagName,
-          style: TextStyle(fontSize: 20),
-        // overflow: TextOverflow.ellipsis,
-        ),
+      title: Text(
+        listTag.tagName,
+        style: TextStyle(fontSize: 20),
+      // overflow: TextOverflow.ellipsis,
       ),
       subtitle: getSubtitle(),
       trailing: getTrailing(),
@@ -39,15 +37,13 @@ class PriceCheckTagTile extends StatelessWidget {
     if (priceCheckTag == null) {
       return null;
     }
-    return Flexible(
-      child: Row(
-          children: [
-            Text('${listTag.quantity} x \$${priceCheckTag.price} - ${DateService.getTimeString(priceCheckTag.submittedDate).item1} by ${priceCheckTag.priceSubmittedBy.username}  ',
-              style: getSubtitleTextStyle(),
-            ),
-            StatusIcon(userReputation: priceCheckTag.priceSubmittedBy.userReputation),
-          ],
-      ),
+    return Row(
+      children: [
+        Text('${listTag.quantity} x \$${priceCheckTag.price} - ${DateService.getTimeString(priceCheckTag.submittedDate).item1} by ${priceCheckTag.priceSubmittedBy.username}  ',
+          style: getSubtitleTextStyle(),
+        ),
+        StatusIcon(userReputation: priceCheckTag.priceSubmittedBy.userReputation),
+      ],
     );
   }
 

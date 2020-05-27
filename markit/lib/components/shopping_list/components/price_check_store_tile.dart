@@ -26,11 +26,9 @@ class PriceCheckStoreTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Flexible(
-        child: Text(
-          storePriceCheck.store.name,
-          style: TextStyle(fontSize: 22),
-        ),
+      title: Text(
+        storePriceCheck.store.name,
+        style: TextStyle(fontSize: 22),
       ),
       subtitle: Text(
         '${getDistance()} mi. away',
@@ -113,8 +111,8 @@ class PriceCheckStoreTile extends StatelessWidget {
 
   Widget makeProgressBar() {
     return StepProgressIndicator(
-      totalSteps: 10,
-      currentStep: (storePriceCheck.matchedRatio * 10).round(),
+      totalSteps: 100,
+      currentStep: (storePriceCheck.matchedRatio * 100).round(),
       selectedColor: Color(0xff22ff56),
       unselectedColor: Color(0xfffff2226),
       size: 7,
