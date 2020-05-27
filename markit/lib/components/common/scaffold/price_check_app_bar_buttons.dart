@@ -14,19 +14,21 @@ class PriceCheckAppBarButtons extends StatefulWidget implements PreferredSizeWid
   PriceCheckAppBarButtons({Key key, this.priceCheckListKey }) : super(key: key);
 
   @override
-  _PriceCheckAppBarButtonsState createState() => _PriceCheckAppBarButtonsState();
+  PriceCheckAppBarButtonsState createState() => PriceCheckAppBarButtonsState();
 
   @override
   Size get preferredSize => TabBar(tabs: []).preferredSize;
 }
 
-class _PriceCheckAppBarButtonsState extends State<PriceCheckAppBarButtons> {
+class PriceCheckAppBarButtonsState extends State<PriceCheckAppBarButtons> {
 
   bool starFilterEnabled = false;
   double minStars = 0;
 
   String sort = 'Price Only';
   List<String> sortOptions = ['Price Only', 'Price & Staleness', 'Staleness Only'];
+
+  bool sortingDisabled = false;
 
   @override
   Widget build(BuildContext context) {
@@ -53,17 +55,15 @@ class _PriceCheckAppBarButtonsState extends State<PriceCheckAppBarButtons> {
                           });
                         },
                         style: GoogleFonts.lato(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.black),
-                        items: sortOptions.map((option) => DropdownMenuItem(
-                          value: option,
-                          child: Center(
-                            child: Text(
-                              option,
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        )).toList(),
+                        items: getSortItems(),
                         isExpanded: true,
                         isDense: true,
+                        disabledHint: Center(
+                          child: Text('( Cannot Sort )',
+                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
                       )
                     ),
                   )
@@ -96,6 +96,21 @@ class _PriceCheckAppBarButtonsState extends State<PriceCheckAppBarButtons> {
         ),
       ),
     );
+  }
+
+  List<DropdownMenuItem> getSortItems() {
+    if (sortingDisabled) {
+      return null;
+    }
+    return sortOptions.map((option) => DropdownMenuItem(
+      value: option,
+      child: Center(
+        child: Text(
+          option,
+          textAlign: TextAlign.center,
+        ),
+      ),
+    )).toList();
   }
 
   Color getStarFilterColor() {
@@ -173,5 +188,11 @@ class _PriceCheckAppBarButtonsState extends State<PriceCheckAppBarButtons> {
         ),
       ],
     ).show(context);
+  }
+
+  void disableSorting() {
+    setState(() {
+      sortingDisabled = true;
+    });
   }
 }

@@ -7,15 +7,14 @@ import 'package:rating_bar/rating_bar.dart';
 import 'package:markit/components/common/status_icon.dart';
 import 'package:markit/components/models/markit_user_model.dart';
 import 'package:markit/components/models/store_model.dart';
-import 'package:markit/components/service/live_feed_service.dart';
+import 'package:markit/components/service/date_service.dart';
 import 'package:markit/components/service/location_service.dart';
 
 class ReviewMark extends StatelessWidget {
   final String comment;
   final int rating;
   final StoreModel store;
-  final String user;
-  // final MarkitUserModel user;
+  final MarkitUserModel user;
   final DateTime submittedDate;
   final Position location;
 
@@ -52,7 +51,7 @@ class ReviewMark extends StatelessWidget {
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                     child: Text(
-                      '${LiveFeedService.getTimeString(submittedDate)}',
+                      '${DateService.getTimeString(submittedDate).item1}',
                       style: TextStyle(
                         color: Colors.grey
                       )
@@ -152,7 +151,7 @@ class ReviewMark extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Flexible(
-                        child: Text('$user',
+                        child: Text('${user.username}',
                           style: TextStyle(
                             fontSize: 15,
                             color: Colors.grey,
@@ -162,7 +161,7 @@ class ReviewMark extends StatelessWidget {
                       ),
                       Padding(
                         padding: EdgeInsets.only(left: 5),
-                        child: StatusIcon(userReputation: 100),
+                        child: StatusIcon(userReputation: user.userReputation),
                       ),
                     ],
                   ),

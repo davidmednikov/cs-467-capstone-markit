@@ -3,6 +3,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:select_dialog/select_dialog.dart';
 
 import 'package:markit/components/common/scaffold/dynamic_fab.dart';
+import 'package:markit/components/common/scaffold/price_check_app_bar_buttons.dart';
 import 'package:markit/components/models/price_check_model.dart';
 import 'package:markit/components/models/shopping_list_model.dart';
 import 'package:markit/components/models/store_model.dart';
@@ -17,8 +18,9 @@ class PriceCheckList extends StatefulWidget {
   ShoppingListModel shoppingList;
 
   GlobalKey<DynamicFabState> dynamicFabKey;
+  GlobalKey<PriceCheckAppBarButtonsState> priceCheckAppBarButtonsKey;
 
-  PriceCheckList({Key key, this.shoppingList, this.dynamicFabKey}) : super(key: key);
+  PriceCheckList({Key key, this.shoppingList, this.dynamicFabKey, this.priceCheckAppBarButtonsKey}) : super(key: key);
 
   ApiService apiService = new ApiService();
   AuthService authService = new AuthService();
@@ -61,12 +63,16 @@ class PriceCheckListState extends State<PriceCheckList> {
 
   Widget buildStoreList(List<Map> storeMaps) {
     List<PriceCheckModel> priceCheckStores = storeMaps.map((store) => PriceCheckModel.fromJson(store)).toList();
-    if (sortBy == 'Price Only') {
-      priceCheckStores.sort((a, b) => a.priceRank.compareTo(b.priceRank));
-    } else if (sortBy == 'Price & Staleness') {
-      priceCheckStores.sort((a, b) => a.priceAndStalenessRank.compareTo(b.priceAndStalenessRank));
-    } else if (sortBy == 'Staleness Only') {
-      priceCheckStores.sort((a, b) => a.stalenessRank.compareTo(b.stalenessRank));
+    if (priceCheckStores.length >= 1 && priceCheckStores[0].matchedRatio < 1) {
+      priceCheckStores.sort((b, a) => sortByRatioAndPrice(a, b));
+    } else {
+      if (sortBy == 'Price Only') {
+        priceCheckStores.sort((a, b) => a.priceRank.compareTo(b.priceRank));
+      } else if (sortBy == 'Price & Staleness') {
+        priceCheckStores.sort((a, b) => a.priceAndStalenessRank.compareTo(b.priceAndStalenessRank));
+      } else if (sortBy == 'Staleness Only') {
+        priceCheckStores.sort((a, b) => a.stalenessRank.compareTo(b.stalenessRank));
+      }
     }
     if (starFilterEnabled) {
       priceCheckStores.removeWhere((store) => store.store.averageRating == null || store.store.averageRating < minStars);
@@ -93,12 +99,21 @@ class PriceCheckListState extends State<PriceCheckList> {
       return [];
     } else {
       List<Map> storeMaps = List.from(priceCheckResponse['rankings']);
-      storeMaps.removeWhere((store) => store['missingItems'] == true);
-      if (storeMaps.length == 0) {
-        showNotification('No nearby stores match all tags in your list.');
+      if (storeMaps.length >= 1 && storeMaps[0]['matchedRatio'] < 1) {
+        showNotification('Some items could not be found.');
+        showNotifications = false;
+        widget.priceCheckAppBarButtonsKey.currentState.disableSorting();
       }
       return storeMaps;
     }
+  }
+
+  int sortByRatioAndPrice(PriceCheckModel a, PriceCheckModel b) {
+    int compare = a.matchedRatio.compareTo(b.matchedRatio);
+    if (compare == 0) {
+      return b.totalPrice.compareTo(a.totalPrice);
+    }
+    return compare;
   }
 
   void showNotification(String message) {

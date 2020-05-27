@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 import 'package:markit/components/models/markit_user_model.dart';
 
 class PriceCheckTagModel {
@@ -6,8 +8,11 @@ class PriceCheckTagModel {
   double price;
   bool isSalePrice;
   MarkitUserModel priceSubmittedBy;
+  DateTime submittedDate;
 
-  PriceCheckTagModel({this.tagId, this.tagNames, this.price, this.isSalePrice, this.priceSubmittedBy});
+  PriceCheckTagModel({this.tagId, this.tagNames, this.price, this.isSalePrice, this.priceSubmittedBy, this.submittedDate});
+
+  static DateFormat formatter = new DateFormat("yyyy-MM-ddTHH:mm:ss");
 
   factory PriceCheckTagModel.fromJson(Map<String, dynamic> json) {
     return PriceCheckTagModel(
@@ -16,6 +21,7 @@ class PriceCheckTagModel {
       price: json['price'],
       isSalePrice: json['isSalePrice'],
       priceSubmittedBy: MarkitUserModel.fromJsonForPriceCheck(json['priceSubmittedBy']),
+      submittedDate: formatter.parse(json['priceSubmittedBy']['submittedDate'], true),
     );
   }
 }

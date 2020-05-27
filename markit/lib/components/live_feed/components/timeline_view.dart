@@ -6,6 +6,7 @@ import 'package:timeline_list/timeline_model.dart';
 
 import 'package:markit/components/live_feed/components/price_mark.dart';
 import 'package:markit/components/live_feed/components/review_mark.dart';
+import 'package:markit/components/models/markit_user_model.dart';
 import 'package:markit/components/models/store_model.dart';
 
 // code for TimelineView class modified from Flutter Timeline plug-in by Furkan Tektas at:
@@ -37,7 +38,7 @@ class TimelineView extends StatelessWidget {
           child: PriceMark(
             tags: List<String>.from(item['tagNames']),
             store: StoreModel.fromJson(item['store']),
-            user: item['userName'], // Needs to be MarkitUser
+            user: MarkitUserModel.fromJsonForLiveFeed(item['user']),
             submittedDate: formatter.parse(item['createdAt'], true),
             price: item['price'],
             location: location,
@@ -60,7 +61,7 @@ class TimelineView extends StatelessWidget {
             comment: item['comment'],
             rating: item['points'],
             store: StoreModel.fromJson(item['store']),
-            user: item['userName'],
+            user: MarkitUserModel.fromJsonForLiveFeed(item['user']),
             submittedDate: formatter.parse(item['createdAt'], true),
             location: location,
           )

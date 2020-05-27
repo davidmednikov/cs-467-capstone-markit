@@ -8,10 +8,11 @@ class PriceCheckModel {
   int priceRank;
   int stalenessRank;
   int priceAndStalenessRank;
+  num matchedRatio;
   bool missingItems;
   List<PriceCheckTagModel> tagPrices;
 
-  PriceCheckModel({this.store, this.totalPrice, this.staleness, this.priceRank, this.stalenessRank, this.priceAndStalenessRank, this.missingItems, this.tagPrices});
+  PriceCheckModel({this.store, this.totalPrice, this.staleness, this.priceRank, this.stalenessRank, this.priceAndStalenessRank, this.matchedRatio, this.missingItems, this.tagPrices});
 
   factory PriceCheckModel.fromJson(Map<String, dynamic> json) {
     return PriceCheckModel(
@@ -21,6 +22,7 @@ class PriceCheckModel {
       priceRank: json['priceRank'],
       stalenessRank: json['stalenessRank'],
       priceAndStalenessRank: json['priceAndStalenessRank'],
+      matchedRatio: json['matchedRatio'],
       missingItems: json['missingItems'],
       tagPrices: getTagPricesFromObjects(json['listItems']),
     );
