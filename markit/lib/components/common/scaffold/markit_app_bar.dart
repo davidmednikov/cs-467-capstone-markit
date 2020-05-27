@@ -14,8 +14,9 @@ class MarkitAppBar extends StatefulWidget implements PreferredSizeWidget {
   GlobalKey<LiveFeedState> liveFeedKey;
   GlobalKey<PriceCheckListState> priceCheckListKey;
   GlobalKey<ViewStoresState> viewStoresKey;
+  GlobalKey<PriceCheckAppBarButtonsState> priceCheckAppBarButtonsKey;
 
-  MarkitAppBar({Key key, this.titleProp, this.liveFeedKey, this.priceCheckListKey, this.viewStoresKey }) : super(key: key);
+  MarkitAppBar({Key key, this.titleProp, this.liveFeedKey, this.priceCheckListKey, this.viewStoresKey, this.priceCheckAppBarButtonsKey }) : super(key: key);
 
   @override
   _MarkitAppBarState createState() => _MarkitAppBarState();
@@ -53,6 +54,7 @@ class _MarkitAppBarState extends State<MarkitAppBar> {
   Widget getBottomButtons() {
     if (_title == 'Price Check') {
       return PriceCheckAppBarButtons(
+        key: widget.priceCheckAppBarButtonsKey,
         priceCheckListKey: widget.priceCheckListKey,
       );
     } else if (_title == 'Live Feed') {

@@ -36,48 +36,54 @@ class StoreListingTile extends StatelessWidget {
   }
 
   Widget getLetterWidget() {
-    return  FractionallySizedBox(
-      child: Align(
-        child: Image.asset('assets/img/map_markers/letter_${letter.toLowerCase()}.png'),
-        alignment: Alignment.centerLeft
-      ),
-      heightFactor: 1,
-      widthFactor: 0.1,
-    );
+    if (letter != null) {
+      return FractionallySizedBox(
+        child: Align(
+          child: Image.asset('assets/img/map_markers/letter_${letter.toLowerCase()}.png'),
+          alignment: Alignment.centerLeft
+        ),
+        heightFactor: 1,
+        widthFactor: 0.1,
+      );
+    }
+    return null;
   }
 
   Widget getDistanceAndRatingWidget(double distance) {
-    return FractionallySizedBox(
-      alignment: Alignment.centerRight,
-      widthFactor: 0.2,
-      heightFactor: 1,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Expanded(
-                child: Align(
-                  alignment: Alignment.topRight,
-                  child: getRatingBar(),
+    return Padding(
+      padding: EdgeInsets.only(top: 3),
+      child: FractionallySizedBox(
+        alignment: Alignment.centerRight,
+        widthFactor: 0.2,
+        heightFactor: 1,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Expanded(
+                  child: Align(
+                    alignment: Alignment.topRight,
+                    child: getRatingBar(),
+                  ),
                 ),
-              ),
-            ],
-          ),
-          SizedBox(height: 5),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Expanded(
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: Text('${distance.toStringAsFixed(2)} mi', textAlign: TextAlign.end),
+              ],
+            ),
+            SizedBox(height: 5),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Expanded(
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: Text('${distance.toStringAsFixed(2)} mi', textAlign: TextAlign.end),
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

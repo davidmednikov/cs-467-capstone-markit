@@ -6,6 +6,7 @@ import 'package:markit/components/common/status_icon.dart';
 import 'package:markit/components/models/list_tag_model.dart';
 import 'package:markit/components/models/price_check_model.dart';
 import 'package:markit/components/models/price_check_tag_model.dart';
+import 'package:markit/components/service/date_service.dart';
 
 class PriceCheckTagTile extends StatelessWidget {
 
@@ -22,38 +23,61 @@ class PriceCheckTagTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(
-        listTag.tagName,
-        style: TextStyle(fontSize: 20),
-        overflow: TextOverflow.ellipsis,
+      title: Expanded(
+        child: Text(
+          listTag.tagName,
+          style: TextStyle(fontSize: 20),
+        // overflow: TextOverflow.ellipsis,
+        ),
       ),
       subtitle: getSubtitle(),
-      trailing: Stack(
-        alignment: Alignment.center,
-        children: getChildren(),
-      ),
+      trailing: getTrailing(),
     );
   }
 
   Widget getSubtitle() {
-    return Row(
-      children: [
-        Text('${listTag.quantity} x \$${priceCheckTag.price} --- 3 days ago by ${priceCheckTag.priceSubmittedBy.username}   '),
-        StatusIcon(userReputation: priceCheckTag.priceSubmittedBy.userReputation),
-      ],
+    if (priceCheckTag == null) {
+      return null;
+    }
+    return Flexible(
+      child: Row(
+          children: [
+            Text('${listTag.quantity} x \$${priceCheckTag.price} - ${DateService.getTimeString(priceCheckTag.submittedDate).item1} by ${priceCheckTag.priceSubmittedBy.username}  ',
+              style: getSubtitleTextStyle(),
+            ),
+            StatusIcon(userReputation: priceCheckTag.priceSubmittedBy.userReputation),
+          ],
+      ),
     );
   }
 
-  List<Widget> getChildren() {
-    List<Widget> widgets = [
-      Padding(
-        padding: EdgeInsets.only(bottom: 2),
-        child: Text(
-          '\$${(listTag.quantity * priceCheckTag.price).toStringAsFixed(2)}',
-          style: GoogleFonts.lato(fontSize: 20, fontWeight: FontWeight.bold),
-        ),
+  Widget getTrailing() {
+    if (priceCheckTag == null) {
+      return Text(
+        'MISSING',
+        style: GoogleFonts.lato(fontSize: 18, fontWeight: FontWeight.bold, color: getRedIfStaleOrMissing()),
+      );
+    }
+    return Padding(
+      padding: EdgeInsets.only(bottom: 2),
+      child: Text(
+        '\$${(listTag.quantity * priceCheckTag.price).toStringAsFixed(2)}',
+        style: GoogleFonts.lato(fontSize: 20, fontWeight: FontWeight.bold, color: getRedIfStaleOrMissing()),
       ),
-    ];
-    return widgets;
+    );
+  }
+
+  TextStyle getSubtitleTextStyle() {
+    if (priceCheckTag != null && DateService.getTimeString(priceCheckTag.submittedDate).item2) {
+      return TextStyle(color: Colors.red);
+    }
+    return null;
+  }
+
+  Color getRedIfStaleOrMissing() {
+    if (priceCheckTag == null || DateService.getTimeString(priceCheckTag.submittedDate).item2) {
+      return Colors.red;
+    }
+    return Colors.black;
   }
 }
