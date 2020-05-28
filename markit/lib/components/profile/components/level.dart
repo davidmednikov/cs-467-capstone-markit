@@ -72,11 +72,12 @@ class Level extends StatelessWidget {
             'Level:',
             style: TextStyle(
               color: Colors.white,
-              fontSize: 20
+              fontSize: 20,
+              fontWeight: FontWeight.bold
             )
           ),
           SizedBox(
-            height: MediaQuery.of(context).size.height * 0.015
+            height: MediaQuery.of(context).size.height * 0.01
           ),
           Text(
             level,
