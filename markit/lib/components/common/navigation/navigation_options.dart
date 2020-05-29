@@ -39,7 +39,7 @@ List<BottomNavigationBarItem> getNavTabOptions() {
   ];
 }
 
-List<Widget> getNavigators(GlobalKey listsNav, GlobalKey liveFeedNav, GlobalKey storesNav, GlobalKey profilesNav, GlobalKey dynamicFabKey) {
+List<Widget> getNavigators(GlobalKey listsNav, GlobalKey liveFeedNav, GlobalKey storesNav, GlobalKey profilesNav, GlobalKey dynamicFabKey, GlobalKey bottomScaffoldKey) {
   return [
     ListsNavigator(
       key: listsNav,
@@ -47,6 +47,7 @@ List<Widget> getNavigators(GlobalKey listsNav, GlobalKey liveFeedNav, GlobalKey 
     ),
     LiveFeedNavigator(
       key: liveFeedNav,
+      bottomScaffoldKey: bottomScaffoldKey,
     ),
     StoresNavigator(
       key: storesNav,
@@ -71,9 +72,9 @@ Map<String, Widget> getListsRoutes(GlobalKey myListsKey, GlobalKey viewListKey, 
   };
 }
 
-Map<String, Widget> getLiveFeedRoutes(GlobalKey liveFeedKey) {
+Map<String, Widget> getLiveFeedRoutes(GlobalKey liveFeedKey, GlobalKey bottomScaffoldKey) {
   return {
-    '/': LiveFeed(key: liveFeedKey),
+    '/': LiveFeed(key: liveFeedKey, bottomScaffoldKey: bottomScaffoldKey),
   };
 }
 

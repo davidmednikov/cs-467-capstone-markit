@@ -4,6 +4,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:timeline_list/timeline.dart';
 import 'package:timeline_list/timeline_model.dart';
 
+import 'package:markit/components/common/scaffold/bottom_scaffold.dart';
 import 'package:markit/components/live_feed/components/price_mark.dart';
 import 'package:markit/components/live_feed/components/review_mark.dart';
 import 'package:markit/components/models/markit_user_model.dart';
@@ -15,7 +16,9 @@ class TimelineView extends StatelessWidget {
   final List items;
   final Position location;
 
-  TimelineView({Key key, this.items, this.location}) : super(key: key);
+  GlobalKey<BottomScaffoldState> bottomScaffoldKey;
+
+  TimelineView({Key key, this.items, this.location, this.bottomScaffoldKey}) : super(key: key);
 
   final DateFormat formatter = new DateFormat("yyyy-MM-ddTHH:mm:ss");
 
@@ -42,6 +45,7 @@ class TimelineView extends StatelessWidget {
             submittedDate: formatter.parse(item['createdAt'], true),
             price: item['price'],
             location: location,
+            bottomScaffoldKey: bottomScaffoldKey,
           )
         ),
         position: TimelineItemPosition.left,
@@ -64,6 +68,7 @@ class TimelineView extends StatelessWidget {
             user: MarkitUserModel.fromJsonForLiveFeed(item['user']),
             submittedDate: formatter.parse(item['createdAt'], true),
             location: location,
+            bottomScaffoldKey: bottomScaffoldKey,
           )
         ),
         position: TimelineItemPosition.left,
