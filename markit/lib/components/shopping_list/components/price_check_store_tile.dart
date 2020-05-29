@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rating_bar/rating_bar.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 
 import 'package:markit/components/common/scaffold/dynamic_fab.dart';
@@ -25,16 +26,70 @@ class PriceCheckStoreTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(
-        storePriceCheck.store.name,
-        style: TextStyle(fontSize: 22),
+    return Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(5.0)
       ),
-      subtitle: Text(
-        '${getDistance()} mi. away',
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+        child: ListTile(
+          title: getStoreNameWithRating(),
+          subtitle: Text(
+            '${getDistance()} mi. away',
+          ),
+          trailing: showPriceOrPriceAndProgress(),
+          onTap: () => viewStoreTags(context),
+        ),
       ),
-      trailing: showPriceOrPriceAndProgress(),
-      onTap: () => viewStoreTags(context),
+    );
+  }
+
+  Widget getStoreNameWithRating() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  storePriceCheck.store.name,
+                  style: TextStyle(fontSize: 22),
+                ),
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 4),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: getRatingBar(),
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 5),
+      ],
+    );
+  }
+
+  Widget getRatingBar() {
+    double rating = storePriceCheck.store.averageRating == null ? 0 : storePriceCheck.store.averageRating;
+    return RatingBar.readOnly(
+      initialRating: (rating * 2).roundToDouble() / 2.0,
+      isHalfAllowed: true,
+      emptyIcon: FontAwesomeIcons.star,
+      filledIcon: FontAwesomeIcons.solidStar,
+      halfFilledIcon: FontAwesomeIcons.starHalfAlt,
+      size: 15,
+      align: Alignment.centerLeft,
     );
   }
 
