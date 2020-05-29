@@ -11,14 +11,14 @@ class StatusAvatar extends StatelessWidget {
   Widget build(BuildContext context) {
     if (userReputation != null) {
       if (userReputation < 10) {
-        return FaIcon(FontAwesomeIcons.award);
+        return FaIcon(FontAwesomeIcons.award, size: 36);
       } else if (userReputation < 25) {
-        return FaIcon(FontAwesomeIcons.medal);
+        return FaIcon(FontAwesomeIcons.medal, size: 36);
       } else if (userReputation < 50) {
-        return FaIcon(FontAwesomeIcons.trophy);
+        return FaIcon(FontAwesomeIcons.trophy, size: 36);
       }
-      return FaIcon(FontAwesomeIcons.crown);
+      return FaIcon(FontAwesomeIcons.crown, size: 36);
     }
-    return FaIcon(FontAwesomeIcons.user);
+    return FaIcon(FontAwesomeIcons.user, size: 36);
   }
 }

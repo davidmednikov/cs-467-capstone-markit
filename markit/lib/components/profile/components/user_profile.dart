@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:avatar_glow/avatar_glow.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:markit/components/common/widgets/status_avatar.dart';
-import 'package:markit/components/models/markit_user_model.dart';
 import 'package:skeleton_text/skeleton_text.dart';
 import 'package:tuple/tuple.dart';
 
+import 'package:markit/components/common/scaffold/bottom_scaffold.dart';
+import 'package:markit/components/common/widgets/status_avatar.dart';
+import 'package:markit/components/models/markit_user_model.dart';
+import 'package:markit/components/profile/components/recent_marks.dart';
 import 'package:markit/components/service/api_service.dart';
 import 'package:markit/components/service/auth_service.dart';
-import 'package:markit/components/profile/components/level.dart';
-import 'package:markit/components/profile/components/recent_marks.dart';
-import 'package:markit/components/profile/components/reputation.dart';
 import 'package:markit/components/service/location_service.dart';
 
 class UserProfile extends StatelessWidget {
@@ -23,11 +21,16 @@ class UserProfile extends StatelessWidget {
   List ratings;
   List prices;
 
+  int totalRatings;
+  int totalPrices;
+
   ApiService apiService = new ApiService();
   AuthService authService = new AuthService();
   LocationService locationService = new LocationService();
 
-  UserProfile({Key key, this.userProp}) : super(key: key);
+  GlobalKey<BottomScaffoldState> bottomScaffoldKey;
+
+  UserProfile({Key key, this.userProp, this.bottomScaffoldKey}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +54,7 @@ class UserProfile extends StatelessWidget {
     Map<String, Object> userData = new Map();
     userData['user'] = userProp;
     userData['totalRatings'] = ratingsResponse.item2;
-    userData['totalprices'] = pricesResponse.item2;
+    userData['totalPrices'] = pricesResponse.item2;
     userData['activity'] = sortMarks(ratings, prices);
     return userData;
   }
@@ -60,198 +63,50 @@ class UserProfile extends StatelessWidget {
     print('user data: $snapshot');
     if (snapshot.hasData) {
       Map<String, Object> userData = snapshot.data;
-      MarkitUserModel markitUser = userData['user'];
-      return getBlankTemplate(context);
+      userProp = userData['user'];
+      totalRatings = userData['totalRatings'];
+      totalPrices = userData['totalPrices'];
       return Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Container(
-            height: MediaQuery.of(context).size.height * 0.25,
-            width: MediaQuery.of(context).size.width,
-            color: Colors.deepOrange,
-            child: Padding(
-              padding: EdgeInsets.only(bottom: 20),
-              child: Center(
-                child: getAvatar(context),
-              ),
-            ),
-          ),
-          // Padding(
-          //   padding: EdgeInsets.fromLTRB(
-          //     MediaQuery.of(context).size.height * 0.025,
-          //     MediaQuery.of(context).size.height * 0.01,
-          //     MediaQuery.of(context).size.height * 0.025,
-          //     MediaQuery.of(context).size.height * 0.01,
-          //     ),
-          //   child: Row(
-          //     mainAxisAlignment: MainAxisAlignment.center,
-          //     children: [
-          //       Expanded(
-          //         flex: 2,
-          //         child: Level(level: snapshot.data['level'])
-          //       ),
-          //       Expanded(
-          //         flex: 1,
-          //         child: SizedBox(width: MediaQuery.of(context).size.width * 0.1)
-          //       ),
-          //       Expanded(
-          //         flex: 2,
-          //         child: ReputationMarks(
-          //           reputation: snapshot.data['reputation'],
-          //           totalMarks: snapshot.data['totalMarks']
-          //         )
-          //       ),
-          //     ],
-          //   )
-          // ),
-          Center(
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(0, 0, 0, MediaQuery.of(context).size.height * 0.025),
-              child: Text(
-                'Recent marks',
-                style: TextStyle(
-                  fontSize: 20,
-                  decoration: TextDecoration.underline
-                )
-              )
-            )
-          ),
+          profilePageTemplate(context),
           Expanded(
-            child: RecentMarks(marks: userData['activity'], location: location)
+            child: RecentMarks(marks: userData['activity'], location: location, bottomScaffoldKey: bottomScaffoldKey)
           )
         ],
       );
     }
-    return getBlankTemplate(context);
-  }
-
-  Widget getBlankTemplate(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Stack(
-          alignment: Alignment.topCenter,
-          overflow: Overflow.visible,
-          children: [
-            Container(
-              height: MediaQuery.of(context).size.height * 0.3,
-              width: MediaQuery.of(context).size.width,
-              color: Colors.deepOrange,
-              child: getAvatar(context),
-            ),
-            Positioned(
-              top: MediaQuery.of(context).size.height * 0.175,
-              child: getUsernameBanner(context),
-            ),
-            Positioned(
-              top: MediaQuery.of(context).size.height * 0.25,
-              left: MediaQuery.of(context).size.width * 0.05,
-              right: MediaQuery.of(context).size.width * 0.05,
-              height: MediaQuery.of(context).size.height * 0.2,
-              child: getSummaryBox(),
-            ),
-          ],
-        ),
+        profilePageTemplate(context),
       ],
     );
   }
 
-  Widget getSummaryBox({String level, int prices, int reviews}) {
-    return Card(
-      elevation: 5,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(5.0)
-      ),
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        child: Column(
-          children: [
-            Flexible(
-              flex: 1,
-              child: Row(
-                children: [
-                  Flexible(
-                    child: LayoutBuilder(
-                      builder: (context, constraints) => getSkeletonText(constraints),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Flexible(
-              flex: 3,
-              child: Row(
-                children: [
-                  Flexible(
-                    child: Column(
-                      children: [
-                        Flexible(
-                          flex: 1,
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Center(
-                                  child: Text('Reviews',
-                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)
-                                  ),
-                                ),
-                              ),
-                            ]
-                          )
-                        ),
-                        Flexible(
-                          flex: 2,
-                          child: Row(
-                            children: [
-                              Flexible(
-                                child: LayoutBuilder(
-                                  builder: (context, constraints) => getSkeletonText(constraints),
-                                  ),
-                              ),
-                            ]
-                          )
-                        )
-                      ]
-                    ),
-                  ),
-                  Flexible(
-                    child: Column(
-                      children: [
-                        Flexible(
-                          flex: 1,
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Center(
-                                  child: Text('Prices',
-                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)
-                                  ),
-                                ),
-                              ),
-                            ]
-                          )
-                        ),
-                        Flexible(
-                          flex: 2,
-                          child: Row(
-                            children: [
-                              Flexible(
-                                child: LayoutBuilder(
-                                  builder: (context, constraints) => getSkeletonText(constraints),
-                                ),
-                              ),
-                            ]
-                          )
-                        )
-                      ]
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
+  Widget profilePageTemplate(BuildContext context) {
+    return Stack(
+      alignment: Alignment.topCenter,
+      overflow: Overflow.visible,
+      children: [
+        Container(
+          height: MediaQuery.of(context).size.height * 0.35,
+          width: MediaQuery.of(context).size.width,
+          color: Colors.deepOrange,
+          child: getAvatar(context),
         ),
-      ),
+        Positioned(
+          top: MediaQuery.of(context).size.height * 0.1725,
+          child: getUsernameBanner(context),
+        ),
+        Positioned(
+          top: MediaQuery.of(context).size.height * 0.24,
+          left: MediaQuery.of(context).size.width * 0.05,
+          right: MediaQuery.of(context).size.width * 0.05,
+          height: MediaQuery.of(context).size.height * 0.16,
+          child: getSummaryBox(context: context),
+        ),
+      ],
     );
   }
 
@@ -259,7 +114,7 @@ class UserProfile extends StatelessWidget {
     return Align(
       alignment: Alignment.topCenter,
       child: AvatarGlow(
-        endRadius: MediaQuery.of(context).size.height * 0.11,
+        endRadius: MediaQuery.of(context).size.height * 0.095,
         showTwoGlows: true,
         child: Material(
           elevation: 8.0,
@@ -267,7 +122,7 @@ class UserProfile extends StatelessWidget {
           child: CircleAvatar(
             backgroundColor: Colors.deepOrange[100],
             child: getAvatarContent(),
-            radius: MediaQuery.of(context).size.height * 0.075,
+            radius: MediaQuery.of(context).size.height * 0.065,
             // radius: 50,
           ),
         ),
@@ -310,15 +165,172 @@ class UserProfile extends StatelessWidget {
     );
   }
 
+  Widget getSummaryBox({String level, int prices, int reviews, BuildContext context}) {
+    return Card(
+      elevation: 5,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(5.0)
+      ),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        child: Column(
+          children: [
+            Flexible(
+              flex: 1,
+              child: Row(
+                children: [
+                  showLevelOrSkeleton(),
+                ],
+              ),
+            ),
+            Flexible(
+              flex: 2,
+              child: Row(
+                children: [
+                  Flexible(
+                    child: Padding(
+                      padding: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.1),
+                      child: Column(
+                        children: [
+                          Flexible(
+                            flex: 1,
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Center(
+                                    child: Text('Reviews',
+                                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17)
+                                    ),
+                                  ),
+                                ),
+                              ]
+                            )
+                          ),
+                          Flexible(
+                            flex: 2,
+                            child: Row(
+                              children: [
+                                showRatingsCountOrSkeleton(),
+                              ]
+                            )
+                          )
+                        ]
+                      ),
+                    ),
+                  ),
+                  Flexible(
+                    child: Padding(
+                      padding: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.1),
+                      child: Column(
+                        children: [
+                          Flexible(
+                            flex: 1,
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Center(
+                                    child: Text('Prices',
+                                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17)
+                                    ),
+                                  ),
+                                ),
+                              ]
+                            )
+                          ),
+                          Flexible(
+                            flex: 2,
+                            child: Row(
+                              children: [
+                                showPricesCountOrSkeleton(),
+                              ]
+                            )
+                          )
+                        ]
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget showLevelOrSkeleton() {
+    if (totalRatings == null) {
+      return Flexible(
+        child: LayoutBuilder(
+          builder: (context, constraints) => getSkeletonText(constraints),
+          ),
+      );
+    }
+    return Flexible(
+      child: Center(
+        child: Text('${userProp.level}',
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget showRatingsCountOrSkeleton() {
+    if (totalRatings == null) {
+      return Flexible(
+        child: LayoutBuilder(
+          builder: (context, constraints) => getSkeletonText(constraints),
+          ),
+      );
+    }
+    return Flexible(
+      child: Center(
+        child: Text('$totalRatings',
+          style: TextStyle(
+            color: Colors.deepOrange,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget showPricesCountOrSkeleton() {
+    if (totalPrices == null) {
+      return Flexible(
+        child: LayoutBuilder(
+          builder: (context, constraints) => getSkeletonText(constraints),
+          ),
+      );
+    }
+    return Flexible(
+      child: Center(
+        child: Text('$totalPrices',
+          style: TextStyle(
+            color: Colors.deepOrange,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget getSkeletonText(BoxConstraints constraints) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 10),
-      child: SkeletonAnimation(
-        child: Container(
-          width: constraints.maxWidth,
-          height: constraints.maxHeight * .9,
-          decoration: BoxDecoration(
-              color: Colors.grey[300],
+      child: Center(
+        child: SkeletonAnimation(
+          child: Container(
+            width: constraints.maxWidth * .75,
+            height: constraints.maxHeight * .75,
+            decoration: BoxDecoration(
+                color: Colors.grey[300],
+            ),
           ),
         ),
       ),

@@ -18,8 +18,8 @@ class MarkitUserModel {
       username: json['userName'],
       firstName: json['firstName'],
       lastName: json['lastName'],
-      reputation: json['userReputation'],
-      level: json['userLevel'],
+      reputation: json['reputation'],
+      level: json['level'],
     );
   }
 
@@ -33,6 +33,7 @@ class MarkitUserModel {
 
   factory MarkitUserModel.fromJsonForLiveFeed(Map<String, dynamic> json) {
     return MarkitUserModel(
+      id: json['id'],
       username: json['userName'],
       reputation: json['reputation'],
       level: json['level'],

@@ -13,6 +13,8 @@ import 'package:markit/components/common/navigation/navigation_options.dart';
 import 'package:markit/components/common/navigation/stores_navigator.dart';
 import 'package:markit/components/common/scaffold/bottom_nav_bar.dart';
 import 'package:markit/components/common/scaffold/dynamic_fab.dart';
+import 'package:markit/components/models/markit_user_model.dart';
+import 'package:markit/components/models/store_model.dart';
 import 'package:markit/components/service/location_service.dart';
 import 'package:markit/components/service/scan_barcode_service.dart';
 import 'package:markit/components/service/tutorial_service.dart';
@@ -34,7 +36,7 @@ class BottomScaffold extends StatefulWidget {
 
 class BottomScaffoldState extends State<BottomScaffold> {
 
-  int _selectedIndex = 0;
+  int selectedIndex = 0;
 
   final List<BottomNavigationBarItem> _navOptions = getNavTabOptions();
 
@@ -57,9 +59,9 @@ class BottomScaffoldState extends State<BottomScaffold> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _navigators[_selectedIndex],
+      body: _navigators[selectedIndex],
       bottomNavigationBar: BottomNavBar(
-        selectedIndex: _selectedIndex,
+        selectedIndex: selectedIndex,
         navOptions: _navOptions,
         onItemTapped: _onItemTapped,
       ),
@@ -77,11 +79,11 @@ class BottomScaffoldState extends State<BottomScaffold> {
   }
 
   void _onItemTapped(int index) {
-    if (index != _selectedIndex) {
+    if (index != selectedIndex) {
       dynamicFabState.currentState.tabChanged();
     }
     setState(() {
-      _selectedIndex = index;
+      selectedIndex = index;
     });
   }
 
@@ -134,19 +136,25 @@ class BottomScaffoldState extends State<BottomScaffold> {
     listsNavigatorState.currentState.popBackToPriceCheck();
   }
 
-  void navigateToStore(int storeId) {
-    dynamicFabState.currentState.changePage('viewStores');
+  void navigateToStore(StoreModel store) {
+    dynamicFabState.currentState.changePage('viewStore');
     _onItemTapped(2);
+    Navigator.of(storesNavigatorState.currentState.widget.viewStoresKey.currentContext)
+      .pushNamed('view', arguments: store);
   }
 
-  void navigateToUser(int userId) {
-    dynamicFabState.currentState.changePage('myProfile');
+  void navigateToUser(MarkitUserModel user) {
+    dynamicFabState.currentState.changePage('viewProfile');
     _onItemTapped(3);
+    new Future.delayed(const Duration(milliseconds: 50), () {
+      Navigator.of(profilesNavigatorState.currentState.widget.myProfileKey.currentContext)
+      .pushNamed('view', arguments: user);
+    });
   }
 
   String getPage() {
     GlobalKey theKey;
-    switch (_selectedIndex) {
+    switch (selectedIndex) {
       case 0:
         if (listsNavigatorState.currentContext == null) {
           return 'myLists';
@@ -175,7 +183,7 @@ class BottomScaffoldState extends State<BottomScaffold> {
         return 'markit';
     }
     String route = ModalRoute.of(theKey.currentContext).settings.name;
-    String title = widget.pages[_selectedIndex][route];
+    String title = widget.pages[selectedIndex][route];
     return title;
   }
 
