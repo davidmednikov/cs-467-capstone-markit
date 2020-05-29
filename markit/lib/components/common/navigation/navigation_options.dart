@@ -7,6 +7,7 @@ import 'package:markit/components/common/navigation/profiles_navigator.dart';
 import 'package:markit/components/common/navigation/stores_navigator.dart';
 import 'package:markit/components/live_feed/pages/live_feed.dart';
 import 'package:markit/components/profile/pages/my_profile.dart';
+import 'package:markit/components/profile/pages/view_profile.dart';
 import 'package:markit/components/shopping_list/pages/add_tag.dart';
 import 'package:markit/components/shopping_list/pages/my_lists.dart';
 import 'package:markit/components/shopping_list/pages/new_list.dart';
@@ -39,7 +40,7 @@ List<BottomNavigationBarItem> getNavTabOptions() {
   ];
 }
 
-List<Widget> getNavigators(GlobalKey listsNav, GlobalKey liveFeedNav, GlobalKey storesNav, GlobalKey profilesNav, GlobalKey dynamicFabKey) {
+List<Widget> getNavigators(GlobalKey listsNav, GlobalKey liveFeedNav, GlobalKey storesNav, GlobalKey profilesNav, GlobalKey dynamicFabKey, GlobalKey bottomScaffoldKey) {
   return [
     ListsNavigator(
       key: listsNav,
@@ -47,6 +48,7 @@ List<Widget> getNavigators(GlobalKey listsNav, GlobalKey liveFeedNav, GlobalKey 
     ),
     LiveFeedNavigator(
       key: liveFeedNav,
+      bottomScaffoldKey: bottomScaffoldKey,
     ),
     StoresNavigator(
       key: storesNav,
@@ -54,6 +56,7 @@ List<Widget> getNavigators(GlobalKey listsNav, GlobalKey liveFeedNav, GlobalKey 
     ProfilesNavigator(
       key: profilesNav,
       dynamicFabKey: dynamicFabKey,
+      bottomScaffoldKey: bottomScaffoldKey,
     ),
   ];
 }
@@ -71,9 +74,9 @@ Map<String, Widget> getListsRoutes(GlobalKey myListsKey, GlobalKey viewListKey, 
   };
 }
 
-Map<String, Widget> getLiveFeedRoutes(GlobalKey liveFeedKey) {
+Map<String, Widget> getLiveFeedRoutes(GlobalKey liveFeedKey, GlobalKey bottomScaffoldKey) {
   return {
-    '/': LiveFeed(key: liveFeedKey),
+    '/': LiveFeed(key: liveFeedKey, bottomScaffoldKey: bottomScaffoldKey),
   };
 }
 
@@ -84,10 +87,10 @@ Map<String, Widget> getStoresRoutes(GlobalKey viewStoreskey) {
   };
 }
 
-Map<String, Widget> getProfileRoutes(GlobalKey dynamicFab) {
+Map<String, Widget> getProfileRoutes(GlobalKey myProfileKey, GlobalKey dynamicFab, GlobalKey bottomScaffoldKey) {
   return {
-    '/': MyProfile(dynamicFabKey: dynamicFab),
-    // 'userProfile' : UserProfile()
+    '/': MyProfile(key: myProfileKey, dynamicFabKey: dynamicFab, bottomScaffoldKey: bottomScaffoldKey),
+    'view': ViewProfile(bottomScaffoldKey: bottomScaffoldKey),
   };
 }
 

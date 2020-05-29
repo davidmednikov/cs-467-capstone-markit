@@ -27,6 +27,8 @@ void main() async {
 class Markit extends StatelessWidget {
   String token;
 
+  GlobalKey<BottomScaffoldState> bottomScaffoldKey = new GlobalKey();
+
   Markit({Key key, this.token}) : super(key: key);
 
   @override
@@ -56,7 +58,7 @@ class Markit extends StatelessWidget {
   Map<String, WidgetBuilder> getRoutes() {
     return {
       'auth': (context) => LoginScreen(),
-      '/': (context) => BottomScaffold(),
+      '/': (context) => BottomScaffold(key: bottomScaffoldKey),
       'register': (context) => RegistrationScreen(),
       'markit': (context) => MarkPrice(),
     };

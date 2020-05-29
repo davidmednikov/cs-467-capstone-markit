@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:markit/components/common/scaffold/dynamic_fab.dart';
-import 'package:markit/components/common/status_icon.dart';
+import 'package:markit/components/common/widgets/status_icon.dart';
 import 'package:markit/components/models/list_tag_model.dart';
 import 'package:markit/components/models/price_check_model.dart';
 import 'package:markit/components/models/price_check_tag_model.dart';
@@ -42,7 +42,7 @@ class PriceCheckTagTile extends StatelessWidget {
         Text('${listTag.quantity} x \$${priceCheckTag.price} - ${DateService.getTimeString(priceCheckTag.submittedDate).item1} by ${priceCheckTag.priceSubmittedBy.username}  ',
           style: getSubtitleTextStyle(),
         ),
-        StatusIcon(userReputation: priceCheckTag.priceSubmittedBy.userReputation),
+        StatusIcon(userReputation: priceCheckTag.priceSubmittedBy.reputation),
       ],
     );
   }
