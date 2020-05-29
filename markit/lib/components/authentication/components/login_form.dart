@@ -22,6 +22,8 @@ class _LoginFormState extends State<LoginForm> {
   AuthService authService = new AuthService();
   NotificationService notificationService = new NotificationService();
 
+  bool buttonPressed = false;
+
   @override
   Widget build(BuildContext context) {
 
@@ -90,6 +92,7 @@ class _LoginFormState extends State<LoginForm> {
           RaisedButton(
             onPressed: () async {
               if (_formKey.currentState.validate()) {
+                setState(() => buttonPressed = true);
                 _formKey.currentState.save();
                 String token = await authService.getTokenFromServer(currentUser.username, currentUser.password);
                 if (token != null) {
@@ -99,6 +102,7 @@ class _LoginFormState extends State<LoginForm> {
                   Navigator.pushReplacementNamed(context, '/');
                 }
                 else {
+                  setState(() => buttonPressed = false);
                   notificationService.showErrorNotification('Invalid credentials.');
                 }
               }
@@ -106,14 +110,7 @@ class _LoginFormState extends State<LoginForm> {
             shape: StadiumBorder(),
             color: Colors.white,
             padding: EdgeInsets.fromLTRB(50, 15, 50, 15),
-            child: Text(
-              "Log in",
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.deepOrange
-              )
-            )
+            child: showTextOrLoading(),
           ),
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.05,
@@ -135,6 +132,26 @@ class _LoginFormState extends State<LoginForm> {
             )
           )
         ])
+      )
+    );
+  }
+
+  Widget showTextOrLoading() {
+    if (buttonPressed) {
+      return Center(
+        child: SizedBox(
+          height: 21,
+          width: 21,
+          child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.deepOrange)),
+        )
+      );
+    }
+    return Text(
+      "Log in",
+      style: TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.bold,
+        color: Colors.deepOrange
       )
     );
   }

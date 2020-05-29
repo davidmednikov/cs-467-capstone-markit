@@ -85,9 +85,9 @@ Map<String, Widget> getStoresRoutes(GlobalKey viewStoreskey) {
   };
 }
 
-Map<String, Widget> getProfileRoutes(GlobalKey dynamicFab) {
+Map<String, Widget> getProfileRoutes(GlobalKey myProfileKey, GlobalKey dynamicFab) {
   return {
-    '/': MyProfile(dynamicFabKey: dynamicFab),
+    '/': MyProfile(key: myProfileKey, dynamicFabKey: dynamicFab),
     // 'userProfile' : UserProfile()
   };
 }

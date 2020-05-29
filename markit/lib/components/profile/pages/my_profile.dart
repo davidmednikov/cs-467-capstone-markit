@@ -16,14 +16,15 @@ class MyProfile extends StatefulWidget {
   MyProfile({Key key, this.dynamicFabKey}) : super(key: key);
 
   @override
-  _MyProfileState createState() => _MyProfileState();
+  MyProfileState createState() => MyProfileState();
 }
 
-class _MyProfileState extends State<MyProfile> {
+class MyProfileState extends State<MyProfile> {
   @override
   Widget build(BuildContext context) {
     return TopScaffold(
       title: 'View Profile',
+      myProfileKey: widget.key,
       // view: FutureBuilder(
       //   future: getUserInfo(),
       //   builder: (context, snapshot) {
@@ -53,4 +54,9 @@ class _MyProfileState extends State<MyProfile> {
     //   child: const Text('Logout', style: TextStyle(fontSize: 20)),
     // );
     // return MarkPrice();
+
+  void logout() {
+    widget.authService.logout();
+    Navigator.of(widget.dynamicFabKey.currentContext).pushReplacementNamed('auth');
+  }
 }
