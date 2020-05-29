@@ -13,8 +13,8 @@ import 'package:markit/components/common/navigation/navigation_options.dart';
 import 'package:markit/components/common/navigation/stores_navigator.dart';
 import 'package:markit/components/common/scaffold/bottom_nav_bar.dart';
 import 'package:markit/components/common/scaffold/dynamic_fab.dart';
-import 'package:markit/components/common/scan_barcode.dart';
 import 'package:markit/components/service/location_service.dart';
+import 'package:markit/components/service/scan_barcode_service.dart';
 import 'package:markit/components/service/tutorial_service.dart';
 import 'package:markit/components/service/tag_service.dart';
 
@@ -27,6 +27,7 @@ class BottomScaffold extends StatefulWidget {
   BottomScaffoldState createState() => BottomScaffoldState();
 
   LocationService locationService = new LocationService();
+  ScanBarcodeService scanBarcodeService = new ScanBarcodeService();
   TagService tagService = new TagService();
   TutorialService tutorialService = new TutorialService();
 }
@@ -102,7 +103,7 @@ class BottomScaffoldState extends State<BottomScaffold> {
   }
 
   void _onBarcodeButtonPressed() async {
-    String barcode = await scanBarcode();
+    String barcode = await widget.scanBarcodeService.scanBarcode();
     if (barcode != null) {
       String currentPage = dynamicFabState.currentState.currentPage;
       final ProgressDialog dialog = ProgressDialog(context);

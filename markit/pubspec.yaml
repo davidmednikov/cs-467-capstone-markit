@@ -20,6 +20,7 @@ dependencies:
   flutter:
     sdk: flutter
   adaptive_dialog: ^0.5.0
+  avatar_glow: ^1.2.0
   barcode_scan: ^3.0.0
   distance: ^0.1.1
   easy_dialog: ^1.0.5
@@ -46,6 +47,7 @@ dependencies:
   rating_bar:
     path: ./modified_plugins/rating_bar-0.2.0-align-fix
   select_dialog: ^1.1.0
+  skeleton_text: ^1.0.0
   step_progress_indicator: ^0.2.3+6
   timeline_list: ^0.0.5
   tutorial_coach_mark: ^0.3.0
