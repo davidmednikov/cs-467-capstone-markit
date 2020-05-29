@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
 import 'package:markit/components/common/scaffold/top_scaffold.dart';
+import 'package:markit/components/common/scaffold/bottom_scaffold.dart';
 import 'package:markit/components/live_feed/components/timeline_view.dart';
 import 'package:markit/components/service/api_service.dart';
 import 'package:markit/components/service/date_service.dart';
@@ -9,7 +10,9 @@ import 'package:markit/components/service/location_service.dart';
 
 class LiveFeed extends StatefulWidget {
 
-  LiveFeed({Key key}) : super(key: key);
+  GlobalKey<BottomScaffoldState> bottomScaffoldKey;
+
+  LiveFeed({Key key, this.bottomScaffoldKey}) : super(key: key);
 
   ApiService apiService = new ApiService();
   DateService dateService = new DateService();
@@ -81,7 +84,7 @@ class LiveFeedState extends State<LiveFeed> {
   Widget showTimelineOrLoading(AsyncSnapshot<List<Map>> snapshot) {
     if (snapshot.hasData) {
       List<Map> events = snapshot.data;
-      return TimelineView(items: events, location: location);
+      return TimelineView(items: events, location: location, bottomScaffoldKey: widget.bottomScaffoldKey);
     }
     return Center(
       child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.deepOrange)),

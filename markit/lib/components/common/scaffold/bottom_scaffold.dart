@@ -50,7 +50,7 @@ class BottomScaffoldState extends State<BottomScaffold> {
   @override
   void initState() {
     super.initState();
-    _navigators =  getNavigators(listsNavigatorState, liveFeedNavigatorState, storesNavigatorState, profilesNavigatorState, dynamicFabState);
+    _navigators =  getNavigators(listsNavigatorState, liveFeedNavigatorState, storesNavigatorState, profilesNavigatorState, dynamicFabState, widget.key);
     WidgetsBinding.instance.addPostFrameCallback((_) => showTutorialIfFirstTime());
   }
 
@@ -71,7 +71,6 @@ class BottomScaffoldState extends State<BottomScaffold> {
         onPriceCheckButtonPressed: _onPriceCheckButtonPressed,
         onAddRatingButtonPressed: _onAddRatingButtonPressed,
         onCancelButtonPressed: _onCancelButtonPressed,
-        onCheckmarkButtonPressed: _onCheckmarkButtonPressed,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
@@ -135,8 +134,14 @@ class BottomScaffoldState extends State<BottomScaffold> {
     listsNavigatorState.currentState.popBackToPriceCheck();
   }
 
-  void _onCheckmarkButtonPressed() {
-    print('checkmark');
+  void navigateToStore(int storeId) {
+    dynamicFabState.currentState.changePage('viewStores');
+    _onItemTapped(2);
+  }
+
+  void navigateToUser(int userId) {
+    dynamicFabState.currentState.changePage('myProfile');
+    _onItemTapped(3);
   }
 
   String getPage() {
