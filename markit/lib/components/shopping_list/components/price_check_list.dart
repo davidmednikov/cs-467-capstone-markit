@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:select_dialog/select_dialog.dart';
 
@@ -79,13 +80,7 @@ class PriceCheckListState extends State<PriceCheckList> {
     }
     storesInPriceCheck = priceCheckStores.map((store) => store.store).toList();
     return Expanded(
-      child: ListView.builder(
-        itemCount: priceCheckStores.length,
-        itemBuilder: (context, index) {
-          PriceCheckModel store = priceCheckStores[index];
-          return PriceCheckStoreTile(dynamicFabKey: widget.dynamicFabKey, storePriceCheck: store, shoppingList: widget.shoppingList, userLocation: position);
-        },
-      ),
+      child: showListOrIcon(priceCheckStores),
     );
   }
 
@@ -95,7 +90,7 @@ class PriceCheckListState extends State<PriceCheckList> {
     String url = 'https://markit-api.azurewebsites.net/user/$userId/list/${widget.shoppingList.id}/analyze?latitude=${position.latitude}&longitude=${position.longitude}';
     Map priceCheckResponse = await widget.apiService.getMap(url);
     if (priceCheckResponse['errors'] != null && priceCheckResponse['statusCode'] == 400) {
-      showNotification('No nearby stores found.');
+      showNotification('No stores found nearby.');
       return [];
     } else {
       List<Map> storeMaps = List.from(priceCheckResponse['rankings']);
@@ -106,6 +101,24 @@ class PriceCheckListState extends State<PriceCheckList> {
       }
       return storeMaps;
     }
+  }
+
+  Widget showListOrIcon(List<PriceCheckModel> priceCheckStores) {
+    if (priceCheckStores.length == 0) {
+      return Center(
+        child: Opacity(
+          opacity: 0.35,
+          child: FaIcon(FontAwesomeIcons.storeSlash, size: 125, color: Colors.grey),
+        ),
+      );
+    }
+    return ListView.builder(
+      itemCount: priceCheckStores.length,
+      itemBuilder: (context, index) {
+        PriceCheckModel store = priceCheckStores[index];
+        return PriceCheckStoreTile(dynamicFabKey: widget.dynamicFabKey, storePriceCheck: store, shoppingList: widget.shoppingList, userLocation: position);
+      },
+    );
   }
 
   int sortByRatioAndPrice(PriceCheckModel a, PriceCheckModel b) {

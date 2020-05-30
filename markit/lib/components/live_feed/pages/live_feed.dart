@@ -7,6 +7,7 @@ import 'package:markit/components/live_feed/components/timeline_view.dart';
 import 'package:markit/components/service/api_service.dart';
 import 'package:markit/components/service/date_service.dart';
 import 'package:markit/components/service/location_service.dart';
+import 'package:markit/components/service/notification_service.dart';
 
 class LiveFeed extends StatefulWidget {
 
@@ -17,6 +18,7 @@ class LiveFeed extends StatefulWidget {
   ApiService apiService = new ApiService();
   DateService dateService = new DateService();
   LocationService locationService = new LocationService();
+  NotificationService notificationService = new NotificationService();
 
 @override
   LiveFeedState createState() => LiveFeedState();
@@ -49,12 +51,24 @@ class LiveFeedState extends State<LiveFeed> {
   }
 
   Future<List<Map>> getLiveFeedEvents() async {
+    List<Map> activityList;
     if (selected == 'Prices') {
-      return getRecentPrices();
+      activityList = await getRecentPrices();
+      if (activityList.length == 0) {
+        widget.notificationService.showErrorNotification('No prices found nearby.');
+      }
     } else if (selected == 'Reviews') {
-      return getRecentRatings();
+      activityList = await  getRecentRatings();
+      if (activityList.length == 0) {
+        widget.notificationService.showErrorNotification('No reviews found nearby.');
+      }
+    } else {
+      activityList = await  getCombinedLiveFeed();
+      if (activityList.length == 0) {
+        widget.notificationService.showErrorNotification('No activity found nearby.');
+      }
     }
-    return getCombinedLiveFeed();
+    return activityList;
   }
 
   Future<List<Map>> getCombinedLiveFeed() async {
@@ -84,7 +98,7 @@ class LiveFeedState extends State<LiveFeed> {
   Widget showTimelineOrLoading(AsyncSnapshot<List<Map>> snapshot) {
     if (snapshot.hasData) {
       List<Map> events = snapshot.data;
-      return TimelineView(items: events, location: location, bottomScaffoldKey: widget.bottomScaffoldKey);
+      return TimelineView(items: events, location: location, bottomScaffoldKey: widget.bottomScaffoldKey, selected: selected);
     }
     return Center(
       child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.deepOrange)),

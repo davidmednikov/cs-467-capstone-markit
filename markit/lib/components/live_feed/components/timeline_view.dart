@@ -1,5 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:timeline_list/timeline.dart';
 import 'package:timeline_list/timeline_model.dart';
@@ -15,15 +16,19 @@ import 'package:markit/components/models/store_model.dart';
 class TimelineView extends StatelessWidget {
   final List items;
   final Position location;
+  final String selected;
 
   GlobalKey<BottomScaffoldState> bottomScaffoldKey;
 
-  TimelineView({Key key, this.items, this.location, this.bottomScaffoldKey}) : super(key: key);
+  TimelineView({Key key, this.items, this.location, this.bottomScaffoldKey, this.selected}) : super(key: key);
 
   final DateFormat formatter = new DateFormat("yyyy-MM-ddTHH:mm:ss");
 
   @override
   Widget build(BuildContext context) {
+    if (items.length == 0) {
+      return showCenterIcon();
+    }
     return Timeline.builder(
       itemBuilder: timelineBuilder,
       itemCount: items.length,
@@ -81,5 +86,34 @@ class TimelineView extends StatelessWidget {
         iconBackground: Colors.deepOrange
       );
     }
+  }
+
+  Widget showCenterIcon() {
+    Widget centerIcon;
+    if (selected == 'All') {
+      centerIcon = getRssIcon();
+    } else if (selected == 'Prices') {
+      centerIcon = getTagsIcon();
+    } else {
+      centerIcon = getReviewsIcon();
+    }
+    return Center(
+      child: Opacity(
+        opacity: 0.35,
+        child: centerIcon,
+      ),
+    );
+  }
+
+  Widget getRssIcon() {
+    return FaIcon(FontAwesomeIcons.rss, size: 125, color: Colors.grey);
+  }
+
+  Widget getTagsIcon() {
+    return FaIcon(FontAwesomeIcons.tags, size: 125, color: Colors.grey);
+  }
+
+  Widget getReviewsIcon() {
+    return Icon(Icons.rate_review, size: 170, color: Colors.grey);
   }
 }

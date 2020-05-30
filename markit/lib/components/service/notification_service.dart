@@ -7,14 +7,18 @@ class NotificationService {
 
   void showSuccessNotification(String message) {
     showSimpleNotification(
-      Text(message),
+      Text(message,
+        style: TextStyle(color: Colors.white)
+      ),
       background: _successColor,
     );
   }
 
   void showErrorNotification(String error) {
     showSimpleNotification(
-      Text(error),
+      Text(error,
+        style: TextStyle(color: Colors.white)
+      ),
       background: _errorColor,
     );
   }
