@@ -80,6 +80,7 @@ class BottomScaffoldState extends State<BottomScaffold> {
         onPriceCheckButtonPressed: _onPriceCheckButtonPressed,
         onAddRatingButtonPressed: _onAddRatingButtonPressed,
         onCancelButtonPressed: _onCancelButtonPressed,
+        bottomScaffoldKey: widget.key,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
