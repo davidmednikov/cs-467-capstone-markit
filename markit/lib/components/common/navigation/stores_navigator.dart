@@ -6,7 +6,9 @@ import 'package:markit/components/store/pages/view_stores.dart';
 
 class StoresNavigator extends StatefulWidget {
 
-  StoresNavigator({Key key}) : super(key: key);
+  String deepLinkInitRoute;
+
+  StoresNavigator({Key key, this.deepLinkInitRoute}) : super(key: key);
 
   GlobalKey<ViewStoresState> viewStoresKey = new GlobalKey();
 
@@ -19,6 +21,7 @@ class StoresNavigatorState extends State<StoresNavigator> {
   @override
   Widget build(BuildContext context) {
     return TabNavigator(
+      deepLinkInitRoute: widget.deepLinkInitRoute,
       routesToPagesMap: getStoresRoutes(widget.viewStoresKey),
     );
   }

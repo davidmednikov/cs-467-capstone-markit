@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial_material_design/flutter_speed_dial_material_design.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:markit/components/common/scaffold/bottom_scaffold.dart';
 
 import 'package:markit/components/common/scaffold/my_lists_speed_dial_fab.dart';
 import 'package:markit/components/common/scaffold/view_list_speed_dial_fab.dart';
@@ -17,7 +18,9 @@ class DynamicFab extends StatefulWidget {
   var onCancelButtonPressed;
   var onCheckmarkButtonPressed;
 
-  DynamicFab({Key key, this.page, this.onSpeedDialAction, this.onBarcodeButtonPressed, this.onPriceCheckButtonPressed, this.onAddRatingButtonPressed, this.onCancelButtonPressed, this.onCheckmarkButtonPressed }) : super(key: key);
+  GlobalKey<BottomScaffoldState> bottomScaffoldKey;
+
+  DynamicFab({Key key, this.page, this.onSpeedDialAction, this.onBarcodeButtonPressed, this.onPriceCheckButtonPressed, this.onAddRatingButtonPressed, this.onCancelButtonPressed, this.onCheckmarkButtonPressed, this.bottomScaffoldKey }) : super(key: key);
 
   @override
   DynamicFabState createState() => DynamicFabState();

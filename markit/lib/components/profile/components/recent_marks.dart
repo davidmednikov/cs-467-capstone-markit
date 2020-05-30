@@ -1,5 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:markit/components/common/scaffold/bottom_scaffold.dart';
 import 'package:timeline_list/timeline.dart';
@@ -28,12 +29,24 @@ class RecentMarks extends StatelessWidget {
     bottomNavBarIndex = bottomScaffoldKey.currentState.selectedIndex;
     return Padding(
       padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.05),
-      child: Timeline.builder(
-        itemBuilder: timelineBuilder,
-        itemCount: marks.length,
-        physics: ClampingScrollPhysics(),
-        position: TimelinePosition.Left
-      ),
+      child: showTimelineOrIcon(),
+    );
+  }
+
+  Widget showTimelineOrIcon() {
+    if (marks.length == 0) {
+      return Center(
+        child: Opacity(
+          opacity: 0.35,
+          child: FaIcon(FontAwesomeIcons.commentSlash, size: 125, color: Colors.grey),
+        ),
+      );
+    }
+    return Timeline.builder(
+      itemBuilder: timelineBuilder,
+      itemCount: marks.length,
+      physics: ClampingScrollPhysics(),
+      position: TimelinePosition.Left
     );
   }
 

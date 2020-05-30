@@ -49,15 +49,22 @@ class BottomScaffoldState extends State<BottomScaffold> {
 
   final GlobalKey<DynamicFabState> dynamicFabState = GlobalKey<DynamicFabState>();
 
+  String deepLinkInitRoute;
+  Object deepLinkArgument;
+
   @override
   void initState() {
     super.initState();
-    _navigators =  getNavigators(listsNavigatorState, liveFeedNavigatorState, storesNavigatorState, profilesNavigatorState, dynamicFabState, widget.key);
     WidgetsBinding.instance.addPostFrameCallback((_) => showTutorialIfFirstTime());
   }
 
   @override
   Widget build(BuildContext context) {
+    if (deepLinkInitRoute != null) {
+      _navigators =  getNavigators(listsNavigatorState, liveFeedNavigatorState, storesNavigatorState, profilesNavigatorState, dynamicFabState, widget.key, deepLinkInitRoute: deepLinkInitRoute);
+    } else {
+      _navigators =  getNavigators(listsNavigatorState, liveFeedNavigatorState, storesNavigatorState, profilesNavigatorState, dynamicFabState, widget.key);
+    }
     return Scaffold(
       body: _navigators[selectedIndex],
       bottomNavigationBar: BottomNavBar(
@@ -73,6 +80,7 @@ class BottomScaffoldState extends State<BottomScaffold> {
         onPriceCheckButtonPressed: _onPriceCheckButtonPressed,
         onAddRatingButtonPressed: _onAddRatingButtonPressed,
         onCancelButtonPressed: _onCancelButtonPressed,
+        bottomScaffoldKey: widget.key,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
@@ -83,6 +91,8 @@ class BottomScaffoldState extends State<BottomScaffold> {
       dynamicFabState.currentState.tabChanged();
     }
     setState(() {
+      deepLinkInitRoute = null;
+      deepLinkArgument = null;
       selectedIndex = index;
     });
   }
@@ -137,18 +147,26 @@ class BottomScaffoldState extends State<BottomScaffold> {
   }
 
   void navigateToStore(StoreModel store) {
-    dynamicFabState.currentState.changePage('viewStore');
-    _onItemTapped(2);
-    Navigator.of(storesNavigatorState.currentState.widget.viewStoresKey.currentContext)
-      .pushNamed('view', arguments: store);
+    deepLink('store', 'view', store);
   }
 
   void navigateToUser(MarkitUserModel user) {
-    dynamicFabState.currentState.changePage('viewProfile');
-    _onItemTapped(3);
-    new Future.delayed(const Duration(milliseconds: 50), () {
-      Navigator.of(profilesNavigatorState.currentState.widget.myProfileKey.currentContext)
-      .pushNamed('view', arguments: user);
+    deepLink('profile', 'view', user);
+  }
+
+  void deepLink(String type, String route, Object argument) {
+    int index;
+    if (type == 'store') {
+      index = 2;
+    }
+    if (type == 'profile') {
+      index = 3;
+    }
+    dynamicFabState.currentState.tabChanged();
+    setState(() {
+      deepLinkInitRoute = route;
+      deepLinkArgument = argument;
+      selectedIndex = index;
     });
   }
 

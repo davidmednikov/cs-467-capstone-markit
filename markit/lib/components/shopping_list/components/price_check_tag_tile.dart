@@ -7,7 +7,6 @@ import 'package:markit/components/models/list_tag_model.dart';
 import 'package:markit/components/models/price_check_model.dart';
 import 'package:markit/components/models/price_check_tag_model.dart';
 import 'package:markit/components/service/date_service.dart';
-import 'package:markit/components/service/notification_service.dart';
 
 class PriceCheckTagTile extends StatelessWidget {
 
@@ -82,7 +81,6 @@ class PriceCheckTagTile extends StatelessWidget {
   }
 
   void viewUser() {
-    NotificationService notificationService = new NotificationService();
-    notificationService.showErrorNotification('Coming soon');
+    dynamicFabKey.currentState.widget.bottomScaffoldKey.currentState.navigateToUser(priceCheckTag.priceSubmittedBy);
   }
 }

@@ -122,7 +122,6 @@ class UserProfile extends StatelessWidget {
             backgroundColor: Colors.deepOrange[100],
             child: getAvatarContent(),
             radius: MediaQuery.of(context).size.height * 0.065,
-            // radius: 50,
           ),
         ),
       ),
@@ -258,7 +257,7 @@ class UserProfile extends StatelessWidget {
   }
 
   Widget showLevelOrSkeleton() {
-    if (totalRatings == null) {
+    if (userProp == null) {
       return Flexible(
         child: LayoutBuilder(
           builder: (context, constraints) => getSkeletonText(constraints),

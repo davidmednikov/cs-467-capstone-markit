@@ -11,7 +11,9 @@ class ProfilesNavigator extends StatefulWidget {
   GlobalKey<DynamicFabState> dynamicFabKey;
   GlobalKey<BottomScaffoldState> bottomScaffoldKey;
 
-  ProfilesNavigator({Key key, this.dynamicFabKey, this.bottomScaffoldKey}) : super(key: key);
+  String deepLinkInitRoute;
+
+  ProfilesNavigator({Key key, this.dynamicFabKey, this.bottomScaffoldKey, this.deepLinkInitRoute}) : super(key: key);
 
   GlobalKey<MyProfileState> myProfileKey = new GlobalKey();
 
@@ -24,6 +26,7 @@ class ProfilesNavigatorState extends State<ProfilesNavigator> {
   @override
   Widget build(BuildContext context) {
     return TabNavigator(
+      deepLinkInitRoute: widget.deepLinkInitRoute,
       routesToPagesMap: getProfileRoutes(widget.myProfileKey, widget.dynamicFabKey, widget.bottomScaffoldKey),
     );
   }
