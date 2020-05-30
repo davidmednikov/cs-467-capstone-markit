@@ -60,7 +60,6 @@ class UserProfile extends StatelessWidget {
   }
 
   Widget showUserProfileOrBaseTemplate(BuildContext context, AsyncSnapshot<Map> snapshot) {
-    print('user data: $snapshot');
     if (snapshot.hasData) {
       Map<String, Object> userData = snapshot.data;
       userProp = userData['user'];

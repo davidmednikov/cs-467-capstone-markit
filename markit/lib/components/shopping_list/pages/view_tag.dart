@@ -57,7 +57,7 @@ class _ViewTagState extends State<ViewTag> {
                       child: TextFormField(
                         autofocus: false,
                         decoration: InputDecoration(
-                          labelText: 'Notes',
+                          labelText: 'Tag',
                           border: OutlineInputBorder(),
                           alignLabelWithHint: true,
                         ),

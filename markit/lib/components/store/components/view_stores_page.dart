@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -51,6 +52,14 @@ class ViewStoresPageState extends State<ViewStoresPage> {
   }
 
   Widget storesList() {
+    if (widget.storesNearMe.length == 0) {
+      return Center(
+        child: Opacity(
+          opacity: 0.35,
+          child: FaIcon(FontAwesomeIcons.storeSlash, size: 125, color: Colors.grey),
+        ),
+      );
+    }
     return ListView.builder(
       itemCount: widget.storesNearMe.length,
       itemBuilder: (context, index) {

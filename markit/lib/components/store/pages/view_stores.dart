@@ -5,6 +5,7 @@ import 'package:markit/components/common/scaffold/top_scaffold.dart';
 import 'package:markit/components/models/store_model.dart';
 import 'package:markit/components/service/api_service.dart';
 import 'package:markit/components/service/location_service.dart';
+import 'package:markit/components/service/notification_service.dart';
 import 'package:markit/components/store/components/view_stores_page.dart';
 
 class ViewStores extends StatefulWidget {
@@ -15,6 +16,8 @@ class ViewStores extends StatefulWidget {
   GlobalKey<ViewStoresPageState> viewStoresPageKey = new GlobalKey();
 
   ViewStores({Key key}) : super(key: key);
+
+  NotificationService notificationService = new NotificationService();
 
   @override
   ViewStoresState createState() => ViewStoresState();
@@ -47,7 +50,11 @@ class ViewStoresState extends State<ViewStores> {
       location = await widget.locationService.getLocation();
     }
     final String url = 'https://markit-api.azurewebsites.net/store/query?latitude=${location.latitude}&longitude=${location.longitude}';
-    return widget.apiService.getList(url);
+    List storesResponse = await widget.apiService.getList(url);
+    if (storesResponse.length == 0) {
+      widget.notificationService.showErrorNotification('No stores found nearby.');
+    }
+    return storesResponse;
   }
 
   Widget viewStoresPageOrLoading(AsyncSnapshot<List> snapshot) {

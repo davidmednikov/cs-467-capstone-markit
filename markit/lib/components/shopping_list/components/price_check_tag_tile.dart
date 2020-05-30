@@ -7,6 +7,7 @@ import 'package:markit/components/models/list_tag_model.dart';
 import 'package:markit/components/models/price_check_model.dart';
 import 'package:markit/components/models/price_check_tag_model.dart';
 import 'package:markit/components/service/date_service.dart';
+import 'package:markit/components/service/notification_service.dart';
 
 class PriceCheckTagTile extends StatelessWidget {
 
@@ -37,13 +38,16 @@ class PriceCheckTagTile extends StatelessWidget {
     if (priceCheckTag == null) {
       return null;
     }
-    return Row(
-      children: [
-        Text('${listTag.quantity} x \$${priceCheckTag.price} - ${DateService.getTimeString(priceCheckTag.submittedDate).item1} by ${priceCheckTag.priceSubmittedBy.username}  ',
-          style: getSubtitleTextStyle(),
-        ),
-        StatusIcon(userReputation: priceCheckTag.priceSubmittedBy.reputation),
-      ],
+    return GestureDetector(
+      onTap: () => viewUser(),
+      child: Row(
+        children: [
+          Text('${listTag.quantity} x \$${priceCheckTag.price} - ${DateService.getTimeString(priceCheckTag.submittedDate).item1} by ${priceCheckTag.priceSubmittedBy.username}  ',
+            style: getSubtitleTextStyle(),
+          ),
+          StatusIcon(userReputation: priceCheckTag.priceSubmittedBy.reputation),
+        ],
+      ),
     );
   }
 
@@ -75,5 +79,10 @@ class PriceCheckTagTile extends StatelessWidget {
       return Colors.red;
     }
     return Colors.black;
+  }
+
+  void viewUser() {
+    NotificationService notificationService = new NotificationService();
+    notificationService.showErrorNotification('Coming soon');
   }
 }
