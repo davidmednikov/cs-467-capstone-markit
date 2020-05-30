@@ -91,7 +91,7 @@ class TimelineView extends StatelessWidget {
   Widget showCenterIcon() {
     Widget centerIcon;
     if (selected == 'All') {
-      centerIcon = getRssIcon();
+      centerIcon = getAllIcon();
     } else if (selected == 'Prices') {
       centerIcon = getTagsIcon();
     } else {
@@ -105,8 +105,8 @@ class TimelineView extends StatelessWidget {
     );
   }
 
-  Widget getRssIcon() {
-    return FaIcon(FontAwesomeIcons.rss, size: 125, color: Colors.grey);
+  Widget getAllIcon() {
+    return FaIcon(FontAwesomeIcons.commentsDollar, size: 125, color: Colors.grey);
   }
 
   Widget getTagsIcon() {

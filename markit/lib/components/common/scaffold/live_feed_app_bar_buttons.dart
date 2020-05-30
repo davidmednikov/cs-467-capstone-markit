@@ -47,7 +47,7 @@ class _LiveFeedAppBarButtonsState extends State<LiveFeedAppBarButtons> {
                             Expanded(
                               child: Align(
                                 alignment: Alignment.centerRight,
-                                child: FaIcon(FontAwesomeIcons.rss),
+                                child: FaIcon(FontAwesomeIcons.commentsDollar),
                               ),
                             ),
                           ],

@@ -40,7 +40,7 @@ List<BottomNavigationBarItem> getNavTabOptions() {
   ];
 }
 
-List<Widget> getNavigators(GlobalKey listsNav, GlobalKey liveFeedNav, GlobalKey storesNav, GlobalKey profilesNav, GlobalKey dynamicFabKey, GlobalKey bottomScaffoldKey) {
+List<Widget> getNavigators(GlobalKey listsNav, GlobalKey liveFeedNav, GlobalKey storesNav, GlobalKey profilesNav, GlobalKey dynamicFabKey, GlobalKey bottomScaffoldKey, {String deepLinkInitRoute}) {
   return [
     ListsNavigator(
       key: listsNav,
@@ -52,11 +52,13 @@ List<Widget> getNavigators(GlobalKey listsNav, GlobalKey liveFeedNav, GlobalKey 
     ),
     StoresNavigator(
       key: storesNav,
+      deepLinkInitRoute: deepLinkInitRoute,
     ),
     ProfilesNavigator(
       key: profilesNav,
       dynamicFabKey: dynamicFabKey,
       bottomScaffoldKey: bottomScaffoldKey,
+      deepLinkInitRoute: deepLinkInitRoute,
     ),
   ];
 }
