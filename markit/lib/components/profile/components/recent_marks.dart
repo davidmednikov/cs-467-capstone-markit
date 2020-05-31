@@ -18,7 +18,9 @@ class RecentMarks extends StatelessWidget {
 
   GlobalKey<BottomScaffoldState> bottomScaffoldKey;
 
-  RecentMarks({Key key, this.marks, this.location, this.bottomScaffoldKey}) : super(key: key);
+  double topPaddingFactor;
+
+  RecentMarks({Key key, this.marks, this.location, this.bottomScaffoldKey, this.topPaddingFactor}) : super(key: key);
 
   final DateFormat formatter = new DateFormat("yyyy-MM-ddTHH:mm:ss");
 
@@ -28,7 +30,7 @@ class RecentMarks extends StatelessWidget {
   Widget build(BuildContext context) {
     bottomNavBarIndex = bottomScaffoldKey.currentState.selectedIndex;
     return Padding(
-      padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.05),
+      padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * topPaddingFactor),
       child: showTimelineOrIcon(),
     );
   }

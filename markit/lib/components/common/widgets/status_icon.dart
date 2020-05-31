@@ -10,15 +10,17 @@ class StatusIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (userReputation != null) {
-      if (userReputation < 10) {
+      if (userReputation < 25) {
+        return FaIcon(FontAwesomeIcons.solidUserCircle, color: Colors.deepOrange, size: 14);
+      } else if (userReputation < 100) {
         return FaIcon(FontAwesomeIcons.award, color: Colors.deepOrange, size: 14);
-      } else if (userReputation < 25) {
+      } else if (userReputation < 250) {
         return FaIcon(FontAwesomeIcons.medal, color: Colors.deepOrange, size: 14);
-      } else if (userReputation < 50) {
+      } else if (userReputation < 1000) {
         return FaIcon(FontAwesomeIcons.trophy, color: Colors.deepOrange, size: 14);
       }
       return FaIcon(FontAwesomeIcons.crown, color: Colors.deepOrange, size: 14);
     }
-    return FaIcon(FontAwesomeIcons.user, color: Colors.deepOrange, size: 14);
+    return FaIcon(FontAwesomeIcons.solidUserCircle, color: Colors.deepOrange, size: 14);
   }
 }

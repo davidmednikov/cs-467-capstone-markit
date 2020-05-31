@@ -23,6 +23,8 @@ class _RegistrationFormState extends State<RegistrationForm> {
   NotificationService notificationService = new NotificationService();
   TutorialService tutorialService = new TutorialService();
 
+  bool buttonPressed = false;
+
   @override
   Widget build(BuildContext context) {
 
@@ -147,6 +149,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
               RaisedButton(
                 onPressed: () async {
                   if (_formKey.currentState.validate()) {
+                    setState(() => buttonPressed = true);
                     _formKey.currentState.save();
                     int userId = await authService.postUserToServer(newUser.firstName, newUser.lastName, newUser.username, newUser.password);
                     if (userId != null) {
@@ -157,9 +160,11 @@ class _RegistrationFormState extends State<RegistrationForm> {
                         tutorialService.storeAllTutorialsUnwatched(userId);
                         Navigator.pushReplacementNamed(context, '/');
                       } else {
+                        setState(() => buttonPressed = false);
                         showNotification('Registration error.');
                       }
                     } else {
+                      setState(() => buttonPressed = false);
                       showNotification('Registration error.');
                     }
                   }
@@ -167,15 +172,12 @@ class _RegistrationFormState extends State<RegistrationForm> {
                 shape: StadiumBorder(),
                 color: Colors.white,
                 hoverColor: Colors.deepOrange,
-                padding: EdgeInsets.fromLTRB(50, 15, 50, 15),
-                child: Text(
-                  "Register",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.deepOrange
-                  )
-                )
+                padding: EdgeInsets.fromLTRB(40, 10, 40, 10),
+                child: SizedBox(
+                  height: 25,
+                  width: MediaQuery.of(context).size.width * 0.2,
+                  child: showTextOrLoading(),
+                ),
               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.04,
@@ -200,6 +202,28 @@ class _RegistrationFormState extends State<RegistrationForm> {
           ],
         )
       )
+    );
+  }
+
+  Widget showTextOrLoading() {
+    if (buttonPressed) {
+      return Center(
+        child: SizedBox(
+          height: 21,
+          width: 21,
+          child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.deepOrange)),
+        )
+      );
+    }
+    return Center(
+      child: Text(
+        "Register",
+        style: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+          color: Colors.deepOrange
+        )
+      ),
     );
   }
 

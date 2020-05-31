@@ -25,7 +25,7 @@ class MarkitUserModel {
 
   factory MarkitUserModel.fromJsonForPriceCheck(Map<String, dynamic> json) {
     return MarkitUserModel(
-      id: json['id'],
+      id: json['userId'],
       username: json['userName'],
       reputation: json['userReputation'],
       level: json['userLevel'],

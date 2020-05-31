@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial_material_design/flutter_speed_dial_material_design.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:markit/components/common/scaffold/bottom_scaffold.dart';
 
+import 'package:markit/components/common/scaffold/bottom_scaffold.dart';
 import 'package:markit/components/common/scaffold/my_lists_speed_dial_fab.dart';
 import 'package:markit/components/common/scaffold/view_list_speed_dial_fab.dart';
 
@@ -55,7 +55,7 @@ class DynamicFabState extends State<DynamicFab> {
       );
     } else if (currentPage == 'viewTag' || currentPage == 'addTag') {
       return _getPriceCheckFab();
-    } else if (currentPage == 'priceCheck' || currentPage == 'priceCheckStore') {
+    } else if (currentPage == 'priceCheck' || currentPage == 'priceCheckStore' || currentPage == 'viewStore') {
       return _getAddFeedbackFab();
     } else if (currentPage == 'addRating') {
       return _getCancelFab();

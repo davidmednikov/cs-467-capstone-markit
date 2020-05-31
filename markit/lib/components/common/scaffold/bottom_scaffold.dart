@@ -49,8 +49,9 @@ class BottomScaffoldState extends State<BottomScaffold> {
 
   final GlobalKey<DynamicFabState> dynamicFabState = GlobalKey<DynamicFabState>();
 
-  String deepLinkInitRoute;
-  Object deepLinkArgument;
+  bool deepLink = false;
+  MarkitUserModel userArg;
+  StoreModel storeArg;
 
   @override
   void initState() {
@@ -60,8 +61,8 @@ class BottomScaffoldState extends State<BottomScaffold> {
 
   @override
   Widget build(BuildContext context) {
-    if (deepLinkInitRoute != null) {
-      _navigators =  getNavigators(listsNavigatorState, liveFeedNavigatorState, storesNavigatorState, profilesNavigatorState, dynamicFabState, widget.key, deepLinkInitRoute: deepLinkInitRoute);
+    if (deepLink) {
+      _navigators =  getNavigators(listsNavigatorState, liveFeedNavigatorState, storesNavigatorState, profilesNavigatorState, dynamicFabState, widget.key, userArg: userArg, storeArg: storeArg);
     } else {
       _navigators =  getNavigators(listsNavigatorState, liveFeedNavigatorState, storesNavigatorState, profilesNavigatorState, dynamicFabState, widget.key);
     }
@@ -91,8 +92,9 @@ class BottomScaffoldState extends State<BottomScaffold> {
       dynamicFabState.currentState.tabChanged();
     }
     setState(() {
-      deepLinkInitRoute = null;
-      deepLinkArgument = null;
+      deepLink = false;
+      storeArg = null;
+      userArg = null;
       selectedIndex = index;
     });
   }
@@ -147,26 +149,20 @@ class BottomScaffoldState extends State<BottomScaffold> {
   }
 
   void navigateToStore(StoreModel store) {
-    deepLink('store', 'view', store);
+    dynamicFabState.currentState.tabChanged();
+    setState(() {
+      storeArg = store;
+      deepLink = true;
+      selectedIndex = 2;
+    });
   }
 
   void navigateToUser(MarkitUserModel user) {
-    deepLink('profile', 'view', user);
-  }
-
-  void deepLink(String type, String route, Object argument) {
-    int index;
-    if (type == 'store') {
-      index = 2;
-    }
-    if (type == 'profile') {
-      index = 3;
-    }
     dynamicFabState.currentState.tabChanged();
     setState(() {
-      deepLinkInitRoute = route;
-      deepLinkArgument = argument;
-      selectedIndex = index;
+      userArg = user;
+      deepLink = true;
+      selectedIndex = 3;
     });
   }
 

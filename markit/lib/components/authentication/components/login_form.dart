@@ -109,8 +109,12 @@ class _LoginFormState extends State<LoginForm> {
             },
             shape: StadiumBorder(),
             color: Colors.white,
-            padding: EdgeInsets.fromLTRB(50, 15, 50, 15),
-            child: showTextOrLoading(),
+            padding: EdgeInsets.fromLTRB(40, 10, 40, 10),
+            child: SizedBox(
+              height: 25,
+              width: MediaQuery.of(context).size.width * 0.2,
+              child: showTextOrLoading(),
+            ),
           ),
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.05,
@@ -146,13 +150,15 @@ class _LoginFormState extends State<LoginForm> {
         )
       );
     }
-    return Text(
-      "Log in",
-      style: TextStyle(
-        fontSize: 18,
-        fontWeight: FontWeight.bold,
-        color: Colors.deepOrange
-      )
+    return Center(
+      child: Text(
+        "Log in",
+        style: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+          color: Colors.deepOrange
+        )
+      ),
     );
   }
 }

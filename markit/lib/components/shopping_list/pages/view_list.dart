@@ -10,12 +10,14 @@ import 'package:markit/components/service/api_service.dart';
 import 'package:markit/components/service/auth_service.dart';
 import 'package:markit/components/service/notification_service.dart';
 import 'package:markit/components/shopping_list/components/list_tag_tile.dart';
+import 'package:markit/components/shopping_list/pages/my_lists.dart';
 
 class ViewList extends StatefulWidget {
 
   GlobalKey<DynamicFabState> dynamicFabKey;
+  GlobalKey<MyListsState> myListsKey;
 
-  ViewList({Key key, this.dynamicFabKey}) : super(key: key);
+  ViewList({Key key, this.dynamicFabKey, this.myListsKey}) : super(key: key);
 
   ApiService apiService = new ApiService();
   AuthService authService = new AuthService();
@@ -145,6 +147,7 @@ class ViewListState extends State<ViewList> {
   }
 
   Future<bool> notifyFabOfPop() {
+    widget.myListsKey.currentState.refreshList();
     SystemChannels.textInput.invokeMethod('TextInput.hide');
     widget.dynamicFabKey.currentState.changePage('myLists');
     return Future.value(true);

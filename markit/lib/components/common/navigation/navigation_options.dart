@@ -5,7 +5,10 @@ import 'package:markit/components/common/navigation/lists_navigator.dart';
 import 'package:markit/components/common/navigation/live_feed_navigator.dart';
 import 'package:markit/components/common/navigation/profiles_navigator.dart';
 import 'package:markit/components/common/navigation/stores_navigator.dart';
+import 'package:markit/components/common/scaffold/bottom_scaffold.dart';
 import 'package:markit/components/live_feed/pages/live_feed.dart';
+import 'package:markit/components/models/markit_user_model.dart';
+import 'package:markit/components/models/store_model.dart';
 import 'package:markit/components/profile/pages/my_profile.dart';
 import 'package:markit/components/profile/pages/view_profile.dart';
 import 'package:markit/components/shopping_list/pages/add_tag.dart';
@@ -16,6 +19,7 @@ import 'package:markit/components/shopping_list/pages/price_check_store.dart';
 import 'package:markit/components/shopping_list/pages/view_list.dart';
 import 'package:markit/components/shopping_list/pages/view_tag.dart';
 import 'package:markit/components/shopping_list/pages/add_rating.dart';
+import 'package:markit/components/store/pages/view_store.dart';
 import 'package:markit/components/store/pages/view_stores.dart';
 
 
@@ -40,7 +44,7 @@ List<BottomNavigationBarItem> getNavTabOptions() {
   ];
 }
 
-List<Widget> getNavigators(GlobalKey listsNav, GlobalKey liveFeedNav, GlobalKey storesNav, GlobalKey profilesNav, GlobalKey dynamicFabKey, GlobalKey bottomScaffoldKey, {String deepLinkInitRoute}) {
+List<Widget> getNavigators(GlobalKey listsNav, GlobalKey liveFeedNav, GlobalKey storesNav, GlobalKey profilesNav, GlobalKey dynamicFabKey, GlobalKey bottomScaffoldKey, { MarkitUserModel userArg, StoreModel storeArg }) {
   return [
     ListsNavigator(
       key: listsNav,
@@ -52,13 +56,14 @@ List<Widget> getNavigators(GlobalKey listsNav, GlobalKey liveFeedNav, GlobalKey 
     ),
     StoresNavigator(
       key: storesNav,
-      deepLinkInitRoute: deepLinkInitRoute,
+      storeArg: storeArg,
+      bottomScaffoldKey: bottomScaffoldKey,
     ),
     ProfilesNavigator(
       key: profilesNav,
       dynamicFabKey: dynamicFabKey,
       bottomScaffoldKey: bottomScaffoldKey,
-      deepLinkInitRoute: deepLinkInitRoute,
+      userArg: userArg,
     ),
   ];
 }
@@ -68,7 +73,7 @@ Map<String, Widget> getListsRoutes(GlobalKey myListsKey, GlobalKey viewListKey, 
     '/': MyLists(key: myListsKey, dynamicFabKey: dynamicFab),
     'newList': NewList(dynamicFabKey: dynamicFab),
     'addTag': AddTag(dynamicFabKey: dynamicFab),
-    'viewList': ViewList(key: viewListKey, dynamicFabKey: dynamicFab),
+    'viewList': ViewList(key: viewListKey, dynamicFabKey: dynamicFab, myListsKey: myListsKey),
     'viewTag': ViewTag(dynamicFabKey: dynamicFab),
     'priceCheck': PriceCheck(priceCheckListKey: priceCheckListKey, dynamicFabKey: dynamicFab),
     'priceCheckStore': PriceCheckStore(key: priceCheckStoreKey, dynamicFabKey: dynamicFab),
@@ -82,17 +87,17 @@ Map<String, Widget> getLiveFeedRoutes(GlobalKey liveFeedKey, GlobalKey bottomSca
   };
 }
 
-Map<String, Widget> getStoresRoutes(GlobalKey viewStoreskey) {
+Map<String, Widget> getStoresRoutes(GlobalKey viewStoresKey, GlobalKey<BottomScaffoldState> bottomScaffoldKey, {StoreModel storeArg}) {
   return {
-    '/':ViewStores(key: viewStoreskey),
-    // 'viewStore' : ViewStore(),
+    '/' : ViewStores(key: viewStoresKey, dynamicFabKey: bottomScaffoldKey.currentState.dynamicFabState),
+    'view' : ViewStore(storeArg: storeArg, bottomScaffoldKey: bottomScaffoldKey),
   };
 }
 
-Map<String, Widget> getProfileRoutes(GlobalKey myProfileKey, GlobalKey dynamicFab, GlobalKey bottomScaffoldKey) {
+Map<String, Widget> getProfileRoutes(GlobalKey myProfileKey, GlobalKey dynamicFab, GlobalKey bottomScaffoldKey, { MarkitUserModel userArg }) {
   return {
     '/': MyProfile(key: myProfileKey, dynamicFabKey: dynamicFab, bottomScaffoldKey: bottomScaffoldKey),
-    'view': ViewProfile(bottomScaffoldKey: bottomScaffoldKey),
+    'view': ViewProfile(bottomScaffoldKey: bottomScaffoldKey, userArg: userArg),
   };
 }
 

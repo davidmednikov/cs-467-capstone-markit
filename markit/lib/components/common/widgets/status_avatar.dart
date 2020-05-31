@@ -10,15 +10,17 @@ class StatusAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (userReputation != null) {
-      if (userReputation < 10) {
+      if (userReputation < 25) {
+        return FaIcon(FontAwesomeIcons.solidUserCircle, size: 40);
+      } else if (userReputation < 100) {
         return FaIcon(FontAwesomeIcons.award, size: 36);
-      } else if (userReputation < 25) {
+      } else if (userReputation < 250) {
         return FaIcon(FontAwesomeIcons.medal, size: 36);
-      } else if (userReputation < 50) {
+      } else if (userReputation < 1000) {
         return FaIcon(FontAwesomeIcons.trophy, size: 36);
       }
       return FaIcon(FontAwesomeIcons.crown, size: 36);
     }
-    return FaIcon(FontAwesomeIcons.user, size: 36);
+    return FaIcon(FontAwesomeIcons.solidUserCircle, size: 40);
   }
 }

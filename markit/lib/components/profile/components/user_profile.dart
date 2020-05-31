@@ -70,7 +70,12 @@ class UserProfile extends StatelessWidget {
         children: [
           profilePageTemplate(context),
           Expanded(
-            child: RecentMarks(marks: userData['activity'], location: location, bottomScaffoldKey: bottomScaffoldKey)
+            child: RecentMarks(
+              marks: userData['activity'],
+              location: location,
+              bottomScaffoldKey: bottomScaffoldKey,
+              topPaddingFactor: 0.05,
+            )
           )
         ],
       );

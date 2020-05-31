@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:rating_bar/rating_bar.dart';
 
+import 'package:markit/components/common/scaffold/dynamic_fab.dart';
 import 'package:markit/components/models/store_model.dart';
 import 'package:markit/components/service/location_service.dart';
 
@@ -11,25 +12,30 @@ class StoreListingTile extends StatelessWidget {
   final String letter;
   final Position position;
 
+  GlobalKey<DynamicFabState> dynamicFabKey;
+
   LocationService locationService = new LocationService();
 
-  StoreListingTile({Key key, this.store, this.letter, this.position});
+  StoreListingTile({Key key, this.store, this.letter, this.position, this.dynamicFabKey});
 
   @override
   Widget build(BuildContext context) {
     double distance = locationService.locationBetweenInMiles(store.latitude, store.longitude, position.latitude, position.longitude);
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(5.0)
-      ),
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-        child: ListTile(
-          leading: getLetterWidget(),
-          title: Text(store.name, style: TextStyle(fontSize: 16)),
-          subtitle: Text('${store.streetAddress}\n${store.city}, ${store.state}', style: TextStyle(fontSize: 13)),
-          trailing: getDistanceAndRatingWidget(distance),
+    return GestureDetector(
+      onTap: () => navigateToViewStore(context),
+      child: Card(
+        elevation: 2,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(5.0)
+        ),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+          child: ListTile(
+            leading: getLetterWidget(),
+            title: Text(store.name, style: TextStyle(fontSize: 16)),
+            subtitle: Text('${store.streetAddress}\n${store.city}, ${store.state} ${store.postalCode}', style: TextStyle(fontSize: 13)),
+            trailing: getDistanceAndRatingWidget(distance),
+          ),
         ),
       ),
     );
@@ -99,5 +105,14 @@ class StoreListingTile extends StatelessWidget {
       size: 12,
       align: Alignment.centerRight,
     );
+  }
+
+  void navigateToViewStore(BuildContext context) {
+    if (letter != null) {
+      dynamicFabKey.currentState.changePage('viewStore');
+      Navigator.of(context).pushNamed('view', arguments: store);
+    } else {
+      dynamicFabKey.currentState.widget.bottomScaffoldKey.currentState.navigateToStore(store);
+    }
   }
 }
