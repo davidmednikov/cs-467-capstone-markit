@@ -131,8 +131,7 @@ class _ViewTagState extends State<ViewTag> {
                         onPressed: () async {
                           if (formKey.currentState.validate()) {
                             formKey.currentState.save();
-                            buttonPressed = true;
-                            setState( () {} );
+                            setState( () => buttonPressed = true);
                             Map savedTag = await saveTag();
                             ListTagModel listTagModel = ListTagModel.fromJsonWithListId(savedTag, listTag.listId);
                             notifyFabOfPop();
@@ -142,9 +141,7 @@ class _ViewTagState extends State<ViewTag> {
                         color: Colors.deepOrange,
                         child: Padding(
                           padding: EdgeInsets.symmetric(vertical: 10, horizontal: 80),
-                          child: Center(
-                            child: Icon(Icons.cloud_upload, size: 50, color: Colors.white),
-                          ),
+                          child: showIconOrLoading(),
                         ),
                       ),
                     ),
@@ -156,6 +153,19 @@ class _ViewTagState extends State<ViewTag> {
         ),
       ),
       onWillPop: notifyFabOfPop,
+    );
+  }
+
+  Widget showIconOrLoading() {
+    if (buttonPressed) {
+      return SizedBox(
+        height: 50,
+        width: 50,
+        child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.white)),
+      );
+    }
+    return Center(
+      child: Icon(Icons.cloud_upload, size: 50, color: Colors.white),
     );
   }
 

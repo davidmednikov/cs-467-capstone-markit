@@ -96,8 +96,7 @@ class _NewListState extends State<NewList> {
                         onPressed: () async {
                           if (formKey.currentState.validate()) {
                             formKey.currentState.save();
-                            buttonPressed = true;
-                            setState( () {} );
+                            setState( () => buttonPressed = true);
                             Map<String, Object> listObject =await saveList();
                             ShoppingListModel list = ShoppingListModel(
                               id: listObject['id'],
@@ -114,9 +113,7 @@ class _NewListState extends State<NewList> {
                         color: Colors.deepOrange,
                         child: Padding(
                           padding: EdgeInsets.symmetric(vertical: 10, horizontal: 80),
-                          child: Center(
-                            child: Icon(Icons.cloud_upload, size: 50, color: Colors.white),
-                          ),
+                          child: showIconOrLoading(),
                         ),
                       ),
                     ),
@@ -128,6 +125,19 @@ class _NewListState extends State<NewList> {
         ),
       ),
       onWillPop: notifyFabOfPop,
+    );
+  }
+
+  Widget showIconOrLoading() {
+    if (buttonPressed) {
+      return SizedBox(
+        height: 50,
+        width: 50,
+        child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.white)),
+      );
+    }
+    return Center(
+      child: Icon(Icons.cloud_upload, size: 50, color: Colors.white),
     );
   }
 

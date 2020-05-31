@@ -75,4 +75,8 @@ class ViewStoresState extends State<ViewStores> {
       location = position;
     });
   }
+
+  void refreshAfterRating() {
+    setState(() {});
+  }
 }

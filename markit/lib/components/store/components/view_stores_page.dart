@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:markit/components/common/scaffold/dynamic_fab.dart';
+import 'package:select_dialog/select_dialog.dart';
 
+import 'package:markit/components/common/scaffold/dynamic_fab.dart';
 import 'package:markit/components/models/store_model.dart';
 import 'package:markit/components/service/api_service.dart';
 import 'package:markit/components/service/auth_service.dart';
@@ -117,5 +118,26 @@ class ViewStoresPageState extends State<ViewStoresPage> {
     setState(() {
       mapViewEnabled = selectedView == 'Map View';
     });
+  }
+
+  Future<StoreModel> promptForStore() async {
+    StoreModel store;
+    if (widget.storesNearMe.length > 0) {
+      await SelectDialog.showModal<StoreModel>(
+        context,
+        label: 'Which Store did you shop at?',
+        selectedValue: widget.storesNearMe[0],
+        items: List.generate(widget.storesNearMe.length, (index) => widget.storesNearMe[index]),
+        onChange: (StoreModel selected) {
+          setState(() {
+            store = selected;
+          });
+        },
+      );
+      return Future.value(store);
+    } else {
+      widget.notificationService.showErrorNotification('No available stores to review.');
+      return Future.value(null);
+    }
   }
 }

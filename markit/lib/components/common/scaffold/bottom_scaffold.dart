@@ -141,7 +141,11 @@ class BottomScaffoldState extends State<BottomScaffold> {
   }
 
   void _onAddRatingButtonPressed() {
-    listsNavigatorState.currentState.navigateToAddRating();
+    if (selectedIndex == 0) {
+      listsNavigatorState.currentState.navigateToAddRating();
+    } else {
+      storesNavigatorState.currentState.navigateToAddRating();
+    }
   }
 
   void _onCancelButtonPressed() {

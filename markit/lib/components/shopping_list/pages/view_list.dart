@@ -37,6 +37,8 @@ class ViewListState extends State<ViewList> {
 
   String notes;
 
+  bool buttonPressed = false;
+
   @override
   Widget build(BuildContext context) {
     if (!tagAddedOrDeleted) {
@@ -79,17 +81,7 @@ class ViewListState extends State<ViewList> {
                 notes = value;
               },
             ),
-            IconButton(
-              icon: FaIcon(FontAwesomeIcons.solidSave),
-              onPressed: () async {
-                formKey.currentState.save();
-                await saveNotes();
-                setState( () {
-                  shoppingList.description = notes;
-                } );
-                showNotification('Notes updated.');
-              },
-            ),
+            saveIconOrLoading(),
           ],
         ),
       ),
@@ -118,6 +110,32 @@ class ViewListState extends State<ViewList> {
           return ListTagTile(listTag: tag, dynamicFabKey: widget.dynamicFabKey, viewListKey: widget.key);
         },
       ),
+    );
+  }
+
+  Widget saveIconOrLoading() {
+    if (buttonPressed) {
+      return Padding(
+        padding: EdgeInsets.only(right: 15, bottom: 15),
+        child: SizedBox(
+          height: 20,
+          width: 20,
+          child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.black)),
+        ),
+      );
+    }
+    return IconButton(
+      icon: FaIcon(FontAwesomeIcons.solidSave),
+      onPressed: () async {
+        setState(() {
+          buttonPressed = true;
+          shoppingList.description = notes;
+        });
+        formKey.currentState.save();
+        await saveNotes();
+        setState(() => buttonPressed = false);
+        showNotification('Notes updated.');
+      },
     );
   }
 

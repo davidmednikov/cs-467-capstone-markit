@@ -87,10 +87,11 @@ Map<String, Widget> getLiveFeedRoutes(GlobalKey liveFeedKey, GlobalKey bottomSca
   };
 }
 
-Map<String, Widget> getStoresRoutes(GlobalKey viewStoresKey, GlobalKey<BottomScaffoldState> bottomScaffoldKey, {StoreModel storeArg}) {
+Map<String, Widget> getStoresRoutes(GlobalKey viewStoresKey, GlobalKey viewStoreKey, GlobalKey<BottomScaffoldState> bottomScaffoldKey, {StoreModel storeArg}) {
   return {
     '/' : ViewStores(key: viewStoresKey, dynamicFabKey: bottomScaffoldKey.currentState.dynamicFabState),
-    'view' : ViewStore(storeArg: storeArg, bottomScaffoldKey: bottomScaffoldKey),
+    'view' : ViewStore(key: viewStoreKey, storeArg: storeArg, bottomScaffoldKey: bottomScaffoldKey),
+    'addRating': AddRating(dynamicFabKey: bottomScaffoldKey.currentState.dynamicFabState),
   };
 }
 
@@ -119,6 +120,7 @@ List<Map<String, String>> getPages() {
     {
       '/': 'viewStores',
       'viewStore': 'viewStore',
+      'addRating': 'addRating',
     },
     {
       '/': 'myProfile',

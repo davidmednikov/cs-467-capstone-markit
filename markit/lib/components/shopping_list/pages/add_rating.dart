@@ -6,7 +6,6 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'package:markit/components/common/scaffold/dynamic_fab.dart';
 import 'package:markit/components/common/scaffold/top_scaffold.dart';
-import 'package:markit/components/models/shopping_list_model.dart';
 import 'package:markit/components/models/store_model.dart';
 import 'package:markit/components/service/api_service.dart';
 import 'package:markit/components/service/auth_service.dart';
@@ -30,7 +29,6 @@ class AddRatingState extends State<AddRating> {
 
   final formKey = GlobalKey<FormState>();
 
-  ShoppingListModel shoppingList;
   StoreModel store;
   bool pickedFromList;
 
@@ -42,7 +40,6 @@ class AddRatingState extends State<AddRating> {
   @override
   Widget build(BuildContext context) {
     Map arguments = ModalRoute.of(context).settings.arguments;
-    shoppingList = arguments['shoppingList'];
     store = arguments['store'];
     pickedFromList = arguments['pickedFromList'];
     return WillPopScope(
@@ -136,8 +133,7 @@ class AddRatingState extends State<AddRating> {
                         onPressed: () async {
                           if (formKey.currentState.validate()) {
                             formKey.currentState.save();
-                            buttonPressed = true;
-                            setState( () {} );
+                            setState( () => buttonPressed = true);
                             Map savedComment = await saveComment();
                             if (savedComment['id'] != null) {
                               notifyFabOfPop();
@@ -149,9 +145,7 @@ class AddRatingState extends State<AddRating> {
                         color: Colors.deepOrange,
                         child: Padding(
                           padding: EdgeInsets.symmetric(vertical: 10, horizontal: 80),
-                          child: Center(
-                            child: Icon(Icons.cloud_upload, size: 50, color: Colors.white),
-                          ),
+                          child: showIconOrLoading(),
                         ),
                       ),
                     ),
@@ -163,6 +157,19 @@ class AddRatingState extends State<AddRating> {
         ),
       ),
       onWillPop: notifyFabOfPop,
+    );
+  }
+
+  Widget showIconOrLoading() {
+    if (buttonPressed) {
+      return SizedBox(
+        height: 50,
+        width: 50,
+        child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.white)),
+      );
+    }
+    return Center(
+      child: Icon(Icons.cloud_upload, size: 50, color: Colors.white),
     );
   }
 
@@ -182,7 +189,24 @@ class AddRatingState extends State<AddRating> {
 
   Future<bool> notifyFabOfPop() {
     SystemChannels.textInput.invokeMethod('TextInput.hide');
-    widget.dynamicFabKey.currentState.changePage(pickedFromList ? 'priceCheck' : 'priceCheckStore');
+    String popBackTo;
+    if (widget.dynamicFabKey.currentState.widget.bottomScaffoldKey.currentState.selectedIndex == 0) {
+      if (pickedFromList) {
+        popBackTo = 'priceCheck';
+      } else {
+        popBackTo = 'priceCheckStore';
+      }
+    } else {
+      if (pickedFromList) {
+        popBackTo = 'viewStores';
+      } else {
+        popBackTo = 'viewStore';
+      }
+      if (widget.dynamicFabKey.currentState.widget.bottomScaffoldKey.currentState.storesNavigatorState.currentState.widget.viewStoresKey.currentState != null) {
+        widget.dynamicFabKey.currentState.widget.bottomScaffoldKey.currentState.storesNavigatorState.currentState.widget.viewStoresKey.currentState.refreshAfterRating();
+      }
+    }
+    widget.dynamicFabKey.currentState.changePage(popBackTo);
     return Future.value(true);
   }
 }

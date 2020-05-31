@@ -14,10 +14,10 @@ class ViewStore extends StatefulWidget {
   ViewStore({Key key, this.storeArg, this.bottomScaffoldKey}) : super(key: key);
 
   @override
-  _ViewStoreState createState() => _ViewStoreState();
+  ViewStoreState createState() => ViewStoreState();
 }
 
-class _ViewStoreState extends State<ViewStore> {
+class ViewStoreState extends State<ViewStore> {
 
   StoreModel store;
 
