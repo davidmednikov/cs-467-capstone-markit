@@ -44,6 +44,10 @@ class MyListsState extends State<MyLists> {
     );
   }
 
+  void refreshList() {
+    setState(() {});
+  }
+
   Widget showListOrLoading(AsyncSnapshot<List> snapshot) {
     if (snapshot.hasData) {
       List<Object> listObjects = snapshot.data;

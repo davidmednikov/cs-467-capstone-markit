@@ -77,6 +77,7 @@ class PriceCheckStoreState extends State<PriceCheckStore> {
                 child: StoreListingTile(
                   store: priceCheckStore.store,
                   position: userLocation,
+                  dynamicFabKey: widget.dynamicFabKey,
                 ),
               ),
             ),

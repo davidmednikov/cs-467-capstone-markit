@@ -121,7 +121,6 @@ class ReviewMark extends StatelessWidget {
   }
 
   Widget getRatingBar() {
-    double rating = store.averageRating == null ? 0 : store.averageRating;
     return RatingBar.readOnly(
       initialRating: (rating * 2).roundToDouble() / 2.0,
       isHalfAllowed: true,

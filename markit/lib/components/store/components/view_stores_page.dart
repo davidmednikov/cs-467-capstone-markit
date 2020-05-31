@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:select_dialog/select_dialog.dart';
 
+import 'package:markit/components/common/scaffold/dynamic_fab.dart';
 import 'package:markit/components/models/store_model.dart';
 import 'package:markit/components/service/api_service.dart';
 import 'package:markit/components/service/auth_service.dart';
@@ -15,7 +17,9 @@ class ViewStoresPage extends StatefulWidget {
   List<StoreModel> storesNearMe;
   Position location;
 
-  ViewStoresPage({Key key, this.storesNearMe, this.location}) : super(key: key);
+  GlobalKey<DynamicFabState> dynamicFabKey = new GlobalKey();
+
+  ViewStoresPage({Key key, this.storesNearMe, this.location, this.dynamicFabKey}) : super(key: key);
 
   ApiService apiService = new ApiService();
   AuthService authService = new AuthService();
@@ -67,6 +71,7 @@ class ViewStoresPageState extends State<ViewStoresPage> {
           store: widget.storesNearMe[index],
           letter: String.fromCharCode(index + 65),
           position: widget.location,
+          dynamicFabKey: widget.dynamicFabKey,
         );
       }
     );
@@ -79,6 +84,7 @@ class ViewStoresPageState extends State<ViewStoresPage> {
         target: LatLng(widget.location.latitude, widget.location.longitude),
         zoom: 13.0,
       ),
+      myLocationEnabled: true,
     );
   }
 
@@ -112,5 +118,26 @@ class ViewStoresPageState extends State<ViewStoresPage> {
     setState(() {
       mapViewEnabled = selectedView == 'Map View';
     });
+  }
+
+  Future<StoreModel> promptForStore() async {
+    StoreModel store;
+    if (widget.storesNearMe.length > 0) {
+      await SelectDialog.showModal<StoreModel>(
+        context,
+        label: 'Which Store did you shop at?',
+        selectedValue: widget.storesNearMe[0],
+        items: List.generate(widget.storesNearMe.length, (index) => widget.storesNearMe[index]),
+        onChange: (StoreModel selected) {
+          setState(() {
+            store = selected;
+          });
+        },
+      );
+      return Future.value(store);
+    } else {
+      widget.notificationService.showErrorNotification('No available stores to review.');
+      return Future.value(null);
+    }
   }
 }

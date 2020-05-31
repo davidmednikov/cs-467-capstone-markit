@@ -13,7 +13,9 @@ class ViewProfile extends StatefulWidget {
   GlobalKey<DynamicFabState> dynamicFabKey;
   GlobalKey<BottomScaffoldState> bottomScaffoldKey;
 
-  ViewProfile({Key key, this.dynamicFabKey, this.bottomScaffoldKey}) : super(key: key);
+  MarkitUserModel userArg;
+
+  ViewProfile({Key key, this.dynamicFabKey, this.bottomScaffoldKey, this.userArg}) : super(key: key);
 
   @override
   ViewProfileState createState() => ViewProfileState();
@@ -21,16 +23,13 @@ class ViewProfile extends StatefulWidget {
 
 class ViewProfileState extends State<ViewProfile> {
 
-  MarkitUserModel user;
-
   @override
   Widget build(BuildContext context) {
-    user = widget.bottomScaffoldKey.currentState.deepLinkArgument;
     return TopScaffold(
       title: 'View Profile',
       noPadding: true,
       noDropShadow: true,
-      view: UserProfile(userProp: user, bottomScaffoldKey: widget.bottomScaffoldKey),
+      view: UserProfile(userProp: widget.userArg, bottomScaffoldKey: widget.bottomScaffoldKey),
     );
   }
 

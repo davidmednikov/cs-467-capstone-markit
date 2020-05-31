@@ -10,12 +10,14 @@ import 'package:markit/components/service/api_service.dart';
 import 'package:markit/components/service/auth_service.dart';
 import 'package:markit/components/service/notification_service.dart';
 import 'package:markit/components/shopping_list/components/list_tag_tile.dart';
+import 'package:markit/components/shopping_list/pages/my_lists.dart';
 
 class ViewList extends StatefulWidget {
 
   GlobalKey<DynamicFabState> dynamicFabKey;
+  GlobalKey<MyListsState> myListsKey;
 
-  ViewList({Key key, this.dynamicFabKey}) : super(key: key);
+  ViewList({Key key, this.dynamicFabKey, this.myListsKey}) : super(key: key);
 
   ApiService apiService = new ApiService();
   AuthService authService = new AuthService();
@@ -34,6 +36,8 @@ class ViewListState extends State<ViewList> {
   final formKey = GlobalKey<FormState>();
 
   String notes;
+
+  bool buttonPressed = false;
 
   @override
   Widget build(BuildContext context) {
@@ -77,17 +81,7 @@ class ViewListState extends State<ViewList> {
                 notes = value;
               },
             ),
-            IconButton(
-              icon: FaIcon(FontAwesomeIcons.solidSave),
-              onPressed: () async {
-                formKey.currentState.save();
-                await saveNotes();
-                setState( () {
-                  shoppingList.description = notes;
-                } );
-                showNotification('Notes updated.');
-              },
-            ),
+            saveIconOrLoading(),
           ],
         ),
       ),
@@ -119,6 +113,32 @@ class ViewListState extends State<ViewList> {
     );
   }
 
+  Widget saveIconOrLoading() {
+    if (buttonPressed) {
+      return Padding(
+        padding: EdgeInsets.only(right: 15, bottom: 15),
+        child: SizedBox(
+          height: 20,
+          width: 20,
+          child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.black)),
+        ),
+      );
+    }
+    return IconButton(
+      icon: FaIcon(FontAwesomeIcons.solidSave),
+      onPressed: () async {
+        setState(() {
+          buttonPressed = true;
+          shoppingList.description = notes;
+        });
+        formKey.currentState.save();
+        await saveNotes();
+        setState(() => buttonPressed = false);
+        showNotification('Notes updated.');
+      },
+    );
+  }
+
   void showNotification(String message) {
     widget.notificationService.showSuccessNotification(message);
   }
@@ -145,6 +165,7 @@ class ViewListState extends State<ViewList> {
   }
 
   Future<bool> notifyFabOfPop() {
+    widget.myListsKey.currentState.refreshList();
     SystemChannels.textInput.invokeMethod('TextInput.hide');
     widget.dynamicFabKey.currentState.changePage('myLists');
     return Future.value(true);

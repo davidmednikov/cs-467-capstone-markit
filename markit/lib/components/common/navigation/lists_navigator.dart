@@ -73,26 +73,23 @@ class ListsNavigatorState extends State<ListsNavigator> {
   }
 
   void navigateToAddRating() async {
-    ShoppingListModel list = widget.priceCheckListKey.currentState.widget.shoppingList;
     if (widget.priceCheckStoreKey.currentState == null) {
       StoreModel store = await widget.priceCheckListKey.currentState.promptForStore();
       if (store != null) {
         widget.dynamicFabKey.currentState.changePage('addRating');
         Map arguments = {
-          'shoppingList': list,
           'store': store,
+          'pickedFromList': true,
         };
-        arguments['pickedFromList'] = true;
         Navigator.of(widget.viewListKey.currentContext).pushNamed('addRating', arguments: arguments);
       }
     } else {
       StoreModel store = widget.priceCheckStoreKey.currentState.priceCheckStore.store;
       widget.dynamicFabKey.currentState.changePage('addRating');
       Map arguments = {
-        'shoppingList': list,
         'store': store,
+        'pickedFromList': false,
       };
-      arguments['pickedFromList'] = false;
       Navigator.of(widget.viewListKey.currentContext).pushNamed('addRating', arguments: arguments);
     }
   }

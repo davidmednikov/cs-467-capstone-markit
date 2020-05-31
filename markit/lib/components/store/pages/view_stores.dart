@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:markit/components/common/scaffold/dynamic_fab.dart';
 
 import 'package:markit/components/common/scaffold/top_scaffold.dart';
 import 'package:markit/components/models/store_model.dart';
@@ -10,14 +11,15 @@ import 'package:markit/components/store/components/view_stores_page.dart';
 
 class ViewStores extends StatefulWidget {
 
+  GlobalKey<DynamicFabState> dynamicFabKey;
+
+  ViewStores({Key key, this.dynamicFabKey}) : super(key: key);
+
   ApiService apiService = new ApiService();
   LocationService locationService = new LocationService();
+  NotificationService notificationService = new NotificationService();
 
   GlobalKey<ViewStoresPageState> viewStoresPageKey = new GlobalKey();
-
-  ViewStores({Key key}) : super(key: key);
-
-  NotificationService notificationService = new NotificationService();
 
   @override
   ViewStoresState createState() => ViewStoresState();
@@ -60,7 +62,7 @@ class ViewStoresState extends State<ViewStores> {
   Widget viewStoresPageOrLoading(AsyncSnapshot<List> snapshot) {
     if (snapshot.hasData) {
       List<StoreModel> stores = List<Map>.from(snapshot.data).map((store) => StoreModel.fromJson(store)).toList();
-      return ViewStoresPage(key: widget.viewStoresPageKey, storesNearMe: stores, location: location);
+      return ViewStoresPage(key: widget.viewStoresPageKey, storesNearMe: stores, location: location, dynamicFabKey: widget.dynamicFabKey);
     }
     return Center(
       child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.deepOrange)),
@@ -72,5 +74,9 @@ class ViewStoresState extends State<ViewStores> {
     setState(() {
       location = position;
     });
+  }
+
+  void refreshAfterRating() {
+    setState(() {});
   }
 }

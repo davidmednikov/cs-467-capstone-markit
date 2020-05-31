@@ -1,3 +1,5 @@
+import 'package:us_states/us_states.dart';
+
 class StoreModel {
   int id;
   String name;
@@ -17,9 +19,9 @@ class StoreModel {
     StoreModel theStore = StoreModel(
       id: json['id'],
       name: json['name'],
-      streetAddress: json['streetAddress'],
+      streetAddress: shortenAddress(json['streetAddress']),
       city: json['city'],
-      state: json['state'],
+      state: getStateAbbreviation(json['state']),
       postalCode: json['postalCode'],
       averageRating: json['averageRating'],
       googleId: json['googleId'],
@@ -39,4 +41,22 @@ class StoreModel {
 
   @override
   int get hashCode => id.hashCode^name.hashCode;
+}
+
+String shortenAddress(String streetAddress) {
+  if (streetAddress.contains('Boulevard')) {
+    return streetAddress.replaceAll('Boulevard', 'Blvd.');
+  } else if (streetAddress.contains('Avenue')) {
+    return streetAddress.replaceAll('Avenue', 'Ave.');
+  } else if (streetAddress.contains('Highway')) {
+    return streetAddress.replaceAll('Highway', 'Hwy');
+  }
+  return streetAddress;
+}
+
+String getStateAbbreviation(String stateString) {
+  if (stateString.length > 3) {
+    return USStates.getAbbreviation(stateString);
+  }
+  return stateString;
 }
