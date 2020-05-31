@@ -55,7 +55,7 @@ class DynamicFabState extends State<DynamicFab> {
       );
     } else if (currentPage == 'viewTag' || currentPage == 'addTag') {
       return _getPriceCheckFab();
-    } else if (currentPage == 'priceCheck' || currentPage == 'priceCheckStore' || currentPage == 'viewStores' || currentPage == 'viewStore') {
+    } else if (currentPage == 'priceCheck' || currentPage == 'priceCheckStore' || currentPage == 'viewStores' || currentPage == 'viewStore' || currentPage == 'viewStoreMap') {
       return _getAddFeedbackFab();
     } else if (currentPage == 'addRating') {
       return _getCancelFab();

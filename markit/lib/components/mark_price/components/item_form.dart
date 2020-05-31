@@ -48,6 +48,8 @@ class _ItemFormState extends State<ItemForm> {
   bool changedStore = false;
   StoreModel selectedStore;
 
+  bool buttonPressed = false;
+
   @override
   void initState() {
     super.initState();
@@ -197,59 +199,54 @@ class _ItemFormState extends State<ItemForm> {
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 40, vertical: 50),
                     child: RaisedButton(
-                    onPressed: () async {
-                      if (_formKey.currentState.validate()) {
-                        _formKey.currentState.save();
-                        int userId = await authService.getUserIdFromStorage();
-                        List<String> tagsToSubmit = createTagsForSubmittal(_markPriceTagsStateKey.currentState.tags);
-                        if (tagsToSubmit.isEmpty) {
-                          String input = _markPriceTagsStateKey.currentState.widget.tagStateKey.currentState.lastInput;
-                          if (input.length >= 3) {
-                            tagsToSubmit = createTagsListFromInput(input);
-                          } else {
-                            notificationService.showErrorNotification('Need at least 1 tag.');
+                      onPressed: () async {
+                        if (_formKey.currentState.validate()) {
+                          _formKey.currentState.save();
+                          int userId = await authService.getUserIdFromStorage();
+                          List<String> tagsToSubmit = createTagsForSubmittal(_markPriceTagsStateKey.currentState.tags);
+                          if (tagsToSubmit.isEmpty) {
+                            String input = _markPriceTagsStateKey.currentState.widget.tagStateKey.currentState.lastInput;
+                            if (input.length >= 3) {
+                              tagsToSubmit = createTagsListFromInput(input);
+                            } else {
+                              notificationService.showErrorNotification('Need at least 1 tag.');
+                            }
+                          }
+                          if (tagsToSubmit.isNotEmpty) {
+                            setState(() {
+                              buttonPressed = true;
+                              newItem.userId = userId;
+                              newItem.tags = tagsToSubmit;
+                            });
+
+                            int storeId = newItem.storeId != null ? newItem.storeId : widget.guessedStore.id;
+
+                            final Map<String, Object> itemPost = {
+                              "userId": newItem.userId,
+                              "storeId": storeId,
+                              "upc": widget.upc,
+                              "price": newItem.price,
+                              "isSalePrice": newItem.isSalePrice,
+                              "tags": newItem.tags
+                            };
+                            final Map<String, Object> response = await addItem(itemPost);
+                            setState(() => buttonPressed = false);
+                            if (response.isNotEmpty) {
+                              Navigator.pop(context);
+                              notificationService.showSuccessNotification('Price added.');
+                            } else {
+                              notificationService.showErrorNotification('Error adding price.');
+                            }
                           }
                         }
-                        if (tagsToSubmit.isNotEmpty) {
-                          setState(() {
-                            newItem.userId = userId;
-                            newItem.tags = tagsToSubmit;
-                          });
-
-                          int storeId = newItem.storeId != null ? newItem.storeId : widget.guessedStore.id;
-
-                          final Map<String, Object> itemPost = {
-                            "userId": newItem.userId,
-                            "storeId": storeId,
-                            "upc": widget.upc,
-                            "price": newItem.price,
-                            "isSalePrice": newItem.isSalePrice,
-                            "tags": newItem.tags
-                          };
-                          final Map<String, Object> response = await addItem(itemPost);
-                          if (response.isNotEmpty) {
-                            Navigator.pushNamed(context, '/');
-                            notificationService.showSuccessNotification('Price added.');
-                          } else {
-                            notificationService.showErrorNotification('Error adding price.');
-                          }
-                        }
-                      }
-                    },
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10))
+                      },
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10))
+                      ),
+                      color: Colors.deepOrange,
+                      padding: EdgeInsets.fromLTRB(50, 15, 50, 15),
+                      child: showTextOrLoading(),
                     ),
-                    color: Colors.deepOrange,
-                    padding: EdgeInsets.fromLTRB(50, 15, 50, 15),
-                    child: Text(
-                      "Markit!",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      )
-                    )
-                  ),
                   ),
                 ),
               ],
@@ -257,6 +254,28 @@ class _ItemFormState extends State<ItemForm> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget showTextOrLoading() {
+    if (buttonPressed) {
+      return Center(
+        child: SizedBox(
+          height: 24,
+          width: 24,
+          child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.white)),
+        )
+      );
+    }
+    return Center(
+      child: Text(
+        "Markit!",
+        style: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+        )
+      )
     );
   }
 

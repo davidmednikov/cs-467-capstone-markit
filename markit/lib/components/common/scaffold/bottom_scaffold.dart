@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
@@ -21,7 +22,9 @@ import 'package:markit/components/service/tutorial_service.dart';
 import 'package:markit/components/service/tag_service.dart';
 
 class BottomScaffold extends StatefulWidget {
-  BottomScaffold({Key key }) : super(key: key);
+  BitmapDescriptor markerIcon;
+
+  BottomScaffold({Key key, this.markerIcon }) : super(key: key);
 
   List<Map<String, String>> pages = getPages();
 
@@ -149,7 +152,11 @@ class BottomScaffoldState extends State<BottomScaffold> {
   }
 
   void _onCancelButtonPressed() {
-    listsNavigatorState.currentState.popBackToPriceCheck();
+    if (selectedIndex == 0) {
+      listsNavigatorState.currentState.popBackToPriceCheck();
+    } else {
+      storesNavigatorState.currentState.popBackToStorePage();
+    }
   }
 
   void navigateToStore(StoreModel store) {

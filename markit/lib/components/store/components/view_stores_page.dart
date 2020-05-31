@@ -95,6 +95,11 @@ class ViewStoresPageState extends State<ViewStoresPage> {
         markerId: MarkerId(String.fromCharCode(i + 65)),
         position: LatLng(widget.storesNearMe[i].latitude, widget.storesNearMe[i].longitude),
         icon: markerIcons[i],
+        infoWindow: InfoWindow(
+          title: widget.storesNearMe[i].name,
+          snippet: widget.storesNearMe[i].streetAddress,
+          onTap: () => navigateToViewStore(widget.storesNearMe[i]),
+        ),
       );
       markers.add(marker);
     }
@@ -139,5 +144,10 @@ class ViewStoresPageState extends State<ViewStoresPage> {
       widget.notificationService.showErrorNotification('No available stores to review.');
       return Future.value(null);
     }
+  }
+
+  void navigateToViewStore(StoreModel store) {
+    widget.dynamicFabKey.currentState.changePage('viewStore');
+    Navigator.of(context).pushNamed('view', arguments: store);
   }
 }
