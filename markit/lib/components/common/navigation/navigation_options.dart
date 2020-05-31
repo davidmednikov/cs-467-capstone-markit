@@ -20,6 +20,7 @@ import 'package:markit/components/shopping_list/pages/view_list.dart';
 import 'package:markit/components/shopping_list/pages/view_tag.dart';
 import 'package:markit/components/shopping_list/pages/add_rating.dart';
 import 'package:markit/components/store/pages/view_store.dart';
+import 'package:markit/components/store/pages/view_store_map.dart';
 import 'package:markit/components/store/pages/view_stores.dart';
 
 
@@ -87,10 +88,11 @@ Map<String, Widget> getLiveFeedRoutes(GlobalKey liveFeedKey, GlobalKey bottomSca
   };
 }
 
-Map<String, Widget> getStoresRoutes(GlobalKey viewStoresKey, GlobalKey viewStoreKey, GlobalKey<BottomScaffoldState> bottomScaffoldKey, {StoreModel storeArg}) {
+Map<String, Widget> getStoresRoutes(GlobalKey viewStoresKey, GlobalKey viewStoreKey, GlobalKey viewStoreMapKey, GlobalKey<BottomScaffoldState> bottomScaffoldKey, {StoreModel storeArg}) {
   return {
     '/' : ViewStores(key: viewStoresKey, dynamicFabKey: bottomScaffoldKey.currentState.dynamicFabState),
     'view' : ViewStore(key: viewStoreKey, storeArg: storeArg, bottomScaffoldKey: bottomScaffoldKey),
+    'viewMap' : ViewStoreMap(key: viewStoreMapKey, bottomScaffoldKey: bottomScaffoldKey),
     'addRating': AddRating(dynamicFabKey: bottomScaffoldKey.currentState.dynamicFabState),
   };
 }
@@ -120,11 +122,12 @@ List<Map<String, String>> getPages() {
     {
       '/': 'viewStores',
       'viewStore': 'viewStore',
+      'viewStoreMap': 'viewStoreMap',
       'addRating': 'addRating',
     },
     {
       '/': 'myProfile',
-      // 'userProfile' : 'User Profile',
+      'view': 'viewProfile',
     },
   ];
 }

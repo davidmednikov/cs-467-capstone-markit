@@ -41,7 +41,6 @@ class PriceMark extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String strDate = formatter.format(submittedDate);
-    double distance = locationService.locationBetweenInMiles(location.latitude, location.longitude, store.latitude, store.longitude);
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15.0)

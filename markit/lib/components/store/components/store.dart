@@ -7,7 +7,6 @@ import 'package:markit/components/models/store_model.dart';
 import 'package:markit/components/service/api_service.dart';
 import 'package:markit/components/service/auth_service.dart';
 import 'package:markit/components/service/location_service.dart';
-import 'package:markit/components/store/components/rating_marks.dart';
 import 'package:markit/components/profile/components/recent_marks.dart';
 import 'package:markit/components/store/components/store_details.dart';
 
@@ -34,94 +33,6 @@ class Store extends StatelessWidget {
       future: getStoreInfo(),
       builder: (context, snapshot) => showTemplateOrFull(context, snapshot),
     );
-    // FutureBuilder(
-    //   future: getStoreInfo(),
-    //   builder: (context, snapshot) {
-    //     if (snapshot.hasData) {
-    //       return Column(
-    //         mainAxisAlignment: MainAxisAlignment.start,
-    //         children: <Widget>[
-    //           Padding(
-    //             padding: EdgeInsets.fromLTRB(
-    //               MediaQuery.of(context).size.height * 0.025,
-    //               MediaQuery.of(context).size.height * 0.01,
-    //               MediaQuery.of(context).size.height * 0.025,
-    //               MediaQuery.of(context).size.height * 0.01,
-    //               ),
-    //             child: Text(
-    //               '${snapshot.data['name']}',
-    //               style: TextStyle(
-    //                 fontSize: 20,
-    //                 fontWeight: FontWeight.bold
-    //               )
-    //             )
-    //           ),
-    //           Padding(
-    //             padding: EdgeInsets.fromLTRB(
-    //               MediaQuery.of(context).size.height * 0.025,
-    //               MediaQuery.of(context).size.height * 0.01,
-    //               MediaQuery.of(context).size.height * 0.025,
-    //               MediaQuery.of(context).size.height * 0.01,
-    //               ),
-    //             child: Text(
-    //               '${snapshot.data['city']}, ${snapshot.data['state']}',
-    //               style: TextStyle(
-    //                 fontSize: 18,
-    //               )
-    //             )
-    //           ),
-    //           Row(
-    //             mainAxisAlignment: MainAxisAlignment.center,
-    //             children: <Widget>[
-    //               // Expanded(
-    //               //   flex: 2,
-    //               //   child: Padding(
-    //               //     padding: EdgeInsets.fromLTRB(
-    //               //       MediaQuery.of(context).size.height * 0.025,
-    //               //       MediaQuery.of(context).size.height * 0.01,
-    //               //       MediaQuery.of(context).size.height * 0.025,
-    //               //       MediaQuery.of(context).size.height * 0.01,
-    //               //     ),
-    //               //     child: MapView(level: snapshot.data['level']) 
-    //               //   )
-    //               // ),
-    //               Expanded(
-    //                 flex: 1,
-    //                 child: SizedBox(width: MediaQuery.of(context).size.width * 0.1)
-    //               ),
-    //               Expanded(
-    //                 flex: 2,
-    //                 child: RatingMarks(
-    //                   // rating: snapshot.data['averageRating'],
-    //                   rating: 5,
-    //                   totalMarks: snapshot.data['totalMarks']
-    //                 )
-    //               ),
-    //             ],
-    //           ),
-    //           Center(
-    //             child: Padding(
-    //               padding: EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.025, 0, MediaQuery.of(context).size.height * 0.025),
-    //               child: Text(
-    //                 'Recent marks',
-    //                 style: TextStyle(
-    //                   fontSize: 20,
-    //                   decoration: TextDecoration.underline,
-    //                   fontWeight: FontWeight.bold
-    //                 )
-    //               )
-    //             )
-    //           ),
-              
-    //         ],
-    //       );
-    //     } else {
-    //       return Center(
-    //         child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.deepOrange)),
-    //       );
-    //     }
-    //   }
-    // );
   }
 
   Widget showTemplateOrFull(BuildContext context, AsyncSnapshot<Map> snapshot) {
@@ -138,7 +49,7 @@ class Store extends StatelessWidget {
               marks: activityInfo['activity'],
               location: location,
               bottomScaffoldKey: bottomScaffoldKey,
-              topPaddingFactor: 0.15,
+              topPaddingFactor: 0.125,
             ),
           ),
         ],
@@ -158,9 +69,9 @@ class Store extends StatelessWidget {
       overflow: Overflow.visible,
       children: [
         Container(
-          height: MediaQuery.of(context).size.height * 0.25,
+          height: MediaQuery.of(context).size.height * 0.275,
           width: MediaQuery.of(context).size.width,
-          child: mapView()
+          child: mapView(context),
         ),
         Positioned(
           top: MediaQuery.of(context).size.height * 0.2,
@@ -178,18 +89,17 @@ class Store extends StatelessWidget {
     );
   }
 
-  Widget mapView() {
+  Widget mapView(BuildContext context) {
     return GoogleMap(
       markers: getMarker(),
       initialCameraPosition: CameraPosition(
         target: LatLng(store.latitude, store.longitude),
         zoom: 16,
       ),
-      onTap: (latLng) => showFullScreenMap(),
+      onTap: (latLng) => showFullScreenMap(context),
       myLocationEnabled: true,
       myLocationButtonEnabled: false,
       rotateGesturesEnabled: false,
-      scrollGesturesEnabled: false,
       zoomGesturesEnabled: false,
       tiltGesturesEnabled: false,
       zoomControlsEnabled: false,
@@ -203,6 +113,8 @@ class Store extends StatelessWidget {
       Marker(
         markerId: MarkerId('1'),
         position: LatLng(store.latitude, store.longitude),
+        icon: bottomScaffoldKey.currentState.widget.markerIcon,
+        infoWindow: InfoWindow(title: store.name, snippet: store.streetAddress),
       )
     );
     return markers;
@@ -236,7 +148,8 @@ class Store extends StatelessWidget {
     return marksList;
   }
 
-  void showFullScreenMap() {
-    print('map');
+  void showFullScreenMap(BuildContext context) {
+    bottomScaffoldKey.currentState.dynamicFabState.currentState.changePage('viewStoreMap');
+    Navigator.of(context).pushNamed('viewMap', arguments: store);
   }
 }
