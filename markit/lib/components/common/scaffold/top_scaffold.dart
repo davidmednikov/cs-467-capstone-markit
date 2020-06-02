@@ -17,6 +17,8 @@ class TopScaffold extends StatelessWidget {
   bool noPadding;
   bool noDropShadow;
 
+  bool isViewListPage;
+
   GlobalKey<BottomScaffoldState> bottomScaffoldKey;
 
   GlobalKey<LiveFeedState> liveFeedKey;
@@ -25,7 +27,7 @@ class TopScaffold extends StatelessWidget {
   GlobalKey<PriceCheckAppBarButtonsState> priceCheckAppBarButtonsKey;
   GlobalKey<MyProfileState> myProfileKey;
 
-  TopScaffold({Key key, this.title, this.view, this.bottomScaffoldKey, this.liveFeedKey, this.priceCheckListKey, this.viewStoresKey, this.priceCheckAppBarButtonsKey, this.myProfileKey, this.noPadding = false, this.noDropShadow = false}) : super(key: key);
+  TopScaffold({Key key, this.title, this.view, this.bottomScaffoldKey, this.liveFeedKey, this.priceCheckListKey, this.viewStoresKey, this.priceCheckAppBarButtonsKey, this.myProfileKey, this.noPadding = false, this.noDropShadow = false, this.isViewListPage = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +41,7 @@ class TopScaffold extends StatelessWidget {
         myProfileKey: myProfileKey,
         noDropShadow: noDropShadow,
         bottomScaffoldKey: bottomScaffoldKey,
+        isViewListPage: isViewListPage,
       ),
       body: SafeArea(
         child: getPadding(),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import 'package:markit/components/common/scaffold/bottom_scaffold.dart';
 import 'package:markit/components/common/scaffold/dynamic_fab.dart';
 import 'package:markit/components/common/scaffold/top_scaffold.dart';
 import 'package:markit/components/models/list_tag_model.dart';
@@ -15,9 +16,10 @@ import 'package:markit/components/shopping_list/pages/my_lists.dart';
 class ViewList extends StatefulWidget {
 
   GlobalKey<DynamicFabState> dynamicFabKey;
+  GlobalKey<BottomScaffoldState> bottomScaffoldKey;
   GlobalKey<MyListsState> myListsKey;
 
-  ViewList({Key key, this.dynamicFabKey, this.myListsKey}) : super(key: key);
+  ViewList({Key key, this.dynamicFabKey, this.bottomScaffoldKey, this.myListsKey}) : super(key: key);
 
   ApiService apiService = new ApiService();
   AuthService authService = new AuthService();
@@ -40,6 +42,12 @@ class ViewListState extends State<ViewList> {
   bool buttonPressed = false;
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => widget.bottomScaffoldKey.currentState.showListTutorialIfFirstTime());
+  }
+
+  @override
   Widget build(BuildContext context) {
     if (!tagAddedOrDeleted) {
       shoppingList = ModalRoute.of(context).settings.arguments;
@@ -47,6 +55,8 @@ class ViewListState extends State<ViewList> {
     return WillPopScope(
       child: TopScaffold(
         title: shoppingList.name,
+        bottomScaffoldKey: widget.bottomScaffoldKey,
+        isViewListPage: true,
         view: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

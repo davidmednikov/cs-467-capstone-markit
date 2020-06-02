@@ -17,6 +17,8 @@ class MarkitAppBar extends StatefulWidget implements PreferredSizeWidget {
 
   bool noDropShadow;
 
+  bool isViewListPage;
+
   GlobalKey<BottomScaffoldState> bottomScaffoldKey;
 
   GlobalKey<LiveFeedState> liveFeedKey;
@@ -25,7 +27,7 @@ class MarkitAppBar extends StatefulWidget implements PreferredSizeWidget {
   GlobalKey<PriceCheckAppBarButtonsState> priceCheckAppBarButtonsKey;
   GlobalKey<MyProfileState> myProfileKey;
 
-  MarkitAppBar({Key key, this.titleProp, this.bottomScaffoldKey, this.liveFeedKey, this.priceCheckListKey, this.viewStoresKey, this.priceCheckAppBarButtonsKey, this.myProfileKey, this.noDropShadow = false}) : super(key: key);
+  MarkitAppBar({Key key, this.titleProp, this.bottomScaffoldKey, this.liveFeedKey, this.priceCheckListKey, this.viewStoresKey, this.priceCheckAppBarButtonsKey, this.myProfileKey, this.noDropShadow = false, this.isViewListPage = false}) : super(key: key);
 
   AuthService authService = new AuthService();
 
@@ -109,10 +111,26 @@ class _MarkitAppBarState extends State<MarkitAppBar> {
                 title: Text('Play Tutorial'),
                 trailing: FaIcon(FontAwesomeIcons.playCircle),
               ),
-              value: 'tutorial',
+              value: 'homeTutorial',
             )
           ],
-          onSelected: (result) => tutorialButtonTapped(result, context),
+          onSelected: (result) => homeTutorialButtonTapped(result, context),
+        ),
+      ];
+    } else if (widget.isViewListPage != null && widget.isViewListPage) {
+      return [
+        PopupMenuButton(
+          icon: FaIcon(FontAwesomeIcons.ellipsisV),
+          itemBuilder: (context) => [
+            PopupMenuItem(
+              child: ListTile(
+                title: Text('Play Tutorial'),
+                trailing: FaIcon(FontAwesomeIcons.playCircle),
+              ),
+              value: 'listTutorial',
+            )
+          ],
+          onSelected: (result) => listTutorialButtonTapped(result, context),
         ),
       ];
     }
@@ -133,9 +151,15 @@ class _MarkitAppBarState extends State<MarkitAppBar> {
     }
   }
 
-  void tutorialButtonTapped(String result, BuildContext context) {
-    if (result == 'tutorial') {
-      widget.bottomScaffoldKey.currentState.showTutorial();
+  void homeTutorialButtonTapped(String result, BuildContext context) {
+    if (result == 'homeTutorial') {
+      widget.bottomScaffoldKey.currentState.showHomeTutorial();
+    }
+  }
+
+  void listTutorialButtonTapped(String result, BuildContext context) {
+    if (result == 'listTutorial') {
+      widget.bottomScaffoldKey.currentState.showListTutorial();
     }
   }
 }

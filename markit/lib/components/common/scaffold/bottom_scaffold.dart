@@ -59,7 +59,7 @@ class BottomScaffoldState extends State<BottomScaffold> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => showTutorialIfFirstTime());
+    WidgetsBinding.instance.addPostFrameCallback((_) => showHomeTutorialIfFirstTime());
   }
 
   @override
@@ -212,18 +212,18 @@ class BottomScaffoldState extends State<BottomScaffold> {
     return title;
   }
 
-  Future<void> showTutorialIfFirstTime() async {
+  Future<void> showHomeTutorialIfFirstTime() async {
     if (await widget.tutorialService.shouldShowHomeTutorial()) {
       widget.tutorialService.homeTutorialWatched();
       await new Future.delayed(const Duration(seconds : 1));
-      showTutorial();
+      showHomeTutorial();
     }
   }
 
-  void showTutorial() {
+  void showHomeTutorial() {
     TutorialCoachMark(
       context,
-      targets: getTargets(),
+      targets: getHomeTutorialTargets(),
       colorShadow: Colors.deepOrange,
       finish: (){},
       clickTarget: (target){},
@@ -231,7 +231,7 @@ class BottomScaffoldState extends State<BottomScaffold> {
     )..show();
   }
 
-  List<TargetFocus> getTargets() {
+  List<TargetFocus> getHomeTutorialTargets() {
     return <TargetFocus>[
       TargetFocus(
         keyTarget: dynamicFabState,
@@ -263,8 +263,8 @@ class BottomScaffoldState extends State<BottomScaffold> {
                     children: [
                       Expanded(
                         child: Text(
-                          'There\'s more than 1 way to Markit. Tap the button to get started.',
-                          style: GoogleFonts.lato(fontStyle: FontStyle.italic, fontSize: 20, color: Colors.white),
+                          'There\'s more than 1 way to Markit. Tap the button to get started!',
+                          style: GoogleFonts.lato(fontStyle: FontStyle.italic, fontSize: 22, color: Colors.white),
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -330,8 +330,8 @@ class BottomScaffoldState extends State<BottomScaffold> {
                     children: [
                       Expanded(
                         child: Text(
-                          'Climb the ranks by getting points for each price you add.',
-                          style: GoogleFonts.lato(fontStyle: FontStyle.italic, fontSize: 20, color: Colors.white),
+                          'Climb the ranks by getting points for each price you add!',
+                          style: GoogleFonts.lato(fontStyle: FontStyle.italic, fontSize: 22, color: Colors.white),
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -397,8 +397,209 @@ class BottomScaffoldState extends State<BottomScaffold> {
                     children: [
                       Expanded(
                         child: Text(
-                          'Add tags and start saving money now.',
-                          style: GoogleFonts.lato(fontStyle: FontStyle.italic, fontSize: 20, color: Colors.white),
+                          'Add tags and start saving money now!',
+                          style: GoogleFonts.lato(fontStyle: FontStyle.italic, fontSize: 22, color: Colors.white),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    ];
+  }
+
+  Future<void> showListTutorialIfFirstTime() async {
+    if (await widget.tutorialService.shouldShowViewListTutorial()) {
+      widget.tutorialService.viewListTutorialWatched();
+      await new Future.delayed(const Duration(seconds : 1));
+      showListTutorial();
+    }
+  }
+
+  void showListTutorial() {
+    TutorialCoachMark(
+      context,
+      targets: getListTutorialTargets(),
+      colorShadow: Colors.deepOrange,
+      finish: (){},
+      clickTarget: (target){},
+      clickSkip: (){}
+    )..show();
+  }
+
+  List<TargetFocus> getListTutorialTargets() {
+    return <TargetFocus>[
+      TargetFocus(
+        keyTarget: dynamicFabState,
+        contents: [
+          ContentTarget(
+            align:AlignContent.top,
+            child: Container(
+              padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.1),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          'You are now viewing a shopping list.',
+                          style: GoogleFonts.lato(fontStyle: FontStyle.italic, fontWeight: FontWeight.bold, fontSize: 30, color: Colors.white),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.3,
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          'Add tags and save money. Tap the button to get started!',
+                          style: GoogleFonts.lato(fontStyle: FontStyle.italic, fontSize: 22, color: Colors.white),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+      TargetFocus(
+        keyTarget: dynamicFabState,
+        contents: [
+          ContentTarget(
+            align:AlignContent.top,
+            child: Container(
+              padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.1),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          'Tap this icon to add tags to your list.',
+                          style: GoogleFonts.lato(fontStyle: FontStyle.italic, fontWeight: FontWeight.bold, fontSize: 30, color: Colors.white),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.075,
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Center(
+                          child: ClipOval(
+                            child: Container(
+                              color: Colors.white,
+                              child: SizedBox(
+                                width: 50,
+                                height: 50,
+                                child: Padding(
+                                  padding: EdgeInsets.only(top: 8, left: 7),
+                                  child: FaIcon(FontAwesomeIcons.cartPlus, color: Colors.deepOrange, size: 30),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.075,
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          'Find tags by product or brand name. Add as many as you want!',
+                          style: GoogleFonts.lato(fontStyle: FontStyle.italic, fontSize: 22, color: Colors.white),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+      TargetFocus(
+        keyTarget: dynamicFabState,
+        contents: [
+          ContentTarget(
+            align:AlignContent.top,
+            child: Container(
+              padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.15),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          'Then, tap this icon to run a price check.',
+                          style: GoogleFonts.lato(fontStyle: FontStyle.italic, fontWeight: FontWeight.bold, fontSize: 30, color: Colors.white),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.075,
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Center(
+                          child: ClipOval(
+                            child: Container(
+                              color: Colors.white,
+                              child: SizedBox(
+                                width: 50,
+                                height: 50,
+                                child: Padding(
+                                  padding: EdgeInsets.only(top: 8, left: 10),
+                                  child: FaIcon(FontAwesomeIcons.searchDollar, color: Colors.deepOrange, size: 30),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.075,
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          'We\'ll show you which stores give you the best bang for your buck!',
+                          style: GoogleFonts.lato(fontStyle: FontStyle.italic, fontSize: 22, color: Colors.white),
                           textAlign: TextAlign.center,
                         ),
                       ),
