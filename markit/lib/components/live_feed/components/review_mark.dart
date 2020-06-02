@@ -164,13 +164,11 @@ class ReviewMark extends StatelessWidget {
   Widget getStoreAddressWidget() {
     if (hideStore) {
       return Expanded(
-        flex: 2,
         child: Container(),
       );
     }
     double distance = locationService.locationBetweenInMiles(location.latitude, location.longitude, store.latitude, store.longitude);
     return Expanded(
-        flex: 2,
         child: GestureDetector(
           onTap: () => viewStore(),
           child: Padding(
@@ -212,12 +210,10 @@ class ReviewMark extends StatelessWidget {
   Widget getSubmittingUserWidget() {
     if (hideUser) {
       return Expanded(
-        flex: 1,
         child: Container(),
       );
     }
     return Expanded(
-      flex: 1,
       child: GestureDetector(
         onTap: () => viewUser(),
         child: Padding(

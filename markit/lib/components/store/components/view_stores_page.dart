@@ -130,7 +130,7 @@ class ViewStoresPageState extends State<ViewStoresPage> {
     if (widget.storesNearMe.length > 0) {
       await SelectDialog.showModal<StoreModel>(
         context,
-        label: 'Which Store did you shop at?',
+        label: 'Which Store do you want to rate?',
         selectedValue: widget.storesNearMe[0],
         items: List.generate(widget.storesNearMe.length, (index) => widget.storesNearMe[index]),
         onChange: (StoreModel selected) {

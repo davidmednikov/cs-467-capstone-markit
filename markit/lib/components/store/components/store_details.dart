@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:rating_bar/rating_bar.dart';
@@ -36,14 +37,14 @@ class StoreDetails extends StatelessWidget {
               flex: 2,
               child: Column(
                 children: [
-                  Flexible(
+                  Expanded(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Expanded(
                           child: Align(
                             alignment: Alignment.centerLeft,
-                            child: Text(store.name,
+                            child: AutoSizeText(store.name,
                               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)
                             ),
                           ),
@@ -51,7 +52,7 @@ class StoreDetails extends StatelessWidget {
                       ]
                     )
                   ),
-                  Flexible(
+                  Expanded(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       // crossAxisAlignment: CrossAxisAlignment.start,
@@ -80,7 +81,7 @@ class StoreDetails extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Flexible(
+                  Expanded(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
