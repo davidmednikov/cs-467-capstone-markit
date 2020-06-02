@@ -18,6 +18,8 @@ class StatusIcon extends StatelessWidget {
         return FaIcon(FontAwesomeIcons.medal, color: Colors.deepOrange, size: 14);
       } else if (userReputation < 1000) {
         return FaIcon(FontAwesomeIcons.trophy, color: Colors.deepOrange, size: 14);
+      } else if (userReputation < 5000) {
+        return FaIcon(FontAwesomeIcons.chessQueen, color: Colors.deepOrange, size: 14);
       }
       return FaIcon(FontAwesomeIcons.crown, color: Colors.deepOrange, size: 14);
     }

@@ -18,6 +18,8 @@ class StatusAvatar extends StatelessWidget {
         return FaIcon(FontAwesomeIcons.medal, size: 36);
       } else if (userReputation < 1000) {
         return FaIcon(FontAwesomeIcons.trophy, size: 36);
+      } else if (userReputation < 5000) {
+        return FaIcon(FontAwesomeIcons.chessQueen, size: 36);
       }
       return FaIcon(FontAwesomeIcons.crown, size: 36);
     }

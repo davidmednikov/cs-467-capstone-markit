@@ -131,7 +131,7 @@ class PriceMark extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Flexible(
-                        child: Text('\$$price',
+                        child: Text('\$${price.toStringAsFixed(2)}',
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold
@@ -163,13 +163,11 @@ class PriceMark extends StatelessWidget {
   Widget getStoreAddressWidget() {
     if (hideStore) {
       return Expanded(
-        flex: 2,
         child: Container(),
       );
     }
     double distance = locationService.locationBetweenInMiles(location.latitude, location.longitude, store.latitude, store.longitude);
     return Expanded(
-      flex: 2,
       child: GestureDetector(
         onTap: () => viewStore(),
         child: Padding(
@@ -215,12 +213,10 @@ class PriceMark extends StatelessWidget {
    Widget getSubmittingUserWidget() {
     if (hideUser) {
       return Expanded(
-        flex: 1,
         child: Container(),
       );
     }
     return Expanded(
-      flex: 1,
       child: GestureDetector(
         onTap: () => viewUser(),
         child: Padding(
