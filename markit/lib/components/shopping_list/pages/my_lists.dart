@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import 'package:markit/components/common/scaffold/bottom_scaffold.dart';
 import 'package:markit/components/common/scaffold/dynamic_fab.dart';
 import 'package:markit/components/common/scaffold/top_scaffold.dart';
 import 'package:markit/components/models/shopping_list_model.dart';
@@ -15,8 +16,9 @@ import 'package:markit/components/shopping_list/components/shopping_list_tile.da
 class MyLists extends StatefulWidget {
 
   GlobalKey<DynamicFabState> dynamicFabKey;
+  GlobalKey<BottomScaffoldState> bottomScaffoldKey;
 
-  MyLists({Key key, this.dynamicFabKey}) : super(key: key);
+  MyLists({Key key, this.dynamicFabKey, this.bottomScaffoldKey}) : super(key: key);
 
   ApiService apiService = new ApiService();
   AuthService authService = new AuthService();
@@ -32,6 +34,7 @@ class MyListsState extends State<MyLists> {
   Widget build(BuildContext context) {
     return TopScaffold(
       title: 'My Lists',
+      bottomScaffoldKey: widget.bottomScaffoldKey,
       view: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

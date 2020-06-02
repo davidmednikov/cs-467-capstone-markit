@@ -15,8 +15,6 @@ import 'package:markit/components/service/auth_service.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([
-    DeviceOrientation.landscapeLeft,
-    DeviceOrientation.landscapeRight,
     DeviceOrientation.portraitUp
   ]);
   await DotEnv().load('env/api_key.env'); // API Key

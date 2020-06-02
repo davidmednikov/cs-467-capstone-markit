@@ -50,6 +50,7 @@ List<Widget> getNavigators(GlobalKey listsNav, GlobalKey liveFeedNav, GlobalKey 
     ListsNavigator(
       key: listsNav,
       dynamicFabKey: dynamicFabKey,
+      bottomScaffoldKey: bottomScaffoldKey,
     ),
     LiveFeedNavigator(
       key: liveFeedNav,
@@ -69,9 +70,9 @@ List<Widget> getNavigators(GlobalKey listsNav, GlobalKey liveFeedNav, GlobalKey 
   ];
 }
 
-Map<String, Widget> getListsRoutes(GlobalKey myListsKey, GlobalKey viewListKey, GlobalKey priceCheckListKey, GlobalKey priceCheckStoreKey, GlobalKey dynamicFab) {
+Map<String, Widget> getListsRoutes(GlobalKey myListsKey, GlobalKey viewListKey, GlobalKey priceCheckListKey, GlobalKey priceCheckStoreKey, GlobalKey dynamicFab, GlobalKey bottomScaffoldKey) {
   return {
-    '/': MyLists(key: myListsKey, dynamicFabKey: dynamicFab),
+    '/': MyLists(key: myListsKey, dynamicFabKey: dynamicFab, bottomScaffoldKey: bottomScaffoldKey),
     'newList': NewList(dynamicFabKey: dynamicFab),
     'addTag': AddTag(dynamicFabKey: dynamicFab),
     'viewList': ViewList(key: viewListKey, dynamicFabKey: dynamicFab, myListsKey: myListsKey),

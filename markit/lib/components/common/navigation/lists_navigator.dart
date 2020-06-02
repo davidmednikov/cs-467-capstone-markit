@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:markit/components/common/navigation/navigation_options.dart';
 import 'package:markit/components/common/navigation/tab_navigator.dart';
+import 'package:markit/components/common/scaffold/bottom_scaffold.dart';
 import 'package:markit/components/common/scaffold/dynamic_fab.dart';
 import 'package:markit/components/models/shopping_list_model.dart';
 import 'package:markit/components/models/store_model.dart';
@@ -14,8 +15,9 @@ import 'package:markit/components/shopping_list/pages/view_list.dart';
 class ListsNavigator extends StatefulWidget {
 
   GlobalKey<DynamicFabState> dynamicFabKey;
+  GlobalKey<BottomScaffoldState> bottomScaffoldKey;
 
-  ListsNavigator({Key key, this.dynamicFabKey}) : super(key: key);
+  ListsNavigator({Key key, this.dynamicFabKey, this.bottomScaffoldKey}) : super(key: key);
 
   GlobalKey<MyListsState> myListsKey = GlobalKey<MyListsState>();
   GlobalKey<ViewListState> viewListKey = GlobalKey<ViewListState>();
@@ -33,7 +35,7 @@ class ListsNavigatorState extends State<ListsNavigator> {
   @override
   void initState() {
     super.initState();
-    _routesToPageMap = getListsRoutes(widget.myListsKey, widget.viewListKey, widget.priceCheckListKey, widget.priceCheckStoreKey, widget.dynamicFabKey);
+    _routesToPageMap = getListsRoutes(widget.myListsKey, widget.viewListKey, widget.priceCheckListKey, widget.priceCheckStoreKey, widget.dynamicFabKey, widget.bottomScaffoldKey);
   }
 
   @override

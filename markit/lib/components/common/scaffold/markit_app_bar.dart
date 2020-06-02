@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import 'package:markit/components/common/scaffold/bottom_scaffold.dart';
 import 'package:markit/components/common/scaffold/live_feed_app_bar_buttons.dart';
 import 'package:markit/components/common/scaffold/price_check_app_bar_buttons.dart';
 import 'package:markit/components/common/scaffold/view_stores_app_bar_buttons.dart';
@@ -16,13 +17,15 @@ class MarkitAppBar extends StatefulWidget implements PreferredSizeWidget {
 
   bool noDropShadow;
 
+  GlobalKey<BottomScaffoldState> bottomScaffoldKey;
+
   GlobalKey<LiveFeedState> liveFeedKey;
   GlobalKey<PriceCheckListState> priceCheckListKey;
   GlobalKey<ViewStoresState> viewStoresKey;
   GlobalKey<PriceCheckAppBarButtonsState> priceCheckAppBarButtonsKey;
   GlobalKey<MyProfileState> myProfileKey;
 
-  MarkitAppBar({Key key, this.titleProp, this.liveFeedKey, this.priceCheckListKey, this.viewStoresKey, this.priceCheckAppBarButtonsKey, this.myProfileKey, this.noDropShadow = false}) : super(key: key);
+  MarkitAppBar({Key key, this.titleProp, this.bottomScaffoldKey, this.liveFeedKey, this.priceCheckListKey, this.viewStoresKey, this.priceCheckAppBarButtonsKey, this.myProfileKey, this.noDropShadow = false}) : super(key: key);
 
   AuthService authService = new AuthService();
 
@@ -96,6 +99,22 @@ class _MarkitAppBarState extends State<MarkitAppBar> {
           onSelected: (result) => logoutButtonTapped(result, context),
         ),
       ];
+    } else if (_title == 'My Lists') {
+      return [
+        PopupMenuButton(
+          icon: FaIcon(FontAwesomeIcons.ellipsisV),
+          itemBuilder: (context) => [
+            PopupMenuItem(
+              child: ListTile(
+                title: Text('Play Tutorial'),
+                trailing: FaIcon(FontAwesomeIcons.playCircle),
+              ),
+              value: 'tutorial',
+            )
+          ],
+          onSelected: (result) => tutorialButtonTapped(result, context),
+        ),
+      ];
     }
     return [];
   }
@@ -111,6 +130,12 @@ class _MarkitAppBarState extends State<MarkitAppBar> {
     if (result == 'logout') {
       widget.authService.logout();
       widget.myProfileKey.currentState.logout();
+    }
+  }
+
+  void tutorialButtonTapped(String result, BuildContext context) {
+    if (result == 'tutorial') {
+      widget.bottomScaffoldKey.currentState.showTutorial();
     }
   }
 }

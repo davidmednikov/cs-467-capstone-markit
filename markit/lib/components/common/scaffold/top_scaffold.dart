@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:markit/components/common/scaffold/bottom_scaffold.dart';
 import 'package:markit/components/common/scaffold/markit_app_bar.dart';
 import 'package:markit/components/common/scaffold/price_check_app_bar_buttons.dart';
 import 'package:markit/components/live_feed/pages/live_feed.dart';
@@ -16,13 +17,15 @@ class TopScaffold extends StatelessWidget {
   bool noPadding;
   bool noDropShadow;
 
+  GlobalKey<BottomScaffoldState> bottomScaffoldKey;
+
   GlobalKey<LiveFeedState> liveFeedKey;
   GlobalKey<PriceCheckListState> priceCheckListKey;
   GlobalKey<ViewStoresState> viewStoresKey;
   GlobalKey<PriceCheckAppBarButtonsState> priceCheckAppBarButtonsKey;
   GlobalKey<MyProfileState> myProfileKey;
 
-  TopScaffold({Key key, this.title, this.view, this.liveFeedKey, this.priceCheckListKey, this.viewStoresKey, this.priceCheckAppBarButtonsKey, this.myProfileKey, this.noPadding = false, this.noDropShadow = false}) : super(key: key);
+  TopScaffold({Key key, this.title, this.view, this.bottomScaffoldKey, this.liveFeedKey, this.priceCheckListKey, this.viewStoresKey, this.priceCheckAppBarButtonsKey, this.myProfileKey, this.noPadding = false, this.noDropShadow = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +38,7 @@ class TopScaffold extends StatelessWidget {
         priceCheckAppBarButtonsKey: priceCheckAppBarButtonsKey,
         myProfileKey: myProfileKey,
         noDropShadow: noDropShadow,
+        bottomScaffoldKey: bottomScaffoldKey,
       ),
       body: SafeArea(
         child: getPadding(),
