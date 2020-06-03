@@ -17,8 +17,6 @@ class ViewStoresAppBarButtons extends StatefulWidget implements PreferredSizeWid
 
   ViewStoresAppBarButtons({Key key, this.buttons, this.viewStoresKey }) : super(key: key);
 
-  GoogleMapsApiService google = new GoogleMapsApiService();
-
   @override
   _ViewStoresAppBarButtonsState createState() => _ViewStoresAppBarButtonsState();
 

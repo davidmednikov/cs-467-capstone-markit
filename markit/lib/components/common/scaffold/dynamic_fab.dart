@@ -11,12 +11,12 @@ class DynamicFab extends StatefulWidget {
 
   String page;
 
-  var onSpeedDialAction;
-  var onBarcodeButtonPressed;
-  var onPriceCheckButtonPressed;
-  var onAddRatingButtonPressed;
-  var onCancelButtonPressed;
-  var onCheckmarkButtonPressed;
+  Function onSpeedDialAction;
+  Function onBarcodeButtonPressed;
+  Function onPriceCheckButtonPressed;
+  Function onAddRatingButtonPressed;
+  Function onCancelButtonPressed;
+  Function onCheckmarkButtonPressed;
 
   GlobalKey<BottomScaffoldState> bottomScaffoldKey;
 
@@ -104,13 +104,6 @@ class DynamicFabState extends State<DynamicFab> {
     return FloatingActionButton(
       child: FaIcon(FontAwesomeIcons.times),
       onPressed: widget.onCancelButtonPressed,
-    );
-  }
-
-  Widget _getCheckmarkFab() {
-    return FloatingActionButton(
-      child: FaIcon(FontAwesomeIcons.check),
-      onPressed: widget.onCheckmarkButtonPressed,
     );
   }
 
