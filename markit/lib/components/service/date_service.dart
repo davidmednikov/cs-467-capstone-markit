@@ -21,7 +21,7 @@ class DateService {
       if (weeks == 1) {
         return Tuple2('1 week ago', false);
       }
-      return Tuple2('$weeks weeks ago', true);
+      return Tuple2('$weeks weeks ago', false);
     } else if (difference.inDays >= 1) {
       int days = (difference.inDays).round();
       if (days == 1) {

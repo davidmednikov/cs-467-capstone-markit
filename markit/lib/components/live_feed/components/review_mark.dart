@@ -178,10 +178,13 @@ class ReviewMark extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text(
-                      '$store',
-                      style: TextStyle(
-                        fontSize: 15,
+                    Flexible(
+                      child: Text(
+                        '$store',
+                        style: TextStyle(
+                          fontSize: 15,
+                        ),
+                        textAlign: TextAlign.left,
                       ),
                     ),
                   ],

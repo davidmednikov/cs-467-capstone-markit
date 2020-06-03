@@ -64,6 +64,7 @@ class RecentMarks extends StatelessWidget {
             user: MarkitUserModel.fromJsonForLiveFeed(item['user']),
             submittedDate: formatter.parse(item['createdAt'], true),
             price: item['price'],
+            isSalePrice: item['isSalePrice'],
             location: location,
             bottomScaffoldKey: bottomScaffoldKey,
             hideStore: bottomNavBarIndex == 2,
