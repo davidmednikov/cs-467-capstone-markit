@@ -99,7 +99,7 @@ class MyListsState extends State<MyLists> {
 
   void renameList(int listId, String newName) async {
     int userId = await widget.authService.getUserIdFromStorage();
-    String url = 'https://markit-api.azurewebsites.net/list/${listId}';
+    String url = 'https://markit-api.azurewebsites.net/list/$listId';
     var body = {
       'userId': userId,
       'name': newName
