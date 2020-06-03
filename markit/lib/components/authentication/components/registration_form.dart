@@ -165,7 +165,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                       }
                     } else {
                       setState(() => buttonPressed = false);
-                      showNotification('Registration error.');
+                      showNotification('This username already exists.');
                     }
                   }
                 },

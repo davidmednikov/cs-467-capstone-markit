@@ -7,8 +7,8 @@ class MyListsSpeedDialFab extends StatefulWidget {
 
   String page;
   SpeedDialController controller;
-  var onSpeedDialAction;
-  var getSpeedDialLabelWidget;
+  Function onSpeedDialAction;
+  Function getSpeedDialLabelWidget;
 
   MyListsSpeedDialFab({Key key, this.page, this.controller, this.onSpeedDialAction, this.getSpeedDialLabelWidget }) : super(key: key);
 

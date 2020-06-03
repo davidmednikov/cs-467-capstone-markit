@@ -271,7 +271,7 @@ class UserProfile extends StatelessWidget {
     }
     return Flexible(
       child: Center(
-        child: Text('${userProp.level}',
+        child: Text(userProp.level,
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,

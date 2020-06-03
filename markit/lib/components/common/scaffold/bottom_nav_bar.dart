@@ -6,7 +6,7 @@ class BottomNavBar extends StatelessWidget {
 
   final List<BottomNavigationBarItem> navOptions;
 
-  var onItemTapped;
+  Function onItemTapped;
 
   BottomNavBar({Key key, this.selectedIndex, this.navOptions, this.onItemTapped }) : super(key: key);
 
