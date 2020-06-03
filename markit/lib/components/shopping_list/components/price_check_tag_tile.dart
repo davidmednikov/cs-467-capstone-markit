@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:markit/components/common/scaffold/dynamic_fab.dart';
@@ -54,14 +55,53 @@ class PriceCheckTagTile extends StatelessWidget {
     if (priceCheckTag == null) {
       return Text(
         'MISSING',
-        style: GoogleFonts.lato(fontSize: 18, fontWeight: FontWeight.bold, color: getRedIfStaleOrMissing()),
+        style: GoogleFonts.lato(fontSize: 18, fontWeight: FontWeight.bold, color: getColor()),
       );
     }
+    return getPriceOrStack();
+  }
+
+  Widget getPriceOrStack() {
+    if (DateService.getTimeString(priceCheckTag.submittedDate).item2) {
+      return getStalePriceStack();
+    } else if (priceCheckTag.isSalePrice) {
+      return getOnSalePriceStack();
+    }
+    return getPriceWidget();
+  }
+
+  Widget getStalePriceStack() {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        getPriceWidget(),
+        Opacity(
+          opacity: 0.5,
+          child: FaIcon(FontAwesomeIcons.clock, color: Colors.grey, size: 36),
+        ),
+      ],
+    );
+  }
+
+  Widget getOnSalePriceStack() {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        getPriceWidget(),
+        Opacity(
+          opacity: 0.5,
+          child: FaIcon(FontAwesomeIcons.tag, color: Colors.grey, size: 36),
+        ),
+      ],
+    );
+  }
+
+  Widget getPriceWidget() {
     return Padding(
       padding: EdgeInsets.only(bottom: 2),
       child: Text(
         '\$${(listTag.quantity * priceCheckTag.price).toStringAsFixed(2)}',
-        style: GoogleFonts.lato(fontSize: 20, fontWeight: FontWeight.bold, color: getRedIfStaleOrMissing()),
+        style: GoogleFonts.lato(fontSize: 20, fontWeight: FontWeight.bold, color: getColor()),
       ),
     );
   }
@@ -73,9 +113,11 @@ class PriceCheckTagTile extends StatelessWidget {
     return null;
   }
 
-  Color getRedIfStaleOrMissing() {
+  Color getColor() {
     if (priceCheckTag == null || DateService.getTimeString(priceCheckTag.submittedDate).item2) {
       return Colors.red;
+    } else if (priceCheckTag.isSalePrice) {
+      return Colors.green;
     }
     return Colors.black;
   }

@@ -1,3 +1,4 @@
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -16,6 +17,7 @@ class PriceMark extends StatelessWidget {
   final MarkitUserModel user;
   final DateTime submittedDate;
   final Position location;
+  final bool isSalePrice;
 
   bool hideUser;
   bool hideStore;
@@ -28,6 +30,7 @@ class PriceMark extends StatelessWidget {
     this.price,
     this.store,
     this.user,
+    this.isSalePrice,
     this.submittedDate,
     this.location,
     this.bottomScaffoldKey,
@@ -130,15 +133,7 @@ class PriceMark extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Flexible(
-                        child: Text('\$${price.toStringAsFixed(2)}',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold
-                          ),
-                          textAlign: TextAlign.right,
-                        ),
-                      ),
+                      getPriceOrOnSaleStack(),
                     ],
                   ),
                 ),
@@ -147,6 +142,39 @@ class PriceMark extends StatelessWidget {
           ),
           getBottomRow(),
         ],
+      ),
+    );
+  }
+
+  Widget getPriceOrOnSaleStack() {
+    if (isSalePrice) {
+      return getOnSalePriceStack();
+    }
+    return getPriceWidget();
+  }
+
+  Widget getOnSalePriceStack() {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        getPriceWidget(),
+        Opacity(
+          opacity: 0.5,
+          child: FaIcon(FontAwesomeIcons.tag, color: Colors.grey, size: 36),
+        ),
+      ],
+    );
+  }
+
+  Widget getPriceWidget() {
+    return Flexible(
+      child: Text('\$${price.toStringAsFixed(2)}',
+        style: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+          color: getPriceColor(),
+        ),
+        textAlign: TextAlign.right,
       ),
     );
   }
@@ -254,6 +282,13 @@ class PriceMark extends StatelessWidget {
       }
     }
     return returnString;
+  }
+
+  Color getPriceColor() {
+    if (isSalePrice) {
+      return Colors.green;
+    }
+    return Colors.black;
   }
 
   void viewStore() {

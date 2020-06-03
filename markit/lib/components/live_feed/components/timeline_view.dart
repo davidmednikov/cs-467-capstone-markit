@@ -50,6 +50,7 @@ class TimelineView extends StatelessWidget {
             submittedDate: formatter.parse(item['createdAt'], true),
             price: item['price'],
             location: location,
+            isSalePrice: item['isSalePrice'],
             bottomScaffoldKey: bottomScaffoldKey,
           )
         ),
