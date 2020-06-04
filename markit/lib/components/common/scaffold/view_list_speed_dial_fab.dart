@@ -27,6 +27,7 @@ class ViewListSpeedDialFabState extends State<ViewListSpeedDialFab> {
       childOnFold: Text('M', style: GoogleFonts.lato(fontStyle: FontStyle.italic, fontWeight: FontWeight.bold, fontSize: 40)),
       childOnUnfold: FaIcon(FontAwesomeIcons.times),
       onAction: widget.onSpeedDialAction,
+      isDismissible: true,
     );
   }
 

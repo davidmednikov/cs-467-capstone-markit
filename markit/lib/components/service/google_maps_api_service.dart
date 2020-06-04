@@ -64,18 +64,4 @@ class GoogleMapsApiService {
       longitude: details.geometry.location.lng,
     );
   }
-
-  //   Map<String, Object> selectedStore = {
-  //     'googleId': p.placeId,
-  //     'name': details.name,
-  //     'streetAddress': returnedStreetAddress,
-  //     'city': city,
-  //     'state': state,
-  //     'postalCode': postalCode,
-  //     'coordinate': {
-  //       'latitude': details.geometry.location.lat,
-  //       'longitude': details.geometry.location.lng,
-  //     }
-  //   };
-  // }
 }

@@ -39,7 +39,7 @@ class ListTagTile extends StatelessWidget {
               padding: EdgeInsets.only(right: 10),
               child: Text(
                 listTag.quantity.toString(),
-                style: GoogleFonts.lato(fontSize: 12, fontWeight: FontWeight.bold),
+                style: GoogleFonts.lato(fontSize: 14, fontWeight: FontWeight.bold),
               )
             )
           ],

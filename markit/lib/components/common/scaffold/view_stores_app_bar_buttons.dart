@@ -144,7 +144,9 @@ class _ViewStoresAppBarButtonsState extends State<ViewStoresAppBarButtons> {
         builder: (context) => PlacePicker(
           apiKey: mapsApiKey,
           onPlacePicked: (result) {
-            changeLocation(result);
+            if (result != null) {
+              changeLocation(result.geometry.location.lat, result.geometry.location.lng);
+            }
             Navigator.of(context).pop();
           },
           initialPosition: LatLng(lat, lng),
@@ -154,13 +156,11 @@ class _ViewStoresAppBarButtonsState extends State<ViewStoresAppBarButtons> {
     );
   }
 
-  Future<Null> changeLocation(PickResult result) async {
-    if (result != null) {
-      final ProgressDialog dialog = ProgressDialog(context);
+  Future<Null> changeLocation(double latitude, double longitude) async {
+    final ProgressDialog dialog = ProgressDialog(context);
       await dialog.show();
-      Position newLocation = Position(latitude: result.geometry.location.lat, longitude: result.geometry.location.lng);
+      Position newLocation = Position(latitude: latitude, longitude: longitude);
       widget.viewStoresKey.currentState.changeLocation(newLocation);
       await dialog.hide();
-    }
   }
 }
