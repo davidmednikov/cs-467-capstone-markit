@@ -5,6 +5,7 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:markit/components/common/scaffold/dynamic_fab.dart';
 import 'package:markit/components/common/scaffold/top_scaffold.dart';
 import 'package:markit/components/models/list_tag_model.dart';
+import 'package:markit/components/models/shopping_list_model.dart';
 import 'package:markit/components/service/api_service.dart';
 import 'package:markit/components/service/tag_service.dart';
 
@@ -29,7 +30,7 @@ class _AddTagState extends State<AddTag> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController _typeAheadController = TextEditingController();
 
-  int listId;
+  ShoppingListModel shoppingList;
 
   int tagId;
   String tagName;
@@ -40,7 +41,7 @@ class _AddTagState extends State<AddTag> {
 
   @override
   Widget build(BuildContext context) {
-    listId = ModalRoute.of(context).settings.arguments;
+    shoppingList = ModalRoute.of(context).settings.arguments;
     return WillPopScope(
       child: TopScaffold(
         title: 'Add Tag',
@@ -79,9 +80,15 @@ class _AddTagState extends State<AddTag> {
                         onSaved: (value) {
                           tagName = value;
                         },
+                        autovalidate: true,
+                        hideOnLoading: true,
                         validator: (value) {
                           if (value.isEmpty) {
                             return 'Please enter a name';
+                          } else if (tagId == null) {
+                            return 'Tag autocomplete must match an existing tag.';
+                          } else if (listAlreadyContainsTag(value)) {
+                            return 'This list already contains this tag.';
                           }
                           return null;
                         },
@@ -153,7 +160,7 @@ class _AddTagState extends State<AddTag> {
                             formKey.currentState.save();
                             setState( () => buttonPressed = true);
                             Map savedTag = await saveTag();
-                            ListTagModel listModel = ListTagModel.fromJsonWithListId(savedTag, listId);
+                            ListTagModel listModel = ListTagModel.fromJsonWithListId(savedTag, shoppingList.id);
                             notifyFabOfPop();
                             Navigator.of(context).pop(listModel);
                           }
@@ -190,7 +197,15 @@ class _AddTagState extends State<AddTag> {
   }
 
   Future<Map> saveTag() async {
-    return widget.tagService.addTagToList(listId, tagId, tagName, quantity, notes);
+    return widget.tagService.addTagToList(shoppingList.id, tagId, tagName, quantity, notes);
+  }
+
+  bool listAlreadyContainsTag(String newTag) {
+    List<String> listTags = shoppingList.listTags.map((listTag) => listTag.tagName).toList();
+    if (listTags.contains(newTag)) {
+      return true;
+    }
+    return false;
   }
 
   Future<bool> notifyFabOfPop() {
@@ -200,6 +215,7 @@ class _AddTagState extends State<AddTag> {
   }
 
   Future<List<Map<String, Object>>> getSuggestions(String pattern) async {
+    tagId = null;
     return List<Map<String, Object>>.from(await widget.tagService.getSuggestions(pattern));
   }
 }

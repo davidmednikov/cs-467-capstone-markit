@@ -133,7 +133,9 @@ class PriceMark extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      getPriceOrOnSaleStack(),
+                      Expanded(
+                        child: getPriceOrOnSaleStack(),
+                      ),
                     ],
                   ),
                 ),
@@ -167,15 +169,13 @@ class PriceMark extends StatelessWidget {
   }
 
   Widget getPriceWidget() {
-    return Flexible(
-      child: Text('\$${price.toStringAsFixed(2)}',
-        style: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-          color: getPriceColor(),
-        ),
-        textAlign: TextAlign.right,
+    return Text('\$${price.toStringAsFixed(2)}',
+      style: TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.bold,
+        color: getPriceColor(),
       ),
+      textAlign: TextAlign.right,
     );
   }
 

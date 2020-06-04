@@ -50,8 +50,8 @@ class ListsNavigatorState extends State<ListsNavigator> {
   }
 
   void navigateToAddTag() {
-    int listId = widget.viewListKey.currentState.shoppingList.id;
-    Navigator.of(widget.viewListKey.currentContext).pushNamed('addTag', arguments: listId)
+    ShoppingListModel list = widget.viewListKey.currentState.shoppingList;
+    Navigator.of(widget.viewListKey.currentContext).pushNamed('addTag', arguments: list)
     .then((newTag) {
       if (newTag != null) {
         widget.viewListKey.currentState.addTag(newTag);

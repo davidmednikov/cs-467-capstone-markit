@@ -42,7 +42,7 @@ class TimelineView extends StatelessWidget {
     if (item['price'] != null) {
       return TimelineModel(
         Container(
-          padding: EdgeInsets.symmetric(vertical: 10),
+          padding: EdgeInsets.symmetric(vertical: 5),
           child: PriceMark(
             tags: List<String>.from(item['tagNames']),
             store: StoreModel.fromJson(item['store']),
@@ -66,7 +66,7 @@ class TimelineView extends StatelessWidget {
     } else {
       return TimelineModel(
         Container(
-          padding: EdgeInsets.symmetric(vertical: 10),
+          padding: EdgeInsets.symmetric(vertical: 5),
           child: ReviewMark(
             comment: item['comment'],
             rating: item['points'],
