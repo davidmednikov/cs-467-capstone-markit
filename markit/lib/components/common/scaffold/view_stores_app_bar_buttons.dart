@@ -158,9 +158,9 @@ class _ViewStoresAppBarButtonsState extends State<ViewStoresAppBarButtons> {
 
   Future<Null> changeLocation(double latitude, double longitude) async {
     final ProgressDialog dialog = ProgressDialog(context);
-      await dialog.show();
-      Position newLocation = Position(latitude: latitude, longitude: longitude);
-      widget.viewStoresKey.currentState.changeLocation(newLocation);
-      await dialog.hide();
+    await dialog.show();
+    Position newLocation = Position(latitude: latitude, longitude: longitude);
+    widget.viewStoresKey.currentState.changeLocation(newLocation);
+    await dialog.hide();
   }
 }
