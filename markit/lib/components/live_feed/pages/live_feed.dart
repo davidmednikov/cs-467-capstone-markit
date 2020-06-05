@@ -55,17 +55,17 @@ class LiveFeedState extends State<LiveFeed> {
     if (selected == 'Prices') {
       activityList = await getRecentPrices();
       if (activityList.length == 0) {
-        widget.notificationService.showErrorNotification('No prices found nearby.');
+        widget.notificationService.showWarningNotification('No prices found nearby.');
       }
     } else if (selected == 'Reviews') {
       activityList = await  getRecentRatings();
       if (activityList.length == 0) {
-        widget.notificationService.showErrorNotification('No reviews found nearby.');
+        widget.notificationService.showWarningNotification('No reviews found nearby.');
       }
     } else {
       activityList = await  getCombinedLiveFeed();
       if (activityList.length == 0) {
-        widget.notificationService.showErrorNotification('No activity found nearby.');
+        widget.notificationService.showWarningNotification('No activity found nearby.');
       }
     }
     return activityList;

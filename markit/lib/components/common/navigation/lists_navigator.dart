@@ -70,7 +70,7 @@ class ListsNavigatorState extends State<ListsNavigator> {
       Navigator.of(widget.viewListKey.currentContext).pushReplacementNamed('priceCheck',
         arguments: widget.viewListKey.currentState.shoppingList);
     } else {
-      widget.viewListKey.currentState.showError('Price Check requires at least 1 tag.');
+      widget.viewListKey.currentState.showWarning('Price Check requires at least 1 tag.');
     }
   }
 

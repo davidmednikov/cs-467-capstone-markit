@@ -131,7 +131,7 @@ class PriceCheckListState extends State<PriceCheckList> {
 
   void showNotification(String message) {
     if (showNotifications) {
-      widget.notificationService.showErrorNotification(message);
+      widget.notificationService.showWarningNotification(message);
     }
   }
 
@@ -175,7 +175,7 @@ class PriceCheckListState extends State<PriceCheckList> {
       );
       return Future.value(store);
     } else {
-      widget.notificationService.showErrorNotification('No available stores to review.');
+      widget.notificationService.showWarningNotification('No available stores to review.');
       return Future.value(null);
     }
   }

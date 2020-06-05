@@ -54,7 +54,7 @@ class ViewStoresState extends State<ViewStores> {
     final String url = 'https://markit-api.azurewebsites.net/store/query?latitude=${location.latitude}&longitude=${location.longitude}';
     List storesResponse = await widget.apiService.getList(url);
     if (storesResponse.length == 0) {
-      widget.notificationService.showErrorNotification('No stores found nearby.');
+      widget.notificationService.showWarningNotification('No stores found nearby.');
     }
     return storesResponse;
   }

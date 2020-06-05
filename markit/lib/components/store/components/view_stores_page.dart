@@ -141,7 +141,7 @@ class ViewStoresPageState extends State<ViewStoresPage> {
       );
       return Future.value(store);
     } else {
-      widget.notificationService.showErrorNotification('No available stores to review.');
+      widget.notificationService.showWarningNotification('No available stores to review.');
       return Future.value(null);
     }
   }
