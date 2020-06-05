@@ -153,8 +153,8 @@ class ViewListState extends State<ViewList> {
     widget.notificationService.showSuccessNotification(message);
   }
 
-  void showError(String error) {
-   widget.notificationService.showErrorNotification(error);
+  void showWarning(String warning) {
+   widget.notificationService.showWarningNotification(warning);
   }
 
   void addTag(ListTagModel newTag) {
