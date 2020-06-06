@@ -61,8 +61,13 @@ dependencies:
 dev_dependencies:
   flutter_launcher_icons: ^0.7.5
   flutter_native_splash: ^0.1.9
+  flutter_rename_app: ^1.0.0
   flutter_test:
     sdk: flutter
+
+flutter_native_splash:
+  image: assets/img/splash.png
+  color: "ff5722"
 
 flutter_icons:
   android: true
@@ -71,9 +76,12 @@ flutter_icons:
   adaptive_icon_background: "#ff5722"
   adaptive_icon_foreground: "assets/img/icon/adaptive_icon.png"
 
-flutter_native_splash:
-  image: assets/img/splash.png
-  color: "ff5722"
+flutter_rename_app:
+  application_name: Markit
+  application_id: edu.osu.markit
+  bundle_id: edu.osu.markit
+  dart_package_name: markit
+  android_package_name: edu.osu.markit
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
