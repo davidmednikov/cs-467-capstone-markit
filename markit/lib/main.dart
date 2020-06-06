@@ -1,3 +1,4 @@
+import 'package:http/http.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -17,6 +18,7 @@ void main() async {
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp
   ]);
+  get('https://markit-api.azurewebsites.net/healthcheck');
   await DotEnv().load('env/api_key.env'); // API Key
   AuthService authService = new AuthService();
   String token = await authService.getToken();
